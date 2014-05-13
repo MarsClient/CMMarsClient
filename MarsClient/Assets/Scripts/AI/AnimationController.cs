@@ -9,6 +9,7 @@ public enum Clip
 	Attack1,
 	Attack2,
 	Attack3,
+	Null,
 }
 
 [System.Serializable]
@@ -17,11 +18,26 @@ public class AnimationItem
 	public Clip clip;
 	public AnimationClip animationClip;
 	public float speed = 1;
+	public string onCompelte;
 	public string clipName
 	{
 		get{
 			return animationClip.name;
 		}
+	}
+
+	public void AddEvent ()
+	{
+		if (animationClip.wrapMode == WrapMode.Default)
+		{
+			AnimationEvent animationEvent = new AnimationEvent();
+			animationEvent.functionName = "Play";
+			animationEvent.stringParameter = "Idle";
+			animationEvent.messageOptions = SendMessageOptions.DontRequireReceiver;
+			animationEvent.time = animationClip.length-0.1f;
+			animationClip.AddEvent (animationEvent);
+		}
+
 	}
 
 	public void SetSpeed (Animation ant)
@@ -51,12 +67,9 @@ public class AnimationController : MonoBehaviour {
 		}
 	}
 
-	public float length
+	public float GetLength (Clip clip)
 	{
-		get
-		{
-			return antPools[currentClip].animationClip.length / animation[currentClip.ToString()].speed;
-		}
+		return antPools[clip].animationClip.length / animation[clip.ToString()].speed;
 	}
 
 	void Start ()
@@ -64,15 +77,8 @@ public class AnimationController : MonoBehaviour {
 		foreach (AnimationItem ai in animationItems)
 		{
 			ai.SetSpeed (animation);
+			ai.AddEvent ();
 			antPools.Add (ai.clip, ai);
-		}
-	}
-
-	void Update ()
-	{
-		if (animation.isPlaying == false)
-		{
-			Play (Clip.Idle);
 		}
 	}
 

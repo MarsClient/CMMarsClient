@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour {
 	private float startAttTime = 0;
 	public int maxAttackCount = 2;
 	private int attckId = -1;
+	private Clip clip;
 	void Attack ()
 	{
 		if (IsIng == false)
@@ -57,7 +58,7 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine (AttackQueue ());
 			return;
 		}
-		if (Time.time - startAttTime > animationController.length / 2)
+		if (clip != Clip.Null && Time.time - startAttTime > animationController.GetLength (clip) / 2)
 		{
 			startAttTime = Time.time;
 			attckId++;
@@ -68,9 +69,11 @@ public class PlayerController : MonoBehaviour {
 	{
 		for (int i = (int)Clip.Attack1; i <= Mathf.Min (attckId, maxAttackCount - 1) + (int)Clip.Attack1; i++)
 		{
-			animationController.Play ((Clip)i);
-			yield return new WaitForSeconds (animationController.length);
+			clip = (Clip)i;
+			animationController.Play (clip);
+			yield return new WaitForSeconds (animationController.GetLength (clip));
 		}
+		clip = Clip.Null;
 		attckId = -1;
 		IsIng = false;
 	}

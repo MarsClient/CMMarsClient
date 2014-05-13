@@ -591,7 +591,7 @@ ModelImporter:
       takeName: Walk
       firstFrame: 0
       lastFrame: 50
-      wrapMode: 0
+      wrapMode: 2
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -967,7 +967,7 @@ ModelImporter:
       takeName: Run
       firstFrame: 0
       lastFrame: 50
-      wrapMode: 1
+      wrapMode: 2
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -2843,7 +2843,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: Attack3
+      name: Attack2
       takeName: Attack1
       firstFrame: 0
       lastFrame: 102
@@ -3031,7 +3031,7 @@ ModelImporter:
       maskType: 0
       maskSource: {instanceID: 0}
     - serializedVersion: 16
-      name: Attack2
+      name: Attack3
       takeName: Attack2
       firstFrame: 0
       lastFrame: 102

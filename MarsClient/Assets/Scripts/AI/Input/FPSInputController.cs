@@ -34,6 +34,9 @@ public class FPSInputController : MonoBehaviour {
 	public delegate void AttackController (FPSInputController fps);
 	public static AttackController attackController;
 
+
+	public Vector2 dir;
+
 	// Use this for initialization
 	void Awake () {
 		m_motor = GetComponent<CharacterMotor>();
@@ -43,8 +46,8 @@ public class FPSInputController : MonoBehaviour {
 	void Update () {
 
 		// Get the input vector from kayboard or analog stick
-		float x = Input.GetKey (KeyCode.A) ? -1 : Input.GetKey (KeyCode.D) ? 1 : 0 ;
-		float z = Input.GetKey (KeyCode.S) ? -1 : Input.GetKey (KeyCode.W) ? 1 : 0 ;
+		float x = Input.GetKey (KeyCode.A) ? dir.x : Input.GetKey (KeyCode.D) ? -dir.x : 0 ;
+		float z = Input.GetKey (KeyCode.S) ? dir.y : Input.GetKey (KeyCode.W) ? -dir.y : 0 ;
 		//Debug.Log (x + "___" + y);
 		m_directionVector = new Vector3(x, 0, z);
 		if (canControl == false)
