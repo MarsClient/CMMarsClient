@@ -12,13 +12,22 @@ public enum Clip
 	Null,
 }
 
+public class AnimationMessage
+{
+	public static string IDLE_MESSAGE = "IdleMessage";
+	public static string ATTACK_MESSAGE = "AttackMessage";
+
+}
+
 [System.Serializable]
 public class AnimationItem
 {
 	public Clip clip;
 	public AnimationClip animationClip;
 	public float speed = 1;
-	public string onCompelte;
+	public float[] eventTimes;
+	public float actionMove = 0;
+	public GameObject effect;
 	public string clipName
 	{
 		get{
@@ -26,37 +35,61 @@ public class AnimationItem
 		}
 	}
 
-	public void AddEvent ()
+	public void Init (Animation ant)
+	{
+		SetSpeed (ant);
+		AddCompleteEvent ();
+		foreach (float t in eventTimes)
+		{
+			SetEvent (AnimationMessage.ATTACK_MESSAGE, t);
+		}
+	}
+
+	private void AddCompleteEvent ()
 	{
 		if (animationClip.wrapMode == WrapMode.Default)
 		{
-			AnimationEvent animationEvent = new AnimationEvent();
-			animationEvent.functionName = "Play";
-			animationEvent.stringParameter = "Idle";
-			animationEvent.messageOptions = SendMessageOptions.DontRequireReceiver;
-			animationEvent.time = animationClip.length-0.1f;
-			animationClip.AddEvent (animationEvent);
+			SetEvent (AnimationMessage.IDLE_MESSAGE);
 		}
-
 	}
-
-	public void SetSpeed (Animation ant)
+	private void SetEvent (string onEvent)
+	{
+		SetEvent (onEvent, animationClip.length - 0.05f);
+	}
+	private void SetEvent (string onEvent, float time)
+	{
+		if (time == 0)
+		{
+			return;
+		}
+		AnimationEvent animationEvent = new AnimationEvent();
+		animationEvent.functionName = onEvent;
+		animationEvent.messageOptions = SendMessageOptions.DontRequireReceiver;
+		animationEvent.time = time;
+		animationClip.AddEvent (animationEvent);
+	}
+	
+	private void SetSpeed (Animation ant)
 	{
 		ant[clipName].speed = speed;
 	}
 }
 public class AnimationController : MonoBehaviour {
 
+	public delegate void AttackEvent (AnimationItem animationItem);
+	public AttackEvent attackEvent;
+
+
 	public AnimationItem[] animationItems;
 	private Dictionary<Clip, AnimationItem> antPools = new Dictionary<Clip, AnimationItem>();
 
-	public Clip currentClip = Clip.Idle;
+	public AnimationItem currentAnimationItem;
 
 	public bool isAttack
 	{
 		get
 		{
-			return currentClip.ToString().Contains ("Attack");
+			return currentAnimationItem.clip.ToString().Contains ("Attack");
 		}
 	}
 
@@ -76,18 +109,34 @@ public class AnimationController : MonoBehaviour {
 	{
 		foreach (AnimationItem ai in animationItems)
 		{
-			ai.SetSpeed (animation);
-			ai.AddEvent ();
+			ai.Init (animation);
 			antPools.Add (ai.clip, ai);
 		}
+		currentAnimationItem = antPools[Clip.Idle];
 	}
 
+	private Clip currentClip;
 	public void Play (Clip clip)
 	{
 		if (currentClip != clip)
 		{
 			currentClip = clip;
-			animation.CrossFade (antPools[clip].clipName);
+			currentAnimationItem = antPools[clip];
+			animation.CrossFade (currentAnimationItem.clipName);
+		}
+	}
+
+	void IdleMessage ()
+	{
+		Play (Clip.Idle);
+	}
+
+	void AttackMessage ()
+	{
+		Debug.Log (currentAnimationItem.clipName);
+		if (attackEvent != null)
+		{
+			attackEvent (currentAnimationItem);
 		}
 	}
 }

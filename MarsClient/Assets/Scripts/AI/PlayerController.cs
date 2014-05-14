@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine (AttackQueue ());
 			return;
 		}
-		if (clip != Clip.Null && Time.time - startAttTime > animationController.GetLength (clip) / 2)
+		if (clip != Clip.Null && Time.time - startAttTime > animationController.GetLength (clip) * 2 / 3)
 		{
 			startAttTime = Time.time;
 			attckId++;
