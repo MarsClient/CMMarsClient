@@ -205,6 +205,12 @@ public class WeaponTrail : MonoBehaviour {
             sections.Clear();
         }
     }
+
+	public void hideMeshRenderActive (bool isState = false)
+	{
+		meshRenderer.enabled = isState;
+		//Tool.SetGoMeshActive<MeshRenderer>(isState, meshRenderer);
+	}
 }
 
 

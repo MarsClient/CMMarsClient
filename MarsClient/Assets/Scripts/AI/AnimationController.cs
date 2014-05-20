@@ -107,6 +107,8 @@ public class AnimationController : MonoBehaviour {
 
 	void Start ()
 	{
+		trails[0].StartTrail (0.2f, 0.5f);
+		trails[1].StartTrail (0.2f, 0.5f);
 		foreach (AnimationItem ai in animationItems)
 		{
 			ai.Init (animation);
@@ -133,10 +135,81 @@ public class AnimationController : MonoBehaviour {
 
 	void AttackMessage ()
 	{
-		Debug.Log (currentAnimationItem.clipName);
+		//Debug.Log (currentAnimationItem.clipName);
 		if (attackEvent != null)
 		{
 			attackEvent (currentAnimationItem);
+		}
+	}
+
+	/*
+	 *New WeaponTrail
+	 *
+	 */
+	protected float t = 0.033f;
+	private float tempT = 0;
+	protected float m = 0;
+	protected Vector3 lastEulerAngles = Vector3.zero;
+	protected Vector3 lastPosition = Vector3.zero;
+	protected Vector3 eulerAngles = Vector3.zero;
+	protected Vector3 position = Vector3.zero;
+	protected float animationIncrement = 0.003f; // ** This sets the number of time the controller samples the animation for the weapon trails
+
+	public List<WeaponTrail> trails = new List<WeaponTrail>();
+
+	void LateUpdate ()
+	{
+		if (trails != null && trails.Count > 0)
+		{
+			RunAnimations ();
+		}
+	}	
+
+	void RunAnimations ()
+	{
+		for (int j = 0; j < trails.Count; j++) 
+		{
+			trails[j].hideMeshRenderActive (isAttack);
+		}
+
+		if (t > 0)
+		{
+			eulerAngles = transform.eulerAngles;
+			position = transform.localPosition;
+
+			while (tempT < t) 
+			{
+				tempT += animationIncrement;
+				m = tempT / t;
+				transform.eulerAngles = new Vector3(Mathf.LerpAngle(lastEulerAngles.x, eulerAngles.x, m),Mathf.LerpAngle(lastEulerAngles.y, eulerAngles.y, m),Mathf.LerpAngle(lastEulerAngles.z, eulerAngles.z, m));
+				transform.position = Vector3.Lerp(lastPosition, position, m);
+				animation.Sample ();
+				for (int j = 0; j < trails.Count; j++) {
+					if (trails[j].time > 0) {
+						trails[j].Itterate (Time.time - t + tempT);
+					} else {
+						trails[j].ClearTrail ();
+					}
+				}
+			}
+			//
+			// ** End of loop
+			//
+			tempT -= t;
+			//
+			// ** Sets the position and rotation to what they were originally
+			transform.localPosition = position;
+			transform.eulerAngles = eulerAngles;
+			lastPosition = position;
+			lastEulerAngles = eulerAngles;
+			//
+			// ** Finally creates the meshes for the WeaponTrails (one per frame)
+			//
+			for (int j = 0; j < trails.Count; j++) {
+				if (trails[j].time > 0) {
+					trails[j].UpdateTrail (Time.time, t);
+				}
+			}
 		}
 	}
 }
