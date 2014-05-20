@@ -187,7 +187,7 @@ public class CharacterMotor : MonoBehaviour {
 	
 	private Transform tr;
 	
-	private CharacterController  controller ;
+	public CharacterController  controller ;
 
 	public CharacterController  characterController
 	{

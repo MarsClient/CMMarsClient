@@ -44,37 +44,75 @@ public class FPSInputController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		// Get the input vector from kayboard or analog stick
-		float x = Input.GetKey (KeyCode.A) ? dir.x : Input.GetKey (KeyCode.D) ? -dir.x : 0 ;
-		float z = Input.GetKey (KeyCode.S) ? dir.y : Input.GetKey (KeyCode.W) ? -dir.y : 0 ;
-		//Debug.Log (x + "___" + y);
-		m_directionVector = new Vector3(x, 0, z);
-		if (canControl == false)
+		if (m_isMoveDir == false)
 		{
-			m_directionVector = Vector3.zero;
-		}
-		if (m_directionVector != Vector3.zero) 
-		{
-			if (canControl == true)
+			// Get the input vector from kayboard or analog stick
+			float x = Input.GetKey (KeyCode.A) ? dir.x : Input.GetKey (KeyCode.D) ? -dir.x : 0 ;
+			float z = Input.GetKey (KeyCode.S) ? dir.y : Input.GetKey (KeyCode.W) ? -dir.y : 0 ;
+			//Debug.Log (x + "___" + y);
+			m_directionVector = new Vector3(x, 0, z);
+			if (canControl == false)
 			{
-				transform.forward = m_directionVector;
+				m_directionVector = Vector3.zero;
+			}
+			if (m_directionVector != Vector3.zero) 
+			{
+				if (canControl == true)
+				{
+					transform.forward = m_directionVector;
+				}
+			}
+			m_motor.inputMoveDirection = m_directionVector;
+
+			if (inputController != null)
+			{
+				inputController (this);
+			}
+
+			if (Input.GetMouseButton (0) || Input.GetKeyDown(KeyCode.J))
+			{
+				if (attackController != null)
+				{
+					attackController (this);
+				}
 			}
 		}
-		m_motor.inputMoveDirection = m_directionVector;
-
-		if (inputController != null)
+		//********Dir move
+		else// (m_isMoveDir)
 		{
-			inputController (this);
-		}
-
-		if (Input.GetMouseButton (0) || Input.GetKeyDown(KeyCode.J))
-		{
-			if (attackController != null)
+			if (Time.time - lastTime < timeing)
 			{
-				attackController (this);
+				if (Vector3.Distance (transform.position, startPos) < moveDistance)
+				{
+					motor.controller.Move (transform.forward * Time.deltaTime * 5);
+					return;
+				}
 			}
+			m_isMoveDir = false;
+//			Vector3 pos = transform.position;
+//			pos += transform.TransformDirection( Vector3.forward) * Time.deltaTime*0.5f;
+//			transform.position = pos;
 		}
+	}
+
+	private bool m_isMoveDir = false;
+	private float lastTime = 0;
+	private float timeing = 0.05f;
+	private float moveDistance;
+	private Vector3 startPos;
+	private bool isForward = true;
+	//private Vector3 m_dir;
+	public void moveDir (float moveDistance, bool isForward = true)
+	{
+		if (moveDistance == 0)
+		{
+			return;
+		}
+		lastTime = Time.time;
+		m_isMoveDir = true;
+		isForward = isForward;
+		startPos = transform.position;
+		this.moveDistance = moveDistance;
 	}
 	
 }

@@ -5,7 +5,10 @@ using System.Collections;
 [RequireComponent(typeof(FPSInputController))]
 public class PlayerController : MonoBehaviour {
 
+	[HideInInspector]
 	public AnimationController animationController;
+	[HideInInspector]
+	public FPSInputController fpsController;
 
 	void OnEnable ()
 	{
@@ -17,6 +20,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		FPSInputController.inputController -= inputController;
 		FPSInputController.attackController -= attackController;
+		animationController.attackEvent -= attackEvent;
 	}
 
 	void inputController (FPSInputController fpsController)
@@ -40,6 +44,11 @@ public class PlayerController : MonoBehaviour {
 	void attackController (FPSInputController fpsController)
 	{
 		Attack ();
+	}
+
+	void attackEvent (AnimationItem animationItem)
+	{
+		fpsController.moveDir (animationItem.actionMove);
 	}
 
 
@@ -81,6 +90,8 @@ public class PlayerController : MonoBehaviour {
 	void Start () 
 	{
 		animationController = GetComponent<AnimationController>();
+		animationController.attackEvent += attackEvent;
+		fpsController = GetComponent<FPSInputController>();
 	}
 
 	void Update () {
