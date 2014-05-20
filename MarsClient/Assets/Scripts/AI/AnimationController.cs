@@ -107,8 +107,13 @@ public class AnimationController : MonoBehaviour {
 
 	void Start ()
 	{
-		trails[0].StartTrail (0.2f, 0.5f);
-		trails[1].StartTrail (0.2f, 0.5f);
+		if (trails != null && trails.Count > 0)
+		{
+			for (int j = 0; j < trails.Count; j++) 
+			{
+				trails[j].StartTrail (.2f, 0.5f);
+			}
+		}
 		foreach (AnimationItem ai in animationItems)
 		{
 			ai.Init (animation);
