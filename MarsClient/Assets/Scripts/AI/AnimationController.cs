@@ -9,6 +9,9 @@ public enum Clip
 	Attack1,
 	Attack2,
 	Attack3,
+	Hit,
+	Fall,
+	Die,
 	Null,
 }
 
@@ -93,10 +96,18 @@ public class AnimationController : MonoBehaviour {
 		}
 	}
 
+	public bool isHitted
+	{
+		get
+		{
+			return currentAnimationItem.clip.ToString().Contains ("Hit");
+		}
+	}
+
 	public bool doNotMove
 	{
 		get{
-			return isAttack;
+			return isAttack || isHitted;
 		}
 	}
 
@@ -118,6 +129,10 @@ public class AnimationController : MonoBehaviour {
 		{
 			ai.Init (animation);
 			antPools.Add (ai.clip, ai);
+			/*if (this.name == "EE0001")
+			{
+				Debug.LogError (ai.clip);
+			}*/
 		}
 		currentAnimationItem = antPools[Clip.Idle];
 	}
@@ -133,7 +148,7 @@ public class AnimationController : MonoBehaviour {
 		}
 	}
 
-	void IdleMessage ()
+	public void IdleMessage ()
 	{
 		Play (Clip.Idle);
 	}

@@ -48,7 +48,18 @@ public class PlayerController : MonoBehaviour {
 
 	void attackEvent (AnimationItem animationItem)
 	{
-		fpsController.moveDir (animationItem.actionMove);
+		for (int i = 0; i < EnemyController.enemys.Count; i++)
+		{
+			EnemyController ec = EnemyController.enemys[i];
+			Vector3 forward = ec.transform.position - transform.position;
+			float angle = Vector3.Dot (transform.forward, forward);
+			float distance = Vector3.Distance (transform.position, ec.transform.position);
+			Debug.Log (angle + "_____" + distance);
+			if (angle > 0 && distance < 2)
+			{
+				ec.Hitted (Clip.Hit, this);
+			}
+		}
 	}
 
 
