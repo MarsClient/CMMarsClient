@@ -26,6 +26,7 @@ public class AnimationMessage
 public class AnimationItem
 {
 	public Clip clip;
+	public Clip targetClip = Clip.Null;
 	public AnimationClip animationClip;
 	public float speed = 1;
 	public float[] eventTimes;
@@ -100,20 +101,29 @@ public class AnimationController : MonoBehaviour {
 	{
 		get
 		{
-			return currentAnimationItem.clip.ToString().Contains ("Hit");
+			return currentAnimationItem.clip == Clip.Hit;
+		}
+	}
+
+	public bool isFall
+	{
+		get
+		{
+			return currentAnimationItem.clip == Clip.Fall;
 		}
 	}
 
 	public bool doNotMove
 	{
 		get{
-			return isAttack || isHitted;
+			return isAttack || isHitted || isFall;
 		}
 	}
 
 	public float GetLength (Clip clip)
 	{
-		return antPools[clip].animationClip.length / animation[clip.ToString()].speed;
+		//Debug.Log (antPools[clip].animationClip.length);
+		return antPools[clip].animationClip.length / animation[antPools[clip].clipName].speed;
 	}
 
 	void Start ()
@@ -142,6 +152,10 @@ public class AnimationController : MonoBehaviour {
 	{
 		if (currentClip != clip)
 		{
+			if (antPools.ContainsKey (clip) == false)
+			{
+				return;
+			}
 			currentClip = clip;
 			currentAnimationItem = antPools[clip];
 			animation.CrossFade (currentAnimationItem.clipName);
@@ -181,6 +195,7 @@ public class AnimationController : MonoBehaviour {
 	{
 		if (trails != null && trails.Count > 0)
 		{
+//			Debug.Log (trails.Count);
 			RunAnimations ();
 		}
 	}	

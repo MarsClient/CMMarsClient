@@ -7,7 +7,7 @@ public class ObjectController : MonoBehaviour {
 
 	void OnEnable ()
 	{
-		transform.rotation = Quaternion.Euler (new Vector3 (0, Random.Range (0, 360), 0));
+		//transform.rotation = Quaternion.Euler (new Vector3 (0, Random.Range (0, 360), 0));
 		Invoke ("DisableGo", active);
 	}
 

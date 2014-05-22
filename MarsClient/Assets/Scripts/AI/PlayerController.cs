@@ -5,6 +5,9 @@ using System.Collections;
 [RequireComponent(typeof(FPSInputController))]
 public class PlayerController : MonoBehaviour {
 
+
+	public float attDistance = 1;
+
 	[HideInInspector]
 	public AnimationController animationController;
 	[HideInInspector]
@@ -53,11 +56,11 @@ public class PlayerController : MonoBehaviour {
 			EnemyController ec = EnemyController.enemys[i];
 			Vector3 forward = ec.transform.position - transform.position;
 			float angle = Vector3.Dot (transform.forward, forward);
-			float distance = Vector3.Distance (transform.position, ec.transform.position);
-			Debug.Log (angle + "_____" + distance);
-			if (angle > 0 && distance < 2)
+			float distance = DistXZ (transform.position, ec.transform.position);
+			//Debug.Log (angle + "_____" + distance);
+			if ((angle > 0 && distance < attDistance) || (angle <= 0 && distance < attDistance / 5))
 			{
-				ec.Hitted (Clip.Hit, this);
+				ec.Hitted (animationItem, this);
 			}
 		}
 	}
@@ -107,5 +110,13 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 	
+	}
+
+	float DistXZ (Vector3 l, Vector3 r)
+	{
+		l.y = 0;
+		r.y = 0;
+		float dist = Mathf.Sqrt (Vector3.SqrMagnitude (l - r));
+		return dist;
 	}
 }
