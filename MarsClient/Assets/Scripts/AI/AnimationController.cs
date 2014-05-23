@@ -53,6 +53,7 @@ public class AnimationItem
 	{
 		if (animationClip.wrapMode == WrapMode.Default)
 		{
+			Debug.Log (animationClip.name);
 			SetEvent (AnimationMessage.IDLE_MESSAGE);
 		}
 	}

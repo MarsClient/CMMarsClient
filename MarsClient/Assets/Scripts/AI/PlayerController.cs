@@ -91,6 +91,10 @@ public class PlayerController : MonoBehaviour {
 	{
 		for (int i = (int)Clip.Attack1; i <= Mathf.Min (attckId, maxAttackCount - 1) + (int)Clip.Attack1; i++)
 		{
+			if (animationController.isFall || animationController.isHitted)
+			{
+				break;
+			}
 			clip = (Clip)i;
 			animationController.Play (clip);
 			yield return new WaitForSeconds (animationController.GetLength (clip));

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -24,6 +24,11 @@ public class AIPath : MonoBehaviour
 	public void Resume ()
 	{
 		_navAgent.Resume ();
+	}
+
+	public void StartPath (Vector3 targetPos)
+	{
+		StartPath (targetPos, null, null);
 	}
 
 	public void StartPath (Vector3 targetPos, OnStartPath onStartPath, OnPathComplete onPathComplete)
@@ -81,7 +86,9 @@ public class AIPath : MonoBehaviour
 
 	/*void Update () 
 	{
-		//Debug.Log (_navAgent.remainingDistance <= _navAgent.stoppingDistance);
+		NavMeshPath path = new NavMeshPath();
+		bool isWalkable = _navAgent.CalculatePath (transform.position, path);
+		Debug.Log (isWalkable);
 		int button = 0;
 		if(Input.GetMouseButtonDown(button)) {
 			Ray ray  = Camera.main.ScreenPointToRay(Input.mousePosition);

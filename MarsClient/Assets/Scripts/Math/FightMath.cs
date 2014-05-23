@@ -36,4 +36,25 @@ public class FightMath
 		float z = URandom.Range (-nav.stoppingDistance * 2, nav.stoppingDistance * 2);
 		return new Vector3 (x, y, z);
 	}
+
+	public static ArrayList findNearest (Transform ef)
+	{
+		ArrayList list = new ArrayList ();
+		float min = float.MaxValue;
+		PlayerUnit playerUnit = null;
+		for (int i = 0; i < PlayerUnit.playersUnit.Count; i++)
+		{
+			PlayerUnit pu = PlayerUnit.playersUnit[i];
+			float distance = FightMath.DistXZ (ef.position, pu.transform.position);
+			if (min > distance)
+			{
+				min = distance;
+				playerUnit = pu;
+			}
+		}
+		list.Add (playerUnit);
+		list.Add (min);
+		Debug.Log (list[0] + "<-----0______1----->" + list[1]);
+		return list;//0-get the nearest player, 1-get the nearest distance
+	}
 }
