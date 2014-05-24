@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum Clip
+public enum Clip : int
 {
 	Idle,
 	Run,
@@ -69,6 +69,7 @@ public class AnimationItem
 		}
 		AnimationEvent animationEvent = new AnimationEvent();
 		animationEvent.functionName = onEvent;
+		animationEvent.intParameter = (int) clip;//clip.ToString();
 		animationEvent.messageOptions = SendMessageOptions.DontRequireReceiver;
 		animationEvent.time = time;
 		animationClip.AddEvent (animationEvent);
@@ -163,17 +164,17 @@ public class AnimationController : MonoBehaviour {
 		}
 	}
 
-	public void IdleMessage ()
+	public void IdleMessage (int c)
 	{
 		Play (Clip.Idle);
 	}
 
-	void AttackMessage ()
+	void AttackMessage (int c)
 	{
-		//Debug.Log (currentAnimationItem.clipName);
 		if (attackEvent != null)
 		{
-			attackEvent (currentAnimationItem);
+			Debug.Log (c);
+			attackEvent (antPools[(Clip)c]);
 		}
 	}
 
