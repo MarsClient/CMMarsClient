@@ -80,18 +80,13 @@ public class FPSInputController : MonoBehaviour {
 		//********Dir move
 		else// (m_isMoveDir)
 		{
-			if (Time.time - lastTime < timeing)
+			if (Vector3.Distance (transform.position, startPos) < moveDistance)
 			{
-				if (Vector3.Distance (transform.position, startPos) < moveDistance)
-				{
-					motor.controller.Move (transform.forward * Time.deltaTime * 5);
+				CollisionFlags cf = motor.characterController.Move (transform.forward * Time.deltaTime * 20);
+				if (cf == CollisionFlags.None)
 					return;
-				}
 			}
 			m_isMoveDir = false;
-//			Vector3 pos = transform.position;
-//			pos += transform.TransformDirection( Vector3.forward) * Time.deltaTime*0.5f;
-//			transform.position = pos;
 		}
 	}
 

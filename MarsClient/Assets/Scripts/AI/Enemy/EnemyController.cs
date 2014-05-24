@@ -61,7 +61,7 @@ public class EnemyController : MonoBehaviour {
 		ObjectPool.Instance.LoadObject ("EF/EF0001", hitPos.position);
 
 		//hit move
-		Vector3 targetPos = transform.position - forward.normalized * animationItem.actionMove;
+		Vector3 targetPos = transform.position - forward.normalized * animationItem.attackMove;
 		TweenPosition.Begin (gameObject, 0.25f, targetPos).onUpdate = onUpdate;
 
 		//hit color

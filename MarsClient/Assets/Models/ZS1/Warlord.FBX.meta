@@ -1,0 +1,205 @@
+fileFormatVersion: 2
+guid: a7784b181fcf3a44daec1726c29b6b0d
+ModelImporter:
+  serializedVersion: 16
+  fileIDToRecycleName:
+    100000: Bip01
+    100002: Bip01 back_right_Wmount
+    100004: Bip01 Head
+    100006: Bip01 L Calf
+    100008: Bip01 L Clavicle
+    100010: Bip01 L Finger0
+    100012: Bip01 L Finger01
+    100014: Bip01 L Finger02
+    100016: Bip01 L Finger1
+    100018: Bip01 L Finger11
+    100020: Bip01 L Finger12
+    100022: Bip01 L Foot
+    100024: Bip01 L Forearm
+    100026: Bip01 L Hand
+    100028: Bip01 L Thigh
+    100030: Bip01 L Toe0
+    100032: Bip01 L UpperArm
+    100034: Bip01 Neck
+    100036: Bip01 Neck1
+    100038: Bip01 Pelvis
+    100040: Bip01 R Calf
+    100042: Bip01 R Clavicle
+    100044: Bip01 R Finger0
+    100046: Bip01 R Finger01
+    100048: Bip01 R Finger02
+    100050: Bip01 R Finger1
+    100052: Bip01 R Finger11
+    100054: Bip01 R Finger12
+    100056: Bip01 R Foot
+    100058: Bip01 R Forearm
+    100060: Bip01 R Hand
+    100062: Bip01 R Thigh
+    100064: Bip01 R Toe0
+    100066: Bip01 R UpperArm
+    100068: Bip01 Rhand_Weapon
+    100070: Bip01 Spine
+    100072: Bip01 Spine1
+    100074: Bip01 Spine2
+    100076: Hair
+    100078: skeleton_footman
+    100080: Skeleton_footman_sword
+    100082: Skeleton_footman_sword01
+    100084: //RootNode
+    100086: Warlord_armor
+    400000: Bip01
+    400002: Bip01 back_right_Wmount
+    400004: Bip01 Head
+    400006: Bip01 L Calf
+    400008: Bip01 L Clavicle
+    400010: Bip01 L Finger0
+    400012: Bip01 L Finger01
+    400014: Bip01 L Finger02
+    400016: Bip01 L Finger1
+    400018: Bip01 L Finger11
+    400020: Bip01 L Finger12
+    400022: Bip01 L Foot
+    400024: Bip01 L Forearm
+    400026: Bip01 L Hand
+    400028: Bip01 L Thigh
+    400030: Bip01 L Toe0
+    400032: Bip01 L UpperArm
+    400034: Bip01 Neck
+    400036: Bip01 Neck1
+    400038: Bip01 Pelvis
+    400040: Bip01 R Calf
+    400042: Bip01 R Clavicle
+    400044: Bip01 R Finger0
+    400046: Bip01 R Finger01
+    400048: Bip01 R Finger02
+    400050: Bip01 R Finger1
+    400052: Bip01 R Finger11
+    400054: Bip01 R Finger12
+    400056: Bip01 R Foot
+    400058: Bip01 R Forearm
+    400060: Bip01 R Hand
+    400062: Bip01 R Thigh
+    400064: Bip01 R Toe0
+    400066: Bip01 R UpperArm
+    400068: Bip01 Rhand_Weapon
+    400070: Bip01 Spine
+    400072: Bip01 Spine1
+    400074: Bip01 Spine2
+    400076: Hair
+    400078: skeleton_footman
+    400080: Skeleton_footman_sword
+    400082: Skeleton_footman_sword01
+    400084: //RootNode
+    400086: Warlord_armor
+    2300000: Skeleton_footman_sword
+    2300002: Skeleton_footman_sword01
+    3300000: Skeleton_footman_sword
+    3300002: Skeleton_footman_sword01
+    4300000: Skeleton_footman_sword
+    4300002: Skeleton_footman_sword01
+    4300004: skeleton_footman
+    4300006: Hair
+    4300008: Warlord_armor
+    7400000: Take 001
+    7400002: Skeleton_Idle
+    7400004: 'Skeleton_Use_object:'
+    7400006: Skeleton_anger
+    7400008: 'Skeleton_Drinking:'
+    7400010: Skeleton_Hit_from_back
+    7400012: Skeleton_Hit_from_front
+    7400014: Skeleton_Looking_around
+    7400016: Skeleton_pointing_A
+    7400018: Skeleton_salute
+    7400020: Skeleton_Talking
+    7400022: Skeleton_thinking
+    7400024: Skeleton_Tracking
+    7400026: Skeleton_sit_down
+    7400028: Skeleton_sitting
+    7400030: Skeleton_came_up
+    7400032: Skeleton_Going_asleep
+    7400034: Skeleton_sleeping
+    7400036: Skeleton_waking_up
+    7400038: Skeleton_walking_back
+    7400040: Skeleton_Climbing_ladder
+    7400042: Skeleton_Crouching
+    7400044: Skeleton_falling_down
+    7400046: Skeleton_Moving_left
+    7400048: Skeleton_Moving_right
+    7400050: Skeleton_Sneaking
+    7400052: Skeleton_Run
+    7400054: Skeleton_Jump_runing
+    7400056: Skeleton_Dying_A
+    7400058: Skeleton_walk
+    7400060: 2H_skeleton_with_weapon_walk
+    7400062: 2H_skeleton_charging
+    7400064: 2H_skeleton_combat_mode
+    7400066: 2H_skeleton_dodge_backwards
+    7400068: 2H_skeleton_dodge_to_left
+    7400070: 2H_skeleton_dodge_to_righ
+    7400072: 2H_skeleton_duck_below_high_swing
+    7400074: 2H_skeleton_parry_from_stright_down
+    7400076: 2H_skeleton_parry_low_front
+    7400078: 2H_skeleton_parry_mid_left
+    7400080: 2H_skeleton_specal_attack_A
+    7400082: 2H_skeleton_specal_attack_B
+    7400084: 2H_skeleton_swing_mid_left
+    7400086: 2H_skeleton_swing_mid_right
+    7400088: 2H_skeleton_sword_swing_high_straight_down
+    7400090: 2H_skeleton_sword_thrust_mid
+    11100000: //RootNode
+    13700000: Hair
+    13700002: skeleton_footman
+    13700004: Warlord_armor
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 1
+  additionalBone: 0
+  userData: 

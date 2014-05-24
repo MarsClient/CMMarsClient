@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 		FPSInputController.inputController -= inputController;
 		FPSInputController.attackController -= attackController;
 		animationController.attackEvent -= attackEvent;
+		animationController.attackAOEEvent -= AttackAOEMessage;
 	}
 
 	void inputController (FPSInputController fpsController)
@@ -36,11 +37,13 @@ public class PlayerController : MonoBehaviour {
 		//Move
 		if (fpsController.directionVector.x != 0 || fpsController.directionVector.z != 0)
 		{
-			animationController.Play (Clip.Run);
+			if (animationController.isSpell == false)
+				animationController.Play (Clip.Run);
 		}
 		else
 		{
-			animationController.Play (Clip.Idle);
+			if (animationController.isSpell == false)
+				animationController.Play (Clip.Idle);
 		}
 	}
 
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour {
 
 	void attackEvent (AnimationItem animationItem)
 	{
+		fpsController.moveDir (animationItem.actionMove);
 		for (int i = 0; i < EnemyController.enemys.Count; i++)
 		{
 			EnemyController ec = EnemyController.enemys[i];
@@ -58,6 +62,21 @@ public class PlayerController : MonoBehaviour {
 			float distance = FightMath.DistXZ (transform.position, ec.transform.position);
 			//Debug.Log (angle + "_____" + distance);
 			if ((angle > 0 && distance < attDistance) || (angle <= 0 && distance < attDistance / 4))
+			{
+				ec.Hitted (animationItem, this);
+			}
+		}
+	}
+
+	void AttackAOEMessage (AnimationItem animationItem)
+	{
+		for (int i = 0; i < EnemyController.enemys.Count; i++)
+		{
+			EnemyController ec = EnemyController.enemys[i];
+			float angle = FightMath.GetMultiplyVector (transform, ec.transform);
+			float distance = FightMath.DistXZ (transform.position, ec.transform.position);
+			//Debug.Log (angle + "_____" + distance);
+			if (distance < attDistance)
 			{
 				ec.Hitted (animationItem, this);
 			}
@@ -108,6 +127,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		animationController = GetComponent<AnimationController>();
 		animationController.attackEvent += attackEvent;
+		animationController.attackAOEEvent += AttackAOEMessage;
 		fpsController = GetComponent<FPSInputController>();
 	}
 

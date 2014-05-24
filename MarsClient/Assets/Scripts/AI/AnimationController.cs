@@ -13,6 +13,8 @@ public enum Clip : int
 	Fall,
 	Die,
 	Null,
+	Spell1,
+	Spell2,
 }
 
 public class AnimationMessage
@@ -23,15 +25,22 @@ public class AnimationMessage
 }
 
 [System.Serializable]
+public class AnimationMessageNeed
+{
+	public float frame;
+	public string eventMesage;
+}
+
+[System.Serializable]
 public class AnimationItem
 {
 	public Clip clip;
 	public Clip targetClip = Clip.Null;
 	public AnimationClip animationClip;
 	public float speed = 1;
-	public float[] eventTimes;
+	public AnimationMessageNeed[] eventFrames;
 	public float actionMove = 0;
-	public GameObject effect;
+	public float attackMove = 0;
 	public string clipName
 	{
 		get{
@@ -43,17 +52,17 @@ public class AnimationItem
 	{
 		SetSpeed (ant);
 		AddCompleteEvent ();
-		foreach (float t in eventTimes)
+		foreach (AnimationMessageNeed am in eventFrames)
 		{
-			SetEvent (AnimationMessage.ATTACK_MESSAGE, t);
+			SetEvent (am.eventMesage, am.frame / animationClip.frameRate);
 		}
 	}
 
 	private void AddCompleteEvent ()
 	{
-		if (animationClip.wrapMode == WrapMode.Default)
+		if (animationClip.wrapMode == WrapMode.Default || animationClip.wrapMode == WrapMode.Once)
 		{
-			Debug.Log (animationClip.name);
+			////Debug.Log (animationClip.name);
 			SetEvent (AnimationMessage.IDLE_MESSAGE);
 		}
 	}
@@ -68,9 +77,10 @@ public class AnimationItem
 			return;
 		}
 		AnimationEvent animationEvent = new AnimationEvent();
+		//animationEvent.objectReferenceParameter = 
 		animationEvent.functionName = onEvent;
 		animationEvent.intParameter = (int) clip;//clip.ToString();
-		animationEvent.messageOptions = SendMessageOptions.DontRequireReceiver;
+		animationEvent.messageOptions = SendMessageOptions.RequireReceiver;
 		animationEvent.time = time;
 		animationClip.AddEvent (animationEvent);
 	}
@@ -85,7 +95,10 @@ public class AnimationController : MonoBehaviour {
 	public delegate void AttackEvent (AnimationItem animationItem);
 	public AttackEvent attackEvent;
 
+	public delegate void AttackAOEEvent (AnimationItem animationItem);
+	public AttackAOEEvent attackAOEEvent;
 
+	private Animation m_Animation;
 	public AnimationItem[] animationItems;
 	private Dictionary<Clip, AnimationItem> antPools = new Dictionary<Clip, AnimationItem>();
 
@@ -96,6 +109,14 @@ public class AnimationController : MonoBehaviour {
 		get
 		{
 			return currentAnimationItem.clip.ToString().Contains ("Attack");
+		}
+	}
+
+	public bool isSpell
+	{
+		get
+		{
+			return currentAnimationItem.clip.ToString().Contains ("Spell");
 		}
 	}
 
@@ -118,18 +139,19 @@ public class AnimationController : MonoBehaviour {
 	public bool doNotMove
 	{
 		get{
-			return isAttack || isHitted || isFall;
+			return isAttack || isHitted || isFall || (isSpell && currentAnimationItem.clip != Clip.Spell2);
 		}
 	}
 
 	public float GetLength (Clip clip)
 	{
-		//Debug.Log (antPools[clip].animationClip.length);
-		return antPools[clip].animationClip.length / animation[antPools[clip].clipName].speed;
+		////Debug.Log (antPools[clip].animationClip.length);
+		return antPools[clip].animationClip.length / m_Animation[antPools[clip].clipName].speed;
 	}
 
 	void Start ()
 	{
+		m_Animation = GetComponentInChildren<Animation>();
 		if (trails != null && trails.Count > 0)
 		{
 			for (int j = 0; j < trails.Count; j++) 
@@ -139,11 +161,11 @@ public class AnimationController : MonoBehaviour {
 		}
 		foreach (AnimationItem ai in animationItems)
 		{
-			ai.Init (animation);
+			ai.Init (m_Animation);
 			antPools.Add (ai.clip, ai);
 			/*if (this.name == "EE0001")
 			{
-				Debug.LogError (ai.clip);
+				//Debug.LogError (ai.clip);
 			}*/
 		}
 		currentAnimationItem = antPools[Clip.Idle];
@@ -160,21 +182,31 @@ public class AnimationController : MonoBehaviour {
 			}
 			currentClip = clip;
 			currentAnimationItem = antPools[clip];
-			animation.CrossFade (currentAnimationItem.clipName);
+			m_Animation.CrossFade (currentAnimationItem.clipName);
 		}
 	}
 
 	public void IdleMessage (int c)
 	{
+		//Debug.Log ("Idle");
 		Play (Clip.Idle);
 	}
 
-	void AttackMessage (int c)
+	public void AttackMessage (int c)
 	{
 		if (attackEvent != null)
 		{
-			Debug.Log (c);
+			//Debug.Log (c);
 			attackEvent (antPools[(Clip)c]);
+		}
+	}
+
+	public void AttackAOEMessage (int c)
+	{
+		if (attackAOEEvent != null)
+		{
+			//Debug.Log (c);
+			attackAOEEvent (antPools[(Clip)c]);
 		}
 	}
 
@@ -195,9 +227,12 @@ public class AnimationController : MonoBehaviour {
 
 	void LateUpdate ()
 	{
+		//Set Frame Done
+//		int currentFrame = (int) (m_Animation[currentAnimationItem.clipName].time * currentAnimationItem.animationClip.frameRate);
+//		//Debug.Log (currentFrame);
+
 		if (trails != null && trails.Count > 0)
 		{
-//			Debug.Log (trails.Count);
 			RunAnimations ();
 		}
 	}	
@@ -206,7 +241,7 @@ public class AnimationController : MonoBehaviour {
 	{
 		for (int j = 0; j < trails.Count; j++) 
 		{
-			trails[j].hideMeshRenderActive (isAttack);
+			trails[j].hideMeshRenderActive (isAttack || isSpell);
 		}
 
 		if (t > 0)
@@ -220,7 +255,7 @@ public class AnimationController : MonoBehaviour {
 				m = tempT / t;
 				transform.eulerAngles = new Vector3(Mathf.LerpAngle(lastEulerAngles.x, eulerAngles.x, m),Mathf.LerpAngle(lastEulerAngles.y, eulerAngles.y, m),Mathf.LerpAngle(lastEulerAngles.z, eulerAngles.z, m));
 				transform.position = Vector3.Lerp(lastPosition, position, m);
-				animation.Sample ();
+				m_Animation.Sample ();
 				for (int j = 0; j < trails.Count; j++) {
 					if (trails[j].time > 0) {
 						trails[j].Itterate (Time.time - t + tempT);
@@ -246,6 +281,22 @@ public class AnimationController : MonoBehaviour {
 				if (trails[j].time > 0) {
 					trails[j].UpdateTrail (Time.time, t);
 				}
+			}
+		}
+	}
+
+	public bool isPlayer = false;
+	void OnGUI ()
+	{
+		if (isPlayer)
+		{
+			if (GUILayout.Button ("Spell1"))
+			{
+				Play (Clip.Spell1);
+			}
+			if (GUILayout.Button ("Spell2"))
+			{
+				Play (Clip.Spell2);
 			}
 		}
 	}

@@ -48,7 +48,7 @@ public class FpsCounter: MonoBehaviour {
    // Sur l'evenement GUI on affiche
    void OnGUI () {
       if (bShow){
-         GUI.Label(new Rect(0,0,200,20), "FPS : " + fps.ToString("f2"));
+         GUI.Label(new Rect(0,Screen.height - 20,200,20), "FPS : " + fps.ToString("f2"));
 		 
 
       }
