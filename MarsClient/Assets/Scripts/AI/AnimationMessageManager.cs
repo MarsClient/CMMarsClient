@@ -24,4 +24,9 @@ public class AnimationMessageManager : MonoBehaviour {
 	{
 		m_Animation.AttackAOEMessage (c);
 	}
+
+	void SpellAssault (int c)
+	{
+		m_Animation.SpellAssault (c);
+	}
 }

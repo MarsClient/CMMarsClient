@@ -54,7 +54,7 @@ public class FightMath
 		}
 		list.Add (playerUnit);
 		list.Add (min);
-		Debug.Log (list[0] + "<-----0______1----->" + list[1]);
+//		Debug.Log (list[0] + "<-----0______1----->" + list[1]);
 		return list;//0-get the nearest player, 1-get the nearest distance
 	}
 }

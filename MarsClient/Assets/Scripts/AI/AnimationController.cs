@@ -98,6 +98,9 @@ public class AnimationController : MonoBehaviour {
 	public delegate void AttackAOEEvent (AnimationItem animationItem);
 	public AttackAOEEvent attackAOEEvent;
 
+	public delegate void AssaultEvent (AnimationItem animationItem);
+	public AssaultEvent assaultEvent;
+
 	private Animation m_Animation;
 	public AnimationItem[] animationItems;
 	private Dictionary<Clip, AnimationItem> antPools = new Dictionary<Clip, AnimationItem>();
@@ -207,6 +210,14 @@ public class AnimationController : MonoBehaviour {
 		{
 			//Debug.Log (c);
 			attackAOEEvent (antPools[(Clip)c]);
+		}
+	}
+
+	public void SpellAssault (int c)
+	{
+		if (assaultEvent != null)
+		{
+			assaultEvent (antPools[(Clip)c]);
 		}
 	}
 

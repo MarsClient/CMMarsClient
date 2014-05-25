@@ -5,6 +5,7 @@ using System.Collections;
 [RequireComponent(typeof(CharacterMotor))]
 [AddComponentMenu("Character/FPS Input Controller")]
 public class FPSInputController : MonoBehaviour {
+
 	private Vector3 m_directionVector;
 	public Vector3 directionVector
 	{
@@ -34,6 +35,9 @@ public class FPSInputController : MonoBehaviour {
 	public delegate void AttackController (FPSInputController fps);
 	public static AttackController attackController;
 
+	public delegate void AssaultDelegate (AnimationItem animationItem);
+	public static AssaultDelegate assaultDelegate;
+
 
 	public Vector2 dir;
 
@@ -50,7 +54,8 @@ public class FPSInputController : MonoBehaviour {
 			float x = Input.GetKey (KeyCode.A) ? dir.x : Input.GetKey (KeyCode.D) ? -dir.x : 0 ;
 			float z = Input.GetKey (KeyCode.S) ? dir.y : Input.GetKey (KeyCode.W) ? -dir.y : 0 ;
 			//Debug.Log (x + "___" + y);
-			m_directionVector = new Vector3(x, 0, z);
+			m_directionVector = new Vector3(x, 0, z).normalized;
+			//Debug.Log (m_directionVector);
 			if (canControl == false)
 			{
 				m_directionVector = Vector3.zero;
@@ -62,7 +67,7 @@ public class FPSInputController : MonoBehaviour {
 					transform.forward = m_directionVector;
 				}
 			}
-			m_motor.inputMoveDirection = m_directionVector;
+			m_motor.inputMoveDirection = m_directionVector.normalized;
 
 			if (inputController != null)
 			{
@@ -84,7 +89,13 @@ public class FPSInputController : MonoBehaviour {
 			{
 				CollisionFlags cf = motor.characterController.Move (transform.forward * Time.deltaTime * 20);
 				if (cf == CollisionFlags.None)
+				{
+					if (assaultDelegate != null)
+					{
+						assaultDelegate (currentAnt);
+					}
 					return;
+				}
 			}
 			m_isMoveDir = false;
 		}
@@ -94,12 +105,13 @@ public class FPSInputController : MonoBehaviour {
 	private float lastTime = 0;
 	private float timeing = 0.05f;
 	private float moveDistance;
+	private AnimationItem currentAnt;
 	private Vector3 startPos;
 	private bool isForward = true;
 	//private Vector3 m_dir;
-	public void moveDir (float moveDistance, bool isForward = true)
+	public void moveDir (AnimationItem ai, bool isForward = true)
 	{
-		if (moveDistance == 0)
+		if (ai.actionMove == 0)
 		{
 			return;
 		}
@@ -107,7 +119,8 @@ public class FPSInputController : MonoBehaviour {
 		m_isMoveDir = true;
 		isForward = isForward;
 		startPos = transform.position;
-		this.moveDistance = moveDistance;
+		this.moveDistance = ai.actionMove;
+		this.currentAnt = ai;
 	}
 	
 }

@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(AnimationController))]
 [RequireComponent(typeof(FPSInputController))]
 public class PlayerController : MonoBehaviour {
 
+	public PRO pro = PRO.ZS;
 
 	public float attDistance = 1;
 
@@ -17,14 +19,17 @@ public class PlayerController : MonoBehaviour {
 	{
 		FPSInputController.inputController += inputController;
 		FPSInputController.attackController += attackController;
+		FPSInputController.assaultDelegate += assaultDelegate;
 	}
 
 	void OnDisable ()
 	{
 		FPSInputController.inputController -= inputController;
 		FPSInputController.attackController -= attackController;
+		FPSInputController.assaultDelegate -= assaultDelegate;
 		animationController.attackEvent -= attackEvent;
 		animationController.attackAOEEvent -= AttackAOEMessage;
+		animationController.assaultEvent -= assaultEvent;
 	}
 
 	void inputController (FPSInputController fpsController)
@@ -54,7 +59,7 @@ public class PlayerController : MonoBehaviour {
 
 	void attackEvent (AnimationItem animationItem)
 	{
-		fpsController.moveDir (animationItem.actionMove);
+		fpsController.moveDir (animationItem);
 		for (int i = 0; i < EnemyController.enemys.Count; i++)
 		{
 			EnemyController ec = EnemyController.enemys[i];
@@ -79,6 +84,45 @@ public class PlayerController : MonoBehaviour {
 			if (distance < attDistance)
 			{
 				ec.Hitted (animationItem, this);
+			}
+		}
+	}
+
+	private List<EnemyController> enemys = new List<EnemyController>();
+	void assaultEvent (AnimationItem animationItem)
+	{
+		fpsController.moveDir (animationItem);
+		//List<EnemyController> es = EnemyController.enemys;
+		foreach (EnemyController ec in EnemyController.enemys)
+		{
+			Debug.Log (ec);
+			enemys.Add (ec);
+		}
+	}
+
+	void assaultDelegate (AnimationItem animationItem)//about spell
+	{
+		if (pro != PRO.FS)
+		{
+			if(animationItem.clip == Clip.Spell1)
+			{
+
+				//List<EnemyController> _enemys = EnemyController.enemys;
+				Debug.Log (EnemyController.enemys.Count + "___________" + enemys.Count);
+				for (int i = 0; i < enemys.Count; i++)
+				{
+					EnemyController ec = enemys[i];
+					float angle = FightMath.GetMultiplyVector (transform, ec.transform);
+					float distance = FightMath.DistXZ (transform.position, ec.transform.position);
+					//Debug.Log (angle + "_____" + distance);
+					if ((angle > 0 && distance < attDistance) || (angle <= 0 && distance < attDistance / 4))
+					{
+						ec.Hitted (animationItem, this);
+						//Debug.Log ("__haha__");
+						enemys.RemoveAt (i);
+						i--;
+					}
+				}
 			}
 		}
 	}
@@ -128,6 +172,7 @@ public class PlayerController : MonoBehaviour {
 		animationController = GetComponent<AnimationController>();
 		animationController.attackEvent += attackEvent;
 		animationController.attackAOEEvent += AttackAOEMessage;
+		animationController.assaultEvent += assaultEvent;
 		fpsController = GetComponent<FPSInputController>();
 	}
 
