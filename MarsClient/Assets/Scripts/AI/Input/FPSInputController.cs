@@ -2,9 +2,12 @@
 using System.Collections;
 
 
-[RequireComponent(typeof(CharacterMotor))]
+//[RequireComponent(typeof(CharacterMotor))]
 [AddComponentMenu("Character/FPS Input Controller")]
 public class FPSInputController : MonoBehaviour {
+
+
+	public CharacterController characterController;
 
 	private Vector3 m_directionVector;
 	public Vector3 directionVector
@@ -43,7 +46,8 @@ public class FPSInputController : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		m_motor = GetComponent<CharacterMotor>();
+		//m_motor = GetComponent<CharacterMotor>();
+		characterController = GetComponent<CharacterController>();
 	}
 	
 	// Update is called once per frame
@@ -54,7 +58,7 @@ public class FPSInputController : MonoBehaviour {
 			float x = Input.GetKey (KeyCode.A) ? dir.x : Input.GetKey (KeyCode.D) ? -dir.x : 0 ;
 			float z = Input.GetKey (KeyCode.S) ? dir.y : Input.GetKey (KeyCode.W) ? -dir.y : 0 ;
 			//Debug.Log (x + "___" + y);
-			m_directionVector = new Vector3(x, 0, z).normalized;
+			m_directionVector = new Vector3(x, 0, z);
 			//Debug.Log (m_directionVector);
 			if (canControl == false)
 			{
@@ -67,7 +71,9 @@ public class FPSInputController : MonoBehaviour {
 					transform.forward = m_directionVector;
 				}
 			}
-			m_motor.inputMoveDirection = m_directionVector.normalized;
+			//DebugConsole.Log (m_directionVector);
+			characterController.Move (m_directionVector.normalized * 0.08f);
+			//m_motor.inputMoveDirection = m_directionVector.normalized;
 
 			if (inputController != null)
 			{
@@ -87,7 +93,7 @@ public class FPSInputController : MonoBehaviour {
 		{
 			if (Vector3.Distance (transform.position, startPos) < moveDistance)
 			{
-				CollisionFlags cf = motor.characterController.Move (transform.forward * Time.deltaTime * 20);
+				CollisionFlags cf = characterController.Move (transform.forward * Time.deltaTime * 20);
 				if (cf == CollisionFlags.None)
 				{
 					if (assaultDelegate != null)

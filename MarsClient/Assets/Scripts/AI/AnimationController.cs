@@ -299,6 +299,7 @@ public class AnimationController : MonoBehaviour {
 	public bool isPlayer = false;
 	void OnGUI ()
 	{
+		//DebugConsole.Log (transform.position);
 		if (isPlayer)
 		{
 			if (GUILayout.Button ("Spell1"))

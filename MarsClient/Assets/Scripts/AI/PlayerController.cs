@@ -27,11 +27,17 @@ public class PlayerController : MonoBehaviour {
 		FPSInputController.inputController -= inputController;
 		FPSInputController.attackController -= attackController;
 		FPSInputController.assaultDelegate -= assaultDelegate;
+		if (animationController == null)
+		{
+			return;
+		}
 		animationController.attackEvent -= attackEvent;
 		animationController.attackAOEEvent -= AttackAOEMessage;
 		animationController.assaultEvent -= assaultEvent;
 	}
 
+	private Vector3 lastPosMove;
+	private Vector3 lastPos;
 	void inputController (FPSInputController fpsController)
 	{
 		fpsController.canControl = !animationController.doNotMove;
@@ -40,15 +46,42 @@ public class PlayerController : MonoBehaviour {
 			return;
 		}
 		//Move
+		Clip c = Clip.Null;
+
+		bool isStop = (lastPosMove != fpsController.directionVector);
+		bool isMoving = (transform.position != lastPos);
+		lastPos = transform.position;
+		lastPosMove = fpsController.directionVector;
+
 		if (fpsController.directionVector.x != 0 || fpsController.directionVector.z != 0)
 		{
 			if (animationController.isSpell == false)
+			{
 				animationController.Play (Clip.Run);
+				c = Clip.Run;
+			}
 		}
 		else
 		{
 			if (animationController.isSpell == false)
+			{
 				animationController.Play (Clip.Idle);
+				c =Clip.Idle;
+			}
+		}
+
+		if (isMoving || isStop)
+		{
+			Debug.Log (transform.forward);
+			Player p = new Player();
+			p.uniqueId = Main.Instance.account.uniqueId;
+			p.x = transform.position.x;
+			p.z = transform.position.z;
+			p.xRo = transform.forward.x;
+			p.zRo = transform.forward.z;
+			p.actionId = (int)c;
+			p.roleName = Main.Instance.account.roleName;
+			NetSend.SendUpdatePlayerPos (p); 
 		}
 	}
 
@@ -108,7 +141,7 @@ public class PlayerController : MonoBehaviour {
 			{
 
 				//List<EnemyController> _enemys = EnemyController.enemys;
-				Debug.Log (EnemyController.enemys.Count + "___________" + enemys.Count);
+//				Debug.Log (EnemyController.enemys.Count + "___________" + enemys.Count);
 				for (int i = 0; i < enemys.Count; i++)
 				{
 					EnemyController ec = enemys[i];

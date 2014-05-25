@@ -21,12 +21,19 @@ public class Bundle
 
 	[DefaultValue (null)]
 	public Account account;
+
+	[DefaultValue (null)]
+	public List<Player> players;
+
+	[DefaultValue(null)]
+	public Player player;
+
 	[DefaultValue (null)]
 	public User user;
 	[DefaultValue (null)]
-	public Room room;
+	public RoomInfo room;
 	[DefaultValue (null)]
-	public List<Room> rooms;
+	public List<RoomInfo> rooms;
 	[DefaultValue (null)]
 	public Message mesaage;
 	[DefaultValue (null)]

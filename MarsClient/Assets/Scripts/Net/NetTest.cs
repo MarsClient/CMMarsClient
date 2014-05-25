@@ -66,10 +66,10 @@ public class NetTest : MonoBehaviour {
 	{
 		if (p.Length >= 2)
 		{
-			Room room = new Room ();
+			RoomInfo room = new RoomInfo ();
 			try
 			{
-				room.RoomIndex = int.Parse (p[1]);
+				room.id = int.Parse (p[1]);
 				NetSend.SendGetRoomInfo(room);
 				return repose;
 			}
@@ -85,10 +85,10 @@ public class NetTest : MonoBehaviour {
 	{
 		if (p.Length >= 2)
 		{
-			Room room = new Room ();
+			RoomInfo room = new RoomInfo ();
 			try
 			{
-				room.RoomIndex = int.Parse (p[1]);
+				room.id = int.Parse (p[1]);
 				NetSend.SendJoinRoom (room);
 				return repose;
 			}

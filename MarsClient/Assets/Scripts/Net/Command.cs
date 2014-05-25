@@ -12,6 +12,7 @@ public enum Command : byte
 	RoomActorBorning,
 	RoomActorActionUpdate,
 	RoomSpeak,
+	UpdatePlayer,
 }
 
 public enum EventCommand: byte
@@ -21,4 +22,6 @@ public enum EventCommand: byte
 	RoomBroadcastActorQuit,
 	RoomBroadcastActorSpeak,
 	JoinRoomNotify,
+	InitAllPlayer,
+	UpdatePlayer,
 }

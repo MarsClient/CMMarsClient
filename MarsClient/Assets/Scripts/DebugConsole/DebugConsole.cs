@@ -169,7 +169,7 @@ public class DebugConsole : MonoBehaviour {
 	public Color systemColor = Message.systemColor;
 	public Color inputColor = Message.inputColor;
 	public Color outputColor = Message.outputColor;
-	
+	public Color getTxtColor = Message.getTxtColor;
 	/// <summary>
 	/// Used to check (or toggle) the open state of the console.
 	/// </summary>
@@ -281,6 +281,7 @@ public class DebugConsole : MonoBehaviour {
 		public static Color systemColor = Color.green;
 		public static Color inputColor = Color.green;
 		public static Color outputColor = Color.cyan;
+		public static Color getTxtColor = Color.blue;
 		
 		public Message(object messageObject) : this(messageObject, MessageType.NORMAL, Message.defaultColor) {
 		}
@@ -338,6 +339,10 @@ public class DebugConsole : MonoBehaviour {
 		
 		public static Message Input(object message) {
 			return new Message(message, MessageType.INPUT, inputColor);
+		}
+
+		public static Message GetTxt(object message) {
+			return new Message(message, MessageType.INPUT, getTxtColor);
 		}
 		
 		public override string ToString() {
@@ -695,6 +700,12 @@ public class DebugConsole : MonoBehaviour {
 	/// <param name="message">Message to print.</param>
 	public static object LogWarning(object message) {
 		DebugConsole.Instance.LogMessage(Message.Warning(message));
+		
+		return message;
+	}
+
+	public static object LogGetInfo(object message) {
+		DebugConsole.Instance.LogMessage(Message.GetTxt(message));
 		
 		return message;
 	}

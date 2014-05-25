@@ -19,12 +19,12 @@ public class NetSend {
 		PhotonClient.Instance.SendServer (Command.Login, a);
 	}
 
-	public static void SendGetRoomInfo (Room room)
+	public static void SendGetRoomInfo (RoomInfo room)
 	{
 		PhotonClient.Instance.SendServer (Command.GetRoomInfo, room);
 	}
 
-	public static void SendJoinRoom (Room room)
+	public static void SendJoinRoom (RoomInfo room)
 	{
 		PhotonClient.Instance.SendServer (Command.JoinRoom, room);
 	}
@@ -42,5 +42,10 @@ public class NetSend {
 	public static void SendRoomSpeak (Message message)
 	{
 		PhotonClient.Instance.SendServer (Command.RoomSpeak, message);
+	}
+
+	public static void SendUpdatePlayerPos (Player p)
+	{
+		PhotonClient.Instance.SendServer (Command.UpdatePlayer, p);
 	}
 }

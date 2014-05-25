@@ -23,6 +23,11 @@ public class ObjectPool {
 		_Instance = null;
 	}
 
+	public GameObject LoadObject (string path)
+	{
+		return LoadObject (path, Vector3.zero);
+	}
+
 	public GameObject LoadObject (string path, Vector3 pos)
 	{
 		List<GameObject> gos = null;

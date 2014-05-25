@@ -10,16 +10,7 @@ using System.Collections.Generic;
 public class User
 {
 	public Account account = new Account ();
-	public Room room = new Room ();
-}
-
-public class Room
-{
-	public int RoomIndex = -1;
-	public string RoomName;
-	public int Limit;
-	public int ActorCount;
-	//public List<Account>
+	public RoomInfo room = new RoomInfo ();
 }
 
 public class Message

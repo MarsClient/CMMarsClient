@@ -1,0 +1,72 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class MultiPlayer : MonoBehaviour {
+
+	void OnEnable ()
+	{
+		PhotonClient.ProcessResults += ProcessResults;
+		PhotonClient.ProcessResultSync += ProcessResultSync;
+	}
+
+	void OnDisable ()
+	{
+		PhotonClient.ProcessResultSync -= ProcessResultSync;
+	}
+
+	void ProcessResults (Bundle bundle)
+	{
+		if (bundle.cmd == Command.Login)
+		{
+			if (bundle.error == null)
+			{
+				GameObject myPlayer = ObjectPool.Instance.LoadObject ("Roles/ZS");
+				CameraController.instance.initialize (myPlayer.transform);
+				myPlayer.name = bundle.account.uniqueId.ToString ();
+			}
+		}
+	}
+
+	void ProcessResultSync (Bundle bundle)
+	{
+		if (bundle.eventCmd == EventCommand.LobbyBroadcast)
+		{
+			if (bundle.error == null)
+			{
+				GameObject myPlayer = ObjectPool.Instance.LoadObject ("Roles/ZS");
+				Destroy (myPlayer.GetComponent<PlayerController>());
+				Destroy (myPlayer.GetComponent<CharacterController>());
+				Destroy (myPlayer.GetComponent<FPSInputController>());
+				myPlayer.name = bundle.account.uniqueId.ToString ();
+			}
+		}
+		else if (bundle.eventCmd == EventCommand.InitAllPlayer)
+		{
+			if (bundle.error == null)
+			{
+				foreach (Player a in bundle.players)
+				{
+					GameObject myPlayer = ObjectPool.Instance.LoadObject ("Roles/ZS");
+					Destroy (myPlayer.GetComponent<PlayerController>());
+					Destroy (myPlayer.GetComponent<CharacterController>());
+					Destroy (myPlayer.GetComponent<FPSInputController>());
+					myPlayer.transform.position = new Vector3 (a.x, 0, a.z);
+					myPlayer.name = a.uniqueId.ToString ();
+				}
+			}
+		}
+		else if (bundle.eventCmd == EventCommand.UpdatePlayer)
+		{
+			if (bundle.error == null)
+			{
+				GameObject otherPlayer = GameObject.Find (bundle.player.uniqueId.ToString ());
+				if (otherPlayer != null)
+				{
+					otherPlayer.transform.position = new Vector3 (bundle.player.x, 0, bundle.player.z);
+					otherPlayer.transform.forward = new Vector3 (bundle.player.xRo, 0, bundle.player.zRo);
+					otherPlayer.GetComponent<AnimationController>().Play ((Clip)bundle.player.actionId);
+				}
+			}
+		}
+	}
+}

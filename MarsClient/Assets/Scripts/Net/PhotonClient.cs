@@ -9,7 +9,7 @@ using ExitGames.Client.Photon;
 
 public class NetEvents
 {
-	public delegate void ProcessResult (Bundle bundle);
+	public delegate void ProcessResults (Bundle bundle);
 	public delegate void ProcessResultSync (Bundle bundle);
 }
 
@@ -19,7 +19,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	/*
 	 *Events
 	 */
-	public static  NetEvents.ProcessResult ProcessResult;
+	public static  NetEvents.ProcessResults ProcessResults;
 	public static  NetEvents.ProcessResultSync ProcessResultSync;
 
 
@@ -123,24 +123,38 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		bundle = JsonConvert.DeserializeObject<Bundle>(json);
 		bundle.cmd = (Command) operationResponse.OperationCode;//cmd
 		Debug.Log (json);
-		DC.Log(json);
+		DC.LogWarning(json);
 		CalledProcessResult (bundle);
-	}
-
-	public void CalledProcessResult (Bundle bundle)
-	{
-		if (ProcessResult != null)
-		{
-			ProcessResult (bundle);
-		}
 	}
 
 	public void OnEvent (EventData eventData)
 	{
-		if (eventData.Code == 1)
+		if (eventData.Parameters.ContainsKey (eventData.Code) == false)
 		{
 			return;
 		}
+		Bundle bundle = new Bundle ();
+		string json = eventData.Parameters[eventData.Code].ToString ();
+		bundle = JsonConvert.DeserializeObject<Bundle>(json);
+		bundle.eventCmd = (EventCommand) eventData.Code;
+		Debug.Log (json);
+		DC.LogWarning(json);
+		CalledProcessEvent (bundle);
 	}
 
+	public void CalledProcessResult (Bundle bundle)
+	{
+		if (ProcessResults != null)
+		{
+			ProcessResults (bundle);
+		}
+	}
+
+	public void CalledProcessEvent (Bundle bundle)
+	{
+		if (ProcessResultSync != null)
+		{
+			ProcessResultSync (bundle);
+		}
+	}
 }
