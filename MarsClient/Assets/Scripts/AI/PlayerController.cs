@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour {
 
 		if (isMoving || isStop)
 		{
-			Debug.Log (transform.forward);
+//			Debug.Log (transform.forward);
 			Player p = new Player();
 			p.uniqueId = Main.Instance.account.uniqueId;
 			p.x = transform.position.x;

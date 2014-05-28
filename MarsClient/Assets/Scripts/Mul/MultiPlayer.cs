@@ -51,6 +51,7 @@ public class MultiPlayer : MonoBehaviour {
 					Destroy (myPlayer.GetComponent<CharacterController>());
 					Destroy (myPlayer.GetComponent<FPSInputController>());
 					myPlayer.transform.position = new Vector3 (a.x, 0, a.z);
+					myPlayer.transform.forward = new Vector3 (a.xRo, 0, a.zRo);
 					myPlayer.name = a.uniqueId.ToString ();
 				}
 			}
@@ -65,6 +66,17 @@ public class MultiPlayer : MonoBehaviour {
 					otherPlayer.transform.position = new Vector3 (bundle.player.x, 0, bundle.player.z);
 					otherPlayer.transform.forward = new Vector3 (bundle.player.xRo, 0, bundle.player.zRo);
 					otherPlayer.GetComponent<AnimationController>().Play ((Clip)bundle.player.actionId);
+				}
+			}
+		}
+		else if (bundle.eventCmd == EventCommand.PlayerDisConnect)
+		{
+			if (bundle.error == null)
+			{
+				GameObject otherPlayer = GameObject.Find (bundle.player.uniqueId.ToString ());
+				if (otherPlayer != null)
+				{
+					Destroy (otherPlayer);
 				}
 			}
 		}

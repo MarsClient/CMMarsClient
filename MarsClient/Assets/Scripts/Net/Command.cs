@@ -24,4 +24,5 @@ public enum EventCommand: byte
 	JoinRoomNotify,
 	InitAllPlayer,
 	UpdatePlayer,
+	PlayerDisConnect,
 }

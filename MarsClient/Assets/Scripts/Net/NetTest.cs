@@ -37,11 +37,12 @@ public class NetTest : MonoBehaviour {
 
 	private string RegisterTest (params string[] p)
 	{
-		if (p.Length >= 3)
+		if (p.Length >= 4)
 		{
 			Account a = new Account ();
 			a.id = p[1];
 			a.pw = p[2];
+			a.roleName = p[3];
 			NetSend.SendRegister (a);
 			//NotificationCenter.PostNotification (this, "SendRegister", a);
 			return repose;
