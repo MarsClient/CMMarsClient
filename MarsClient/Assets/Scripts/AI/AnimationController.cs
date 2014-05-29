@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public enum Clip : int
+public enum AniClip : int
 {
 	Idle,
 	Run,
@@ -34,8 +34,8 @@ public class AnimationMessageNeed
 [System.Serializable]
 public class AnimationItem
 {
-	public Clip clip;
-	public Clip targetClip = Clip.Null;
+	public AniClip clip;
+	public AniClip targetClip = AniClip.Null;
 	public AnimationClip animationClip;
 	public float speed = 1;
 	public AnimationMessageNeed[] eventFrames;
@@ -103,7 +103,7 @@ public class AnimationController : MonoBehaviour {
 
 	private Animation m_Animation;
 	public AnimationItem[] animationItems;
-	private Dictionary<Clip, AnimationItem> antPools = new Dictionary<Clip, AnimationItem>();
+	private Dictionary<AniClip, AnimationItem> antPools = new Dictionary<AniClip, AnimationItem>();
 
 	public AnimationItem currentAnimationItem;
 
@@ -127,7 +127,7 @@ public class AnimationController : MonoBehaviour {
 	{
 		get
 		{
-			return currentAnimationItem.clip == Clip.Hit;
+			return currentAnimationItem.clip == AniClip.Hit;
 		}
 	}
 
@@ -135,18 +135,18 @@ public class AnimationController : MonoBehaviour {
 	{
 		get
 		{
-			return currentAnimationItem.clip == Clip.Fall;
+			return currentAnimationItem.clip == AniClip.Fall;
 		}
 	}
 
 	public bool doNotMove
 	{
 		get{
-			return isAttack || isHitted || isFall || (isSpell && currentAnimationItem.clip != Clip.Spell2);
+			return isAttack || isHitted || isFall || (isSpell && currentAnimationItem.clip != AniClip.Spell2);
 		}
 	}
 
-	public float GetLength (Clip clip)
+	public float GetLength (AniClip clip)
 	{
 		////Debug.Log (antPools[clip].animationClip.length);
 		return antPools[clip].animationClip.length / m_Animation[antPools[clip].clipName].speed;
@@ -171,11 +171,11 @@ public class AnimationController : MonoBehaviour {
 				//Debug.LogError (ai.clip);
 			}*/
 		}
-		currentAnimationItem = antPools[Clip.Idle];
+		currentAnimationItem = antPools[AniClip.Idle];
 	}
 
-	private Clip currentClip;
-	public void Play (Clip clip)
+	private AniClip currentClip;
+	public void Play (AniClip clip)
 	{
 		if (currentClip != clip)
 		{
@@ -192,7 +192,7 @@ public class AnimationController : MonoBehaviour {
 	public void IdleMessage (int c)
 	{
 		//Debug.Log ("Idle");
-		Play (Clip.Idle);
+		Play (AniClip.Idle);
 	}
 
 	public void AttackMessage (int c)
@@ -200,7 +200,7 @@ public class AnimationController : MonoBehaviour {
 		if (attackEvent != null)
 		{
 			//Debug.Log (c);
-			attackEvent (antPools[(Clip)c]);
+			attackEvent (antPools[(AniClip)c]);
 		}
 	}
 
@@ -209,7 +209,7 @@ public class AnimationController : MonoBehaviour {
 		if (attackAOEEvent != null)
 		{
 			//Debug.Log (c);
-			attackAOEEvent (antPools[(Clip)c]);
+			attackAOEEvent (antPools[(AniClip)c]);
 		}
 	}
 
@@ -217,7 +217,7 @@ public class AnimationController : MonoBehaviour {
 	{
 		if (assaultEvent != null)
 		{
-			assaultEvent (antPools[(Clip)c]);
+			assaultEvent (antPools[(AniClip)c]);
 		}
 	}
 
@@ -304,11 +304,11 @@ public class AnimationController : MonoBehaviour {
 		{
 			if (GUILayout.Button ("Spell1"))
 			{
-				Play (Clip.Spell1);
+				Play (AniClip.Spell1);
 			}
 			if (GUILayout.Button ("Spell2"))
 			{
-				Play (Clip.Spell2);
+				Play (AniClip.Spell2);
 			}
 		}
 	}

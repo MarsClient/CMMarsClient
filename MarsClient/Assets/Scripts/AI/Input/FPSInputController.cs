@@ -93,7 +93,7 @@ public class FPSInputController : MonoBehaviour {
 		{
 			if (Vector3.Distance (transform.position, startPos) < moveDistance)
 			{
-				CollisionFlags cf = characterController.Move (transform.forward * Time.deltaTime * 20);
+				CollisionFlags cf = characterController.Move (transform.forward * Time.deltaTime * speed);
 				if (cf == CollisionFlags.None)
 				{
 					if (assaultDelegate != null)
@@ -108,10 +108,11 @@ public class FPSInputController : MonoBehaviour {
 	}
 
 	private bool m_isMoveDir = false;
-	private float lastTime = 0;
-	private float timeing = 0.05f;
+//	private float lastTime = 0;
+//	private float timeing = 0.05f;
 	private float moveDistance;
 	private AnimationItem currentAnt;
+	private float speed = 0;
 	private Vector3 startPos;
 	private bool isForward = true;
 	//private Vector3 m_dir;
@@ -121,10 +122,8 @@ public class FPSInputController : MonoBehaviour {
 		{
 			return;
 		}
-		lastTime = Time.time;
 		m_isMoveDir = true;
 		isForward = isForward;
-		startPos = transform.position;
 		this.moveDistance = ai.actionMove;
 		this.currentAnt = ai;
 	}

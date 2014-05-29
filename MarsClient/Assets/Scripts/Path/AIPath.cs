@@ -5,6 +5,7 @@ using System.Collections;
 public class AIPath : MonoBehaviour 
 {
 	public delegate void OnPathComplete ();
+	public delegate void OnPathUpdate ();
 	public delegate void OnStartPath ();
 
 	private NavMeshAgent _navAgent;

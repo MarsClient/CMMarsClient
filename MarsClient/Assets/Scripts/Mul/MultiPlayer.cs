@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class MultiPlayer : MonoBehaviour {
@@ -65,7 +65,7 @@ public class MultiPlayer : MonoBehaviour {
 				{
 					otherPlayer.transform.position = new Vector3 (bundle.player.x, 0, bundle.player.z);
 					otherPlayer.transform.forward = new Vector3 (bundle.player.xRo, 0, bundle.player.zRo);
-					otherPlayer.GetComponent<AnimationController>().Play ((Clip)bundle.player.actionId);
+					otherPlayer.GetComponent<AnimationController>().Play ((AniClip)bundle.player.actionId);
 				}
 			}
 		}

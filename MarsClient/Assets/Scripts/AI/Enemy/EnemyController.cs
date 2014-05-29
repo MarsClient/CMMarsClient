@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -117,12 +117,12 @@ public class EnemyController : MonoBehaviour {
 	}
     void OnStartPath ()
 	{
-		animationController.Play (Clip.Run);
+		animationController.Play (AniClip.Run);
 	}
 
 	void OnPathComplete ()
 	{
-		animationController.Play (Clip.Idle);
+		animationController.Play (AniClip.Idle);
 	}
 
 	void OnPathCompleteToAttack ()
@@ -137,11 +137,11 @@ public class EnemyController : MonoBehaviour {
 			if (distance <= attDistance)
 			{
 				transform.forward = playerUnit.transform.position - transform.position;
-				animationController.Play (Clip.Attack1);
+				animationController.Play (AniClip.Attack1);
 				return;
 			}
 		}
-		animationController.Play (Clip.Idle);
+		animationController.Play (AniClip.Idle);
 	}
 
 	void AttackEvent (AnimationItem animationItem)

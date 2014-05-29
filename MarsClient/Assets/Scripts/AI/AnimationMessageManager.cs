@@ -3,19 +3,19 @@ using System.Collections;
 
 public class AnimationMessageManager : MonoBehaviour {
 
-	private AnimationController m_Animation;
+	private AiAnimation aiAnimation;
 
 	void Awake ()
 	{
-		m_Animation = transform.parent.GetComponent<AnimationController>();
+		aiAnimation = transform.parent.GetComponent<AiAnimation>();
 	}
 
 	void IdleMessage (int c)
 	{
-		m_Animation.IdleMessage (c);
+		aiAnimation.IdleMessage (c);
 	}
 
-	void AttackMessage (int c)
+	/*void AttackMessage (int c)
 	{
 		m_Animation.AttackMessage (c);
 	}
@@ -28,5 +28,5 @@ public class AnimationMessageManager : MonoBehaviour {
 	void SpellAssault (int c)
 	{
 		m_Animation.SpellAssault (c);
-	}
+	}*/
 }

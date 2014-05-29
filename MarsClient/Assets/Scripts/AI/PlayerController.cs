@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour {
 			return;
 		}
 		//Move
-		Clip c = Clip.Null;
+		AniClip c = AniClip.Null;
 
 		bool isStop = (lastPosMove != fpsController.directionVector);
 		bool isMoving = (transform.position != lastPos);
@@ -57,23 +57,22 @@ public class PlayerController : MonoBehaviour {
 		{
 			if (animationController.isSpell == false)
 			{
-				animationController.Play (Clip.Run);
-				c = Clip.Run;
+				animationController.Play (AniClip.Run);
+				c = AniClip.Run;
 			}
 		}
 		else
 		{
 			if (animationController.isSpell == false)
 			{
-				animationController.Play (Clip.Idle);
-				c =Clip.Idle;
+				animationController.Play (AniClip.Idle);
+				c =AniClip.Idle;
 			}
 		}
 
 		if (isMoving || isStop)
 		{
-//			Debug.Log (transform.forward);
-			Player p = new Player();
+			/*Player p = new Player();
 			p.uniqueId = Main.Instance.account.uniqueId;
 			p.x = transform.position.x;
 			p.z = transform.position.z;
@@ -81,7 +80,7 @@ public class PlayerController : MonoBehaviour {
 			p.zRo = transform.forward.z;
 			p.actionId = (int)c;
 			p.roleName = Main.Instance.account.roleName;
-			NetSend.SendUpdatePlayerPos (p); 
+			NetSend.SendUpdatePlayerPos (p); */
 		}
 	}
 
@@ -137,7 +136,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		if (pro != PRO.FS)
 		{
-			if(animationItem.clip == Clip.Spell1)
+			if(animationItem.clip == AniClip.Spell1)
 			{
 
 				//List<EnemyController> _enemys = EnemyController.enemys;
@@ -165,7 +164,7 @@ public class PlayerController : MonoBehaviour {
 	private float startAttTime = 0;
 	public int maxAttackCount = 2;
 	private int attckId = -1;
-	private Clip clip;
+	private AniClip clip;
 	void Attack ()
 	{
 		if (IsIng == false)
@@ -176,7 +175,7 @@ public class PlayerController : MonoBehaviour {
 			StartCoroutine (AttackQueue ());
 			return;
 		}
-		if (clip != Clip.Null && Time.time - startAttTime > animationController.GetLength (clip) * 2 / 3)
+		if (clip != AniClip.Null && Time.time - startAttTime > animationController.GetLength (clip) * 2 / 3)
 		{
 			startAttTime = Time.time;
 			attckId++;
@@ -185,17 +184,17 @@ public class PlayerController : MonoBehaviour {
 	
 	IEnumerator AttackQueue ()
 	{
-		for (int i = (int)Clip.Attack1; i <= Mathf.Min (attckId, maxAttackCount - 1) + (int)Clip.Attack1; i++)
+		for (int i = (int)AniClip.Attack1; i <= Mathf.Min (attckId, maxAttackCount - 1) + (int)AniClip.Attack1; i++)
 		{
 			if (animationController.isFall || animationController.isHitted)
 			{
 				break;
 			}
-			clip = (Clip)i;
+			clip = (AniClip)i;
 			animationController.Play (clip);
 			yield return new WaitForSeconds (animationController.GetLength (clip));
 		}
-		clip = Clip.Null;
+		clip = AniClip.Null;
 		attckId = -1;
 		IsIng = false;
 	}

@@ -23,7 +23,6 @@ class TronTrailSection
     }
 }
 [RequireComponent(typeof(MeshFilter))]
-[AddComponentMenu("PocketRPG/Weapon Trail")]
 public class WeaponTrail : MonoBehaviour {
 
 
