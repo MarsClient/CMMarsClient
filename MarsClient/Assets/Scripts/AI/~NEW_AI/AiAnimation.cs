@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -21,6 +22,7 @@ public class AntDefine
 {
 	public const string KEY_ATTACK = "Attack";
 	public const string KEY_SPELL = "Spell";
+	public const float ANIMATION_OFFSET = 0.03f;
 }
 
 [System.Serializable]
@@ -28,58 +30,87 @@ public class FrameEvent
 {
 	public int frame;
 	public string method;
+	public float antDisatnce; //>0 forward. <0 back. =0 dont move, when animationing.
+	public float antMoveSpd; // about ant distance, mean that att or spell move spell
 }
 [System.Serializable]
 public class AnimationInfo
 {
 	/*Write in Inspector*/
-	public AnimationClip animationClip;
-	public Clip clip;
-	public float speed = 1.0f;//if speed is zero, it will defu
-	public string onCompleteCallback;
-	public FrameEvent[] events;
+	public AnimationClip animationClip;//animation mode
+	public Clip clip;//animation type
+	public float speed = 1.0f;//if speed is zero, it will deafult one
+	public string onCompleteCallback;//not loop animation for callback when animation end
+	public List<FrameEvent> events;//which frame call something event (in fact send message)
 
 	/*Some properties for get*/
 	//[HideInInspector]
-	public float length;
+	public float length;//animationClip animation time.
 
 	/*int method*/
 	public void Init (Animation ant) 
 	{
 		SetSpeed (ant);
 		OnCompleteEvent ();
-		foreach (FrameEvent fe in events) { SetEvent (fe.method, fe.frame / animationClip.frameRate); }
+		for (int i = 0; i < events.Count; i++) { SetEvent (events[i].method, events[i].frame / animationClip.frameRate, i); }
 	}
-	public void OnCompleteEvent () { if (animationClip.wrapMode == WrapMode.Default || animationClip.wrapMode == WrapMode.Once) { SetEvent (onCompleteCallback, animationClip.length - 0.05f); } }
-	private void SetEvent (string onEvent, float time)
+	public void OnCompleteEvent () { if (animationClip.wrapMode == WrapMode.Default || animationClip.wrapMode == WrapMode.Once) { SetEvent (onCompleteCallback, animationClip.length - AntDefine.ANIMATION_OFFSET); } }
+	private void SetEvent (string onEvent, float time, int index = -1)
 	{
 		if (time != 0 && onEvent != "")
 		{
 			AnimationEvent animationEvent = new AnimationEvent();
 			animationEvent.functionName = onEvent;
-			animationEvent.intParameter = (int) clip;
+
+			//Type c = this.GetType ();
+			//object o = (object)this
+			//UnityEngine.Object o = (UnityEngine.Object) this;
+			string paramter = "";
+			string _clip = ((int) clip).ToString ();
+			paramter = _clip;
+			if (index != -1)
+			{
+				string _index = index.ToString ();// (events.FindIndex (fe)).ToString ();
+				paramter += "," + _index;
+			}
+
+			animationEvent.stringParameter = paramter;//JsonConvert.SerializeObject (fe);//(int) clip;
+
 			animationEvent.messageOptions = SendMessageOptions.RequireReceiver;
 			animationEvent.time = time;
 			animationClip.AddEvent (animationEvent);
 		}
 	}
 	private void SetSpeed (Animation ant) { if (speed == 0) { speed = 1; } length = animationClip.length / speed; ant[animationClip.name].speed = speed; }
+	public FrameEvent getEvent (int index) { if (index >= 0 && index < events.Count) { return events[index]; } return null; }
 }
 
 [RequireComponent(typeof (TrailsManager))]
+[RequireComponent(typeof (AiMove))]
 public class AiAnimation : MonoBehaviour {
 
-	public AnimationInfo[] allAntInfos;
-	private Dictionary<Clip, AnimationInfo> m_infos = new Dictionary<Clip, AnimationInfo> ();
-	private Animation m_Animation;
-	private TrailsManager trailsManager;
+	/* Set Delegates attack spell or other function for call*/
+	public delegate void AttackDelegate (AnimationInfo info);
+	public AttackDelegate attackDelegate;
+
+	public AnimationInfo[] allAntInfos;//Write in Inspector
+	private Dictionary<Clip, AnimationInfo> m_infos = new Dictionary<Clip, AnimationInfo> ();//all  animation infos;
+	private Animation m_Animation;//
+	private TrailsManager trailsManager;//weapon
+
+	private AiMove _aiMove;
+	public AiMove aiMove { get { if (_aiMove == null) { _aiMove = GetComponent <AiMove> (); } return _aiMove; } }
 
 	[HideInInspector]
 	public List<AnimationInfo> normalAttack = new List<AnimationInfo> ();
 
+	private Clip clip = Clip.Idle;
+
+
 	void Start () 
 	{
 		m_Animation = GetComponentInChildren<Animation>();
+
 		trailsManager = GetComponentInChildren<TrailsManager>();
 		foreach (AnimationInfo ai in allAntInfos) 
 		{
@@ -92,7 +123,6 @@ public class AiAnimation : MonoBehaviour {
 		}
 	}
 
-	private Clip clip = Clip.Idle;
 	public void Play (Clip c)
 	{
 		if (clip != c)
@@ -136,8 +166,22 @@ public class AiAnimation : MonoBehaviour {
 	}
 
 	/*Follow is Animation message receive*/
-	public void IdleMessage (int c)
+	public void IdleMessage ()
 	{
 		Play (Clip.Idle);
+	}
+
+	public void AttackMessage (int c)
+	{
+		if (attackDelegate != null)
+		{
+			attackDelegate (GetInfoByClip ((Clip) c));
+		}
+	}
+
+	public void AnimationMove (int c, int eventIndex)
+	{
+		AnimationInfo info = GetInfoByClip ((Clip) c);
+		aiMove.startMoveDir (info, info.getEvent (eventIndex));
 	}
 }

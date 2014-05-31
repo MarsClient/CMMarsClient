@@ -10,23 +10,34 @@ public class AnimationMessageManager : MonoBehaviour {
 		aiAnimation = transform.parent.GetComponent<AiAnimation>();
 	}
 
-	void IdleMessage (int c)
+	void IdleMessage (string info)
 	{
-		aiAnimation.IdleMessage (c);
+		//Clip c = (Clip) int.Parse (info)
+		//Debug.Log (info);
+		aiAnimation.IdleMessage ();
 	}
 
-	/*void AttackMessage (int c)
+	void AttackMessage (int c)
 	{
-		m_Animation.AttackMessage (c);
+		aiAnimation.AttackMessage (c);
 	}
 
-	void AttackAOEMessage (int c)
+	void AnimationMove (string info)
 	{
-		m_Animation.AttackAOEMessage (c);
+		string[] infos = info.Split (',');
+		//Debug.Log (infos[0] + "___" + infos[1]);
+		int c = int.Parse (infos[0]);
+		int eventIndex = int.Parse (infos[1]);
+		aiAnimation.AnimationMove (c, eventIndex);
+	}
+
+	/*void AttackAOEMessage (int c)
+	{
+		aiAnimation.AttackAOEMessage (c);
 	}
 
 	void SpellAssault (int c)
 	{
-		m_Animation.SpellAssault (c);
+		aiAnimation.SpellAssault (c);
 	}*/
 }

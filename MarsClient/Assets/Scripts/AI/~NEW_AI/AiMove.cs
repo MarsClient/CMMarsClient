@@ -32,29 +32,39 @@ public class AiMove : MonoBehaviour {
 		characterController = GetComponent <CharacterController>();
 	}
 
-	void Update () 
+	public void UpdateMove (Vector3 move) 
 	{
 		if (_currentMoveState != MoveState.SpecialMoving)
 		{
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
-			float x = Input.GetKey (KeyCode.A) ? 1 : Input.GetKey (KeyCode.D) ? -1 : 0 ;
-			float z = Input.GetKey (KeyCode.S) ? 1 : Input.GetKey (KeyCode.W) ? -1 : 0 ;
-			m_dir = new Vector3 (x, 0, z);
-#endif
-			_currentMoveState = (x != 0 || z != 0) ? MoveState.Moving : MoveState.Stop;
+
+			m_dir = move;
+			_currentMoveState = (move.x != 0 || move.z != 0) ? MoveState.Moving : MoveState.Stop;
+			CallbackMoveEvent (this);
+			SetMove (m_dir, moveSpeed);
 		}
-		CallbackMoveEvent (this);
-		SetMove (m_dir);
+		else
+		{
+			if (Vector3.Distance (transform.position, startPos) < moveDistance)
+			{
+				CollisionFlags cf = SetMove (transform.forward, speed);
+				if (cf == CollisionFlags.None)
+				{
+					return;
+				}
+			}
+			currentAnt = null;
+			_currentMoveState = MoveState.Stop;
+		}
 	}
 
-	CollisionFlags SetMove (Vector3 dir)
+	CollisionFlags SetMove (Vector3 dir, float spd)
 	{
 		dir = dir.normalized;
 		if (dir != Vector3.zero)
 		{
 			transform.forward = dir;
 		}
-		return characterController.Move (dir * moveSpeed * Time.deltaTime);
+		return characterController.Move (dir * spd * Time.deltaTime);
 	}
 
 	void CallbackMoveEvent (AiMove aiMove)
@@ -63,5 +73,26 @@ public class AiMove : MonoBehaviour {
 		{
 			moveEvent (aiMove);
 		}
+	}
+
+	private float moveDistance;
+	private AnimationInfo currentAnt;
+	private float speed = 1;
+	private Vector3 startPos;
+	private bool isForward = true;
+	public void startMoveDir (AnimationInfo info, FrameEvent fe/*, bool isForward = true*/)
+	{
+		if (fe.antDisatnce == 0)
+		{
+			return;
+		}
+		isForward = fe.antDisatnce > 0;
+		_currentMoveState = MoveState.SpecialMoving;
+		startPos = transform.position;
+		isForward = isForward;
+		this.moveDistance = Mathf.Abs (fe.antDisatnce);
+		this.speed = fe.antMoveSpd;
+		this.currentAnt = info;
+		Debug.Log ("Call");
 	}
 }

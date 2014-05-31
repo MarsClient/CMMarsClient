@@ -1,24 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent (typeof (AiMove))]
 [RequireComponent (typeof (AiAnimation))]
 public class AiPlayer : MonoBehaviour 
 {
-	private AiMove aiMove;
+	//private AiMove aiMove;
 	private AiAnimation aiAnt;
 	void Start ()
 	{
-		aiMove = GetComponent<AiMove> ();
+		//aiMove = GetComponent<AiMove> ();
 		aiAnt  = GetComponent<AiAnimation>();
-		aiMove.moveEvent += MoveEvent;
+		aiAnt.aiMove.moveEvent += MoveEvent;
+		aiAnt.attackDelegate += AttackDelegate;
 	}
 	void OnDisable ()
 	{
-		if (aiMove == null || aiAnt == null) return;
-		aiMove.moveEvent -= MoveEvent;
+		if (aiAnt.aiMove == null || aiAnt == null) return;
+		aiAnt.aiMove.moveEvent -= MoveEvent;
+		aiAnt.attackDelegate -= AttackDelegate;
 	}
 
+	#region Move
 	void MoveEvent (AiMove aiMove)
 	{
 		AiMove.MoveState moveState = aiMove.currentMoveState;
@@ -32,21 +34,31 @@ public class AiPlayer : MonoBehaviour
 		{
 			//About attack
 		}
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
-		if (Input.GetMouseButtonDown (0))
+	}
+	#endregion
+
+/*#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
+	void Update ()
+	{
+		if (Input.GetMouseButton (0))
 		{
 			NormalAttack ();
 		}
-#endif
 	}
+#elif UNITY_ANDROID || UNITY_IPHONE
+	public void MobliePlatform ()
+	{
+		NormalAttack ();
+	}
+#endif*/
 
-
+	#region About Attack
 	private bool isNormalAttacking = false;
 	private int queueId = -1;
 	private int maxAttackCount { get { return aiAnt.normalAttack.Count; } }
 	private float startTime = 0;
 	private Clip clip;
-	void NormalAttack ()
+	public void NormalAttack ()
 	{
 		if (isNormalAttacking == false)
 		{
@@ -78,4 +90,12 @@ public class AiPlayer : MonoBehaviour
 		queueId = -1;
 		isNormalAttacking = false;
 	}
+	#endregion
+
+	#region AiAnimation Event
+	void AttackDelegate (AnimationInfo info)
+	{
+		//aiMove.startMoveDir (info);
+	}
+	#endregion
 }
