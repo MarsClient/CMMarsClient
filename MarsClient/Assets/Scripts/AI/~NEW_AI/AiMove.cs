@@ -93,6 +93,5 @@ public class AiMove : MonoBehaviour {
 		this.moveDistance = Mathf.Abs (fe.antDisatnce);
 		this.speed = fe.antMoveSpd;
 		this.currentAnt = info;
-		Debug.Log ("Call");
 	}
 }
