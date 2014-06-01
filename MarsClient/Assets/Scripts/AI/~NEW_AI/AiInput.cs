@@ -36,4 +36,16 @@ public class AiInput : MonoBehaviour {
 	{
 		aiMove.UpdateMove (dir);
 	}
+
+	void OnGUI ()
+	{
+		if (GUILayout.Button ("Spell1"))
+		{
+			aiPlayer.ShootSpell1 ();
+		}
+		if (GUILayout.Button ("Spell2"))
+		{
+			aiPlayer.ShootSpell2 ();
+		}
+	}
 }

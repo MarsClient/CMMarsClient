@@ -92,6 +92,18 @@ public class AiPlayer : MonoBehaviour
 	}
 	#endregion
 
+	#region spell
+	public void ShootSpell1 ()
+	{
+		aiAnt.Play (Clip.Spell1);
+	}
+
+	public void ShootSpell2 ()
+	{
+		aiAnt.Play (Clip.Spell2);
+	}
+	#endregion
+
 	#region AiAnimation Event
 	void AttackDelegate (AnimationInfo info)
 	{

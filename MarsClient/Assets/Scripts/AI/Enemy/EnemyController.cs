@@ -40,7 +40,7 @@ public class EnemyController : MonoBehaviour {
 		InvokeRepeating ("UpdateEnemyAI", 0, 3);
 	}
 
-	public void Hitted (AnimationItem animationItem, PlayerController player)
+	public void Hitted (AnimationItem animationItem, AiPlayer player)
 	{
 		/*if (animationController.isFall)
 		{
