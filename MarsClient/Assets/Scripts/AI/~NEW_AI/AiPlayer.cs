@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent (typeof (AiAnimation))]
 public class AiPlayer : MonoBehaviour 
 {
+	public float attDistance = 2;
+
 	//private AiMove aiMove;
 	private AiAnimation aiAnt;
 	void Start ()
@@ -21,14 +23,22 @@ public class AiPlayer : MonoBehaviour
 	}
 
 	#region Move
+	private Vector3 lastPos;
 	void MoveEvent (AiMove aiMove)
 	{
 		AiMove.MoveState moveState = aiMove.currentMoveState;
 		if (aiAnt.dontMove) { aiMove.currentMoveState = AiMove.MoveState.Stop; }
 		if (moveState != AiMove.MoveState.SpecialMoving && aiAnt.dontMove == false)
 		{
+			Clip  c = (moveState == AiMove.MoveState.Moving) ? Clip.Run : Clip.Idle;
+
 			//input move
-			aiAnt.Play ((moveState == AiMove.MoveState.Moving) ? Clip.Run : Clip.Idle);
+			aiAnt.Play (c);
+			if (lastPos != transform.position)
+			{
+				lastPos = transform.position;
+				PlayerStateNet (c);
+			}
 		}
 		else
 		{
@@ -37,20 +47,23 @@ public class AiPlayer : MonoBehaviour
 	}
 	#endregion
 
-/*#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
-	void Update ()
+	#region Player State .Net
+	void PlayerStateNet (Clip c)
 	{
-		if (Input.GetMouseButton (0))
+		if (Main.Instance.account != null)
 		{
-			NormalAttack ();
+			Player p = new Player();
+			p.uniqueId = Main.Instance.account.uniqueId;
+			p.x = (float) ((double) transform.position.x);
+			p.z = (float) ((double) transform.position.z);
+			p.xRo = (float) ((double) transform.forward.x);
+			p.zRo = (float) ((double) transform.forward.z);
+			p.actionId = (int)c;
+			p.roleName = Main.Instance.account.roleName;
+			NetSend.SendUpdatePlayerPos (p); 
 		}
 	}
-#elif UNITY_ANDROID || UNITY_IPHONE
-	public void MobliePlatform ()
-	{
-		NormalAttack ();
-	}
-#endif*/
+	#endregion
 
 	#region About Attack
 	private bool isNormalAttacking = false;
@@ -84,6 +97,7 @@ public class AiPlayer : MonoBehaviour
 			}
 			clip = aiAnt.normalAttack[i].clip;
 			aiAnt.Play (clip);
+			PlayerStateNet (clip);
 			yield return new WaitForSeconds (aiAnt.GetInfoByClip (clip).length);
 		}
 		clip = Clip.Null;
@@ -96,18 +110,38 @@ public class AiPlayer : MonoBehaviour
 	public void ShootSpell1 ()
 	{
 		aiAnt.Play (Clip.Spell1);
+		PlayerStateNet (Clip.Spell1);
 	}
 
 	public void ShootSpell2 ()
 	{
 		aiAnt.Play (Clip.Spell2);
+		PlayerStateNet (Clip.Spell2);
 	}
 	#endregion
 
 	#region AiAnimation Event
-	void AttackDelegate (AnimationInfo info)
+	void AttackDelegate (AnimationInfo info, FrameEvent fe)
 	{
-		//aiMove.startMoveDir (info);
+		for (int i = 0; i < EnemyUnit.enemysUnit.Count; i++)
+		{
+			EnemyUnit eu = EnemyUnit.enemysUnit[i];
+			float angle = FightMath.GetMultiplyVector (transform, eu.transform);
+			float distance = FightMath.DistXZ (transform.position, eu.transform.position);
+			//Debug.Log (angle + "_____" + distance);
+			if ((angle > 0 && distance < attDistance) || (angle <= 0 && distance < attDistance / 4))
+			{
+				FightMath.SetTargetForwardDirection (eu.transform, transform);
+				eu.Hitted (info, fe);
+			}
+		}
+	}
+	#endregion
+
+	#region Hit Enemy
+	void attackEvent (AnimationInfo info)
+	{
+
 	}
 	#endregion
 }

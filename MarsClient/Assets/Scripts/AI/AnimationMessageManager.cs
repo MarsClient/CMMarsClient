@@ -17,26 +17,29 @@ public class AnimationMessageManager : MonoBehaviour {
 		aiAnimation.IdleMessage ();
 	}
 
-	void AttackMessage (int c)
+	void AttackMessage (string info)
 	{
-		aiAnimation.AttackMessage (c);
+		string[] infos = info.Split (',');
+		int c = int.Parse (infos[0]);
+		int eventIndex = int.Parse (infos[1]);
+		aiAnimation.AttackMessage (c, eventIndex);
 	}
 
 	void AnimationMove (string info)
 	{
 		string[] infos = info.Split (',');
-		//Debug.Log (infos[0] + "___" + infos[1]);
 		int c = int.Parse (infos[0]);
 		int eventIndex = int.Parse (infos[1]);
 		aiAnimation.AnimationMove (c, eventIndex);
 	}
 
-	/*void AttackAOEMessage (int c)
-	{
-		aiAnimation.AttackAOEMessage (c);
-	}
+//	void AttackAOEMessage (string info)
+//	{
+//		int c = int.Parse (info);
+//		aiAnimation.AttackMessage (c);
+//	}
 
-	void SpellAssault (int c)
+	/*void SpellAssault (int c)
 	{
 		aiAnimation.SpellAssault (c);
 	}*/

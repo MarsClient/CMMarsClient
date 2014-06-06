@@ -30,19 +30,39 @@ public class AiMove : MonoBehaviour {
 	void Start () 
 	{
 		characterController = GetComponent <CharacterController>();
+
+		if (isPlayer == false)
+		{
+			StartUpdate ();
+		}
+	}
+
+	public void StartUpdate ()
+	{
+		InvokeRepeating ("SpecialMoving", 0, 0.03333f);
 	}
 
 	public void UpdateMove (Vector3 move) 
 	{
 		if (_currentMoveState != MoveState.SpecialMoving)
 		{
-
-			m_dir = move;
-			_currentMoveState = (move.x != 0 || move.z != 0) ? MoveState.Moving : MoveState.Stop;
-			CallbackMoveEvent (this);
-			SetMove (m_dir, moveSpeed);
+			if (isPlayer == true)
+			{
+				m_dir = move;
+				_currentMoveState = (move.x != 0 || move.z != 0) ? MoveState.Moving : MoveState.Stop;
+				CallbackMoveEvent (this);
+				SetMove (m_dir, moveSpeed);
+			}
 		}
 		else
+		{
+			SpecialMoving ();
+		}
+	}
+
+	public void SpecialMoving ()
+	{
+		if (_currentMoveState == MoveState.SpecialMoving)
 		{
 			if (Vector3.Distance (transform.position, startPos) < moveDistance)
 			{

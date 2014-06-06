@@ -22,7 +22,7 @@ public class AntDefine
 {
 	public const string KEY_ATTACK = "Attack";
 	public const string KEY_SPELL = "Spell";
-	public const float ANIMATION_OFFSET = 0.03f;
+	public const float ANIMATION_OFFSET = 0.05f;
 }
 
 [System.Serializable]
@@ -42,17 +42,35 @@ public class AnimationInfo
 	public float speed = 1.0f;//if speed is zero, it will deafult one
 	public string onCompleteCallback;//not loop animation for callback when animation end
 	public List<FrameEvent> events;//which frame call something event (in fact send message)
+	//public bool isAoeAllFrames = false;
 
 	/*Some properties for get*/
-	//[HideInInspector]
-	public float length;//animationClip animation time.
+	//
+	[HideInInspector] public float length;//animationClip animation time.
 
 	/*int method*/
 	public void Init (Animation ant) 
 	{
 		SetSpeed (ant);
 		OnCompleteEvent ();
+		//AniamtionAllMesaage ();
 		for (int i = 0; i < events.Count; i++) { SetEvent (events[i].method, events[i].frame / animationClip.frameRate, i); }
+	}
+	public void AniamtionAllMesaage ()
+	{
+//		if (this.isAoeAllFrames == true)
+//		{
+//			int frames = (int) (animationClip.frameRate * animationClip.length);
+//			int startIndex = events.Count;
+//			if (startIndex > 0)
+//			{
+//				FrameEvent frameEvent = events[startIndex - 1];
+//				for (int i = startIndex - 1; i < frames; i++)
+//				{
+//					events.Add (frameEvent);
+//				}
+//			}
+//		}
 	}
 	public void OnCompleteEvent () { if (animationClip.wrapMode == WrapMode.Default || animationClip.wrapMode == WrapMode.Once) { SetEvent (onCompleteCallback, animationClip.length - AntDefine.ANIMATION_OFFSET); } }
 	private void SetEvent (string onEvent, float time, int index = -1)
@@ -90,7 +108,7 @@ public class AnimationInfo
 public class AiAnimation : MonoBehaviour {
 
 	/* Set Delegates attack spell or other function for call*/
-	public delegate void AttackDelegate (AnimationInfo info);
+	public delegate void AttackDelegate (AnimationInfo info, FrameEvent fe);
 	public AttackDelegate attackDelegate;
 
 	public AnimationInfo[] allAntInfos;//Write in Inspector
@@ -100,6 +118,7 @@ public class AiAnimation : MonoBehaviour {
 
 	private AiMove _aiMove;
 	public AiMove aiMove { get { if (_aiMove == null) { _aiMove = GetComponent <AiMove> (); } return _aiMove; } }
+	[HideInInspector] public Transform m_Transform;
 
 	[HideInInspector]
 	public List<AnimationInfo> normalAttack = new List<AnimationInfo> ();
@@ -110,6 +129,7 @@ public class AiAnimation : MonoBehaviour {
 	void Start () 
 	{
 		m_Animation = GetComponentInChildren<Animation>();
+		m_Transform = transform;
 
 		trailsManager = GetComponentInChildren<TrailsManager>();
 		foreach (AnimationInfo ai in allAntInfos) 
@@ -137,6 +157,10 @@ public class AiAnimation : MonoBehaviour {
 				m_Animation.CrossFade (animationInfo.animationClip.name);
 			}
 		}
+	}
+	public void Stop ()
+	{
+		m_Animation.Stop ();
 	}
 
 	/*current state*/
@@ -171,11 +195,12 @@ public class AiAnimation : MonoBehaviour {
 		Play (Clip.Idle);
 	}
 
-	public void AttackMessage (int c)
+	public void AttackMessage (int c, int eventIndex)
 	{
 		if (attackDelegate != null)
 		{
-			attackDelegate (GetInfoByClip ((Clip) c));
+			AnimationInfo info = GetInfoByClip ((Clip) c);
+			attackDelegate (info, info.getEvent (eventIndex));
 		}
 	}
 

@@ -11,6 +11,7 @@ public class MultiPlayer : MonoBehaviour {
 
 	void OnDisable ()
 	{
+		PhotonClient.ProcessResults -= ProcessResults;
 		PhotonClient.ProcessResultSync -= ProcessResultSync;
 	}
 
@@ -34,9 +35,10 @@ public class MultiPlayer : MonoBehaviour {
 			if (bundle.error == null)
 			{
 				GameObject myPlayer = ObjectPool.Instance.LoadObject ("Roles/ZS");
-				Destroy (myPlayer.GetComponent<PlayerController>());
-				Destroy (myPlayer.GetComponent<CharacterController>());
-				Destroy (myPlayer.GetComponent<FPSInputController>());
+				Destroy (myPlayer.GetComponent<AiInput>());
+				myPlayer.GetComponent<AiMove> ().StartUpdate ();
+//				Destroy (myPlayer.GetComponent<CharacterController>());
+//				Destroy (myPlayer.GetComponent<FPSInputController>());
 				myPlayer.name = bundle.account.uniqueId.ToString ();
 			}
 		}
@@ -47,9 +49,8 @@ public class MultiPlayer : MonoBehaviour {
 				foreach (Player a in bundle.players)
 				{
 					GameObject myPlayer = ObjectPool.Instance.LoadObject ("Roles/ZS");
-					Destroy (myPlayer.GetComponent<PlayerController>());
-					Destroy (myPlayer.GetComponent<CharacterController>());
-					Destroy (myPlayer.GetComponent<FPSInputController>());
+					Destroy (myPlayer.GetComponent<AiInput>());
+					myPlayer.GetComponent<AiMove> ().StartUpdate ();
 					myPlayer.transform.position = new Vector3 (a.x, 0, a.z);
 					myPlayer.transform.forward = new Vector3 (a.xRo, 0, a.zRo);
 					myPlayer.name = a.uniqueId.ToString ();
@@ -65,7 +66,7 @@ public class MultiPlayer : MonoBehaviour {
 				{
 					otherPlayer.transform.position = new Vector3 (bundle.player.x, 0, bundle.player.z);
 					otherPlayer.transform.forward = new Vector3 (bundle.player.xRo, 0, bundle.player.zRo);
-					otherPlayer.GetComponent<AnimationController>().Play ((AniClip)bundle.player.actionId);
+					otherPlayer.GetComponent<AiAnimation>().Play ((Clip)bundle.player.actionId);
 				}
 			}
 		}
@@ -80,5 +81,10 @@ public class MultiPlayer : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	void AddPlayer (string id)
+	{
+
 	}
 }

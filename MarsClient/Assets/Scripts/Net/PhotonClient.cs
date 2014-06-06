@@ -120,6 +120,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	{
 		Bundle bundle = new Bundle ();
 		string json = operationResponse[operationResponse.OperationCode].ToString();
+		json = CSharpEncrypt.Decrypt (json);
 		bundle = JsonConvert.DeserializeObject<Bundle>(json);
 		bundle.cmd = (Command) operationResponse.OperationCode;//cmd
 		Debug.Log (json);
@@ -135,6 +136,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		}
 		Bundle bundle = new Bundle ();
 		string json = eventData.Parameters[eventData.Code].ToString ();
+		json = CSharpEncrypt.Decrypt (json);
 		bundle = JsonConvert.DeserializeObject<Bundle>(json);
 		bundle.eventCmd = (EventCommand) eventData.Code;
 		Debug.Log (json);
@@ -144,7 +146,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	public void CalledProcessResult (Bundle bundle)
 	{
-		if (ProcessResults != null)
+		if (ProcessResults != null && bundle != null)
 		{
 			ProcessResults (bundle);
 		}
@@ -152,7 +154,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	public void CalledProcessEvent (Bundle bundle)
 	{
-		if (ProcessResultSync != null)
+		if (ProcessResultSync != null && bundle != null)
 		{
 			ProcessResultSync (bundle);
 		}

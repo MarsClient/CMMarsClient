@@ -40,7 +40,7 @@ public class EnemyController : MonoBehaviour {
 		InvokeRepeating ("UpdateEnemyAI", 0, 3);
 	}
 
-	public void Hitted (AnimationItem animationItem, AiPlayer player)
+	public void Hitted (AnimationItem animationItem, PlayerController player)
 	{
 		/*if (animationController.isFall)
 		{
@@ -154,7 +154,7 @@ public class EnemyController : MonoBehaviour {
 			//Debug.Log (angle + "_____" + distance);
 			if ((angle > 0 && distance < attDistance))
 			{
-				pu.Hitted (animationItem);
+				//pu.Hitted (animationItem);
 			}
 		}
 	}

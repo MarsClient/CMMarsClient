@@ -57,4 +57,15 @@ public class FightMath
 //		Debug.Log (list[0] + "<-----0______1----->" + list[1]);
 		return list;//0-get the nearest player, 1-get the nearest distance
 	}
+
+	public static void SetTargetForwardDirection (Transform left, Transform right)
+	{
+		Vector3 forward = right.position - left.position;
+		if (forward != Vector3.zero)
+		{
+			left.forward = forward.normalized;
+		}
+	}
+
+	public static bool isStateRandom () { return Random.Range (0, 2) == 1; }
 }
