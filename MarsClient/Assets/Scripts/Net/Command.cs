@@ -3,6 +3,7 @@ using System.Collections;
 
 public enum Command : byte
 {
+	Handshake,
 	Login = 5,
 	Register,
 	GetRoomInfo,

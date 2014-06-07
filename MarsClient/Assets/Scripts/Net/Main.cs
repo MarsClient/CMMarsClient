@@ -1,20 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Main 
+public class Main : MonoBehaviour 
 {
-	private static Main m_instance;
-	public static Main Instance
-	{
-		get
-		{
-			if (m_instance == null)
-			{
-				m_instance = new Main ();
-			}
-			return m_instance;
-		}
-	}
+	public static Main Instance;
 
+	public SQLiteVer sqliteVer;
 	public Account account;
+
+	void Awake ()
+	{
+		Instance = this;
+		//StartCoroutine (GameData.Instance.reload ());
+	}
 }

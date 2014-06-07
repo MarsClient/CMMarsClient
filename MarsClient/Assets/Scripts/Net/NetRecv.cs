@@ -15,6 +15,11 @@ public class NetRecv : MonoBehaviour {
 
 	void ProcessResult (Bundle bundle)
 	{
+		if (bundle.cmd == Command.Handshake)
+		{
+			Main.Instance.sqliteVer = bundle.sqliteVer;
+			StartCoroutine (GameData.Instance.reload ());
+		}
 		if (bundle.cmd == Command.Login)
 		{
 			Main.Instance.account = bundle.account;

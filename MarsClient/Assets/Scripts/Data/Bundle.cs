@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 public class Bundle
 {
+	[DefaultValue (null)]
+	public SQLiteVer sqliteVer;
+
 	[DefaultValue (false)]
 	public bool isRegister;
 	[DefaultValue (null)]
