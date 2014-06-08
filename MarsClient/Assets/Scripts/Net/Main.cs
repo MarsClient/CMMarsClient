@@ -8,9 +8,13 @@ public class Main : MonoBehaviour
 	public SQLiteVer sqliteVer;
 	public Account account;
 
-	void Awake ()
+	void Awake () { if (Instance == null) { Instance = this; DontDestroyOnLoad (gameObject); } else if (Instance != this) Destroy (gameObject);}
+
+	void OnGUI ()
 	{
-		Instance = this;
-		//StartCoroutine (GameData.Instance.reload ());
+		if (GUILayout.Button ("haha"))
+		{
+			Application.LoadLevel ("c");
+		}
 	}
 }

@@ -45,7 +45,7 @@ public class GameData	{
 		SQLiteDB db = new SQLiteDB ();
 		string log = "";
 		string fileName = Application.persistentDataPath + name;
-		Debug.LogError (fileName);
+//		Debug.LogError (fileName);
 		// check if database already exists.
 		if(!File.Exists(fileName))
 		{
@@ -91,7 +91,7 @@ public class GameData	{
 			log += 	"\n on WebPlayer it must give an exception, it's normal.";
 		}
 		int version = getVersion(db);
-		Debug.Log ("OLD***********" + version);
+//		Debug.Log ("OLD***********" + version);
 
 		if (Main.Instance.sqliteVer.ver > version)
 		{
@@ -128,7 +128,7 @@ public class GameData	{
 				log += 	"\nTest Fail with Exception " + e.ToString();
 				log += 	"\n on WebPlayer it must give an exception, it's normal.";
 			}
-			Debug.Log ("NEW***********" + getVersion(db));
+			//Debug.Log ("NEW***********" + getVersion(db));
 		}
 
 		LoadTroops (db);

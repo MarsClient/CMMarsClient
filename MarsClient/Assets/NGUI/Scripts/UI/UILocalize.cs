@@ -74,5 +74,7 @@ public class UILocalize : MonoBehaviour
 			sp.MakePixelPerfect();
 		}
 		mLanguage = loc.currentLanguage;
+
+		Destroy (this);
 	}
 }

@@ -1,0 +1,4 @@
+﻿game.user = 用户名:
+game.password = 密码:
+game.user.default = 请输入用户名
+game.password.default = 请输入密码
