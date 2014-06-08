@@ -2,3 +2,9 @@
 game.password = 密码:
 game.user.default = 请输入用户名
 game.password.default = 请输入密码
+game.again.password.default = 再次输入密码
+button.login = 登陆
+button.register = 注册
+button.back = 返回
+game.login.null.error = 用户名或者密码为空
+game.login.success = 登陆成功

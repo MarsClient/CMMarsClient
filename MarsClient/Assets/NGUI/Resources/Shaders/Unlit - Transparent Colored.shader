@@ -31,9 +31,9 @@ Shader "Unlit/Transparent Colored"
 			{
 			
 				//combine primary + texture, previous +- texture
-				Combine primary + texture, primary +- texture
+				//Combine primary + texture, primary +- texture
 			 	//combine texture * primary, texture * primary Double
-				//combine texture * constant, primary
+				combine texture * primary
 			}
 		}
 	}
