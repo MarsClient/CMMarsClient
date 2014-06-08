@@ -18,6 +18,20 @@ public class Toast : MonoBehaviour {
 
 	private float tweenDuration = 1.0f;
 
+	private int disableNum 
+	{ 
+		get 
+		{ 
+			int i = 0;
+			foreach (GameObject go in allItems)
+			{
+				if (go == null) {continue;}
+				if (go != null && go.activeSelf == true ) { i++; }
+			}
+			return i;
+		}
+	}
+
 	public static void ShowNormalText (string text)
 	{
 		instance.ShowText (text);
@@ -31,8 +45,8 @@ public class Toast : MonoBehaviour {
 	private void ShowText (string text, bool isQueue)
 	{
 		if (isQueue) { queue.Enqueue (text); }
-		int count = parent.transform.childCount;//GetComponentsInChildren <UILabel>().Length;//allItems.Count;
-		//Debug.Log (count);
+		int count = disableNum;//GetComponentsInChildren <UILabel>().Length;//allItems.Count;
+//		Debug.Log (count);
 		if (count < maxCount)
 		{
 			//Debug.Log (text);
@@ -45,9 +59,10 @@ public class Toast : MonoBehaviour {
 	{
 		yield return new WaitForSeconds (lastTime);
 
-		TweenAlpha.Begin (go, tweenDuration, 0).ignoreTimeScale = false;
+		TweenAlpha.Begin (go, tweenDuration, 0);//.ignoreTimeScale = false;
 		yield return new WaitForSeconds (tweenDuration);
-		DestroyImmediate (go);
+		go.SetActive (false);
+		//DestroyImmediate (go);
 		if (queue.Count > 0)
 		{
 			string message = queue.Dequeue (); 
@@ -72,12 +87,15 @@ public class Toast : MonoBehaviour {
 			}
 			else if (allItems[i].activeSelf == false)
 			{
+				go = allItems[i];
 				allItems[i].SetActive (true);
 			}
 			if (isNeedSet)
 			{
 				UILabel label = allItems[i].GetComponentInChildren<UILabel> ();
 				allItems[i].transform.localPosition = new Vector3 (0, distance * i, 0);
+//				Debug.LogError (allItems[i] + "___" + allItems[i].activeSelf);
+				label.alpha = 0;
 				TweenAlpha.Begin (allItems[i], tweenDuration / 2, 1.0f);
 				label.text = text;
 				break;
