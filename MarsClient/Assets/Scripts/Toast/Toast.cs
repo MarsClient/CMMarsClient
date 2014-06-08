@@ -118,5 +118,19 @@ public class Toast : MonoBehaviour {
 		{
 			i = 0;
 		}
+		if (GUILayout.Button ("hahahahhahahah"))
+		{
+			new DialogContent ()
+				.SetMessage ("test")
+					.SetYesBtn ("Yes")
+					.SetNoBtn ("No")
+					.SetDelegateBtn (DialogBtnEvent)
+					.Show ();
+		}
+	}
+	
+	void DialogBtnEvent (bool yes)
+	{
+		Debug.Log (yes);
 	}
 }
