@@ -162,25 +162,25 @@ public class UISlider : IgnoreTimeScale
 	/// Update the slider's position on press.
 	/// </summary>
 
-	void OnPress (bool pressed) { if (enabled && pressed && UICamera.currentTouchID != -100) UpdateDrag(); }
+	void OnPress (bool pressed) { if (pressed && UICamera.currentTouchID != -100) UpdateDrag(); }
 
 	/// <summary>
 	/// When dragged, figure out where the mouse is and calculate the updated value of the slider.
 	/// </summary>
 
-	void OnDrag (Vector2 delta) { if (enabled) UpdateDrag(); }
+	void OnDrag (Vector2 delta) { UpdateDrag(); }
 
 	/// <summary>
 	/// Callback from the thumb.
 	/// </summary>
 
-	void OnPressThumb (GameObject go, bool pressed) { if (enabled && pressed) UpdateDrag(); }
+	void OnPressThumb (GameObject go, bool pressed) { if (pressed) UpdateDrag(); }
 
 	/// <summary>
 	/// Callback from the thumb.
 	/// </summary>
 
-	void OnDragThumb (GameObject go, Vector2 delta) { if (enabled) UpdateDrag(); }
+	void OnDragThumb (GameObject go, Vector2 delta) { UpdateDrag(); }
 
 	/// <summary>
 	/// Watch for key events and adjust the value accordingly.
@@ -188,20 +188,17 @@ public class UISlider : IgnoreTimeScale
 
 	void OnKey (KeyCode key)
 	{
-		if (enabled)
-		{
-			float step = (numberOfSteps > 1f) ? 1f / (numberOfSteps - 1) : 0.125f;
+		float step = (numberOfSteps > 1f) ? 1f / (numberOfSteps - 1) : 0.125f;
 
-			if (direction == Direction.Horizontal)
-			{
-				if (key == KeyCode.LeftArrow) Set(rawValue - step, false);
-				else if (key == KeyCode.RightArrow) Set(rawValue + step, false);
-			}
-			else
-			{
-				if (key == KeyCode.DownArrow) Set(rawValue - step, false);
-				else if (key == KeyCode.UpArrow) Set(rawValue + step, false);
-			}
+		if (direction == Direction.Horizontal)
+		{
+			if		(key == KeyCode.LeftArrow)	Set(rawValue - step, false);
+			else if (key == KeyCode.RightArrow) Set(rawValue + step, false);
+		}
+		else
+		{
+			if		(key == KeyCode.DownArrow)	Set(rawValue - step, false);
+			else if (key == KeyCode.UpArrow)	Set(rawValue + step, false);
 		}
 	}
 

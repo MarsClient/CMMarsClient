@@ -22,12 +22,13 @@ public class DialogContent
 	
 	/**all method*/
 	public DialogContent () {}
-	public DialogContent SetMessage (string message) { this.message = message; return this; }
-	public DialogContent SetYesBtn (string yesStr) { this.yesStr = yesStr; return this; }
-	public DialogContent SetNoBtn (string noStr) { this.noStr = noStr; return this; }
+	public DialogContent SetMessage (string message) { this.message = Localization.instance.Get (message); return this; }
+	public DialogContent SetYesBtn (string yesStr) { this.yesStr = Localization.instance.Get (yesStr); return this; }
+	public DialogContent SetNoBtn (string noStr) { this.noStr = Localization.instance.Get (noStr); return this; }
 	public DialogContent SetDelegateBtn (DialogHandle dialogHandle) { this.dialogHandle = dialogHandle; return this; }
 	
 	public void Show () { Dialog.instance.Show (this); }
+	public void ShowWaiting () { Dialog.instance.ShowWaiting (this); }
 }
 #endregion
 
@@ -44,6 +45,12 @@ public class Dialog : MonoBehaviour {
 		dialogItem.gameObject.SetActive (true);
 		dialogItem.Refresh (dc, DiaglogType.normal);
 		//dialogItem.Refresh (dialogItem);
+	}
+
+	public void ShowWaiting (DialogContent dc)//normal
+	{
+		dialogItem.gameObject.SetActive (true);
+		dialogItem.Refresh (dc, DiaglogType.waiting);
 	}
 
 	public void Close ()

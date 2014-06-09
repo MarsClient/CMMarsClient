@@ -19,10 +19,9 @@ public class UITexture : UIWidget
 	[HideInInspector][SerializeField] Rect mRect = new Rect(0f, 0f, 1f, 1f);
 	[HideInInspector][SerializeField] Shader mShader;
 	[HideInInspector][SerializeField] Texture mTexture;
-	[HideInInspector][SerializeField] Material mMat;
 
+	Material mDynamicMat;
 	bool mCreatingMat = false;
-	Material mDynamicMat = null;
 	int mPMA = -1;
 
 	/// <summary>
@@ -80,6 +79,12 @@ public class UITexture : UIWidget
 	public bool hasDynamicMaterial { get { return mDynamicMat != null; } }
 
 	/// <summary>
+	/// UI textures should keep the material reference.
+	/// </summary>
+
+	public override bool keepMaterial { get { return true; } }
+
+	/// <summary>
 	/// Automatically destroy the dynamically-created material.
 	/// </summary>
 
@@ -87,34 +92,32 @@ public class UITexture : UIWidget
 	{
 		get
 		{
-			if (mMat != null) return mMat;
-			if (mDynamicMat != null) return mDynamicMat;
-
-			if (!mCreatingMat && mDynamicMat == null)
+			if (!mCreatingMat && mMat == null)
 			{
 				mCreatingMat = true;
 
-				if (mShader == null) mShader = Shader.Find("Unlit/Texture");
-
-				Cleanup();
-
-				mDynamicMat = new Material(mShader);
-				mDynamicMat.hideFlags = HideFlags.DontSave;
-				mDynamicMat.mainTexture = mTexture;
-				mPMA = 0;
+				if (mainTexture != null)
+				{
+					if (mShader == null) mShader = Shader.Find("Unlit/Texture");
+					mDynamicMat = new Material(mShader);
+					mDynamicMat.hideFlags = HideFlags.DontSave;
+					mDynamicMat.mainTexture = mainTexture;
+					base.material = mDynamicMat;
+					mPMA = 0;
+				}
 				mCreatingMat = false;
 			}
-			return mDynamicMat;
+			return mMat;
 		}
 		set
 		{
-			if (mMat != value)
+			if (mDynamicMat != value && mDynamicMat != null)
 			{
-				Cleanup();
-				mMat = value;
-				mPMA = -1;
-				MarkAsChanged();
+				NGUITools.Destroy(mDynamicMat);
+				mDynamicMat = null;
 			}
+			base.material = value;
+			mPMA = -1;
 		}
 	}
 
@@ -143,24 +146,25 @@ public class UITexture : UIWidget
 	{
 		get
 		{
-			if (mMat != null) return mMat.mainTexture;
-			if (mTexture != null) return mTexture;
-			return null;
+			return (mTexture != null) ? mTexture : base.mainTexture;
 		}
 		set
 		{
-			RemoveFromPanel();
+			if (mPanel != null && mMat != null) mPanel.RemoveWidget(this);
 
-			Material mat = material;
-
-			if (mat != null)
+			if (mMat == null)
 			{
-				mPanel = null;
-				mTexture = value;
-				mat.mainTexture = value;
-
-				if (enabled) CreatePanel();
+				mDynamicMat = new Material(shader);
+				mDynamicMat.hideFlags = HideFlags.DontSave;
+				mMat = mDynamicMat;
 			}
+			
+			mPanel = null;
+			mTex = value;
+			mTexture = value;
+			mMat.mainTexture = value;
+			
+			if (enabled) CreatePanel();
 		}
 	}
 
@@ -168,16 +172,7 @@ public class UITexture : UIWidget
 	/// Clean up.
 	/// </summary>
 
-	void OnDestroy () { Cleanup(); }
-
-	void Cleanup ()
-	{
-		if (mDynamicMat != null)
-		{
-			NGUITools.Destroy(mDynamicMat);
-			mDynamicMat = null;
-		}
-	}
+	void OnDestroy () { NGUITools.Destroy(mDynamicMat); }
 
 	/// <summary>
 	/// Adjust the scale of the widget to make it pixel-perfect.

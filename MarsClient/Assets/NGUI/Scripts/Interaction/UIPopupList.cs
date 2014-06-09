@@ -128,13 +128,6 @@ public class UIPopupList : MonoBehaviour
 	public string functionName = "OnSelectionChange";
 
 	/// <summary>
-	/// If set to 'true', the callback functions will trigger even if the same selection gets chosen again.
-	/// If 'false', the callback functions will trigger only on different selections.
-	/// </summary>
-
-	public bool sameOptionTrigger = false;
-
-	/// <summary>
 	/// Delegate that will be called when the selection changes. Faster than using the 'eventReceiver'.
 	/// </summary>
 
@@ -167,8 +160,6 @@ public class UIPopupList : MonoBehaviour
 		}
 		set
 		{
-			bool trigger = false;
-
 			if (mSelectedItem != value)
 			{
 				mSelectedItem = value;
@@ -181,11 +172,7 @@ public class UIPopupList : MonoBehaviour
 					UnityEditor.EditorUtility.SetDirty(textLabel.gameObject);
 #endif
 				}
-				trigger = true;
-			}
 
-			if (mSelectedItem != null && (trigger || sameOptionTrigger))
-			{
 				current = this;
 				if (onSelectionChange != null) onSelectionChange(mSelectedItem);
 
@@ -457,7 +444,7 @@ public class UIPopupList : MonoBehaviour
 
 	void OnClick()
 	{
-		if (enabled && NGUITools.GetActive(gameObject) && mChild == null && atlas != null && font != null && items.Count > 0)
+		if (mChild == null && atlas != null && font != null && items.Count > 0)
 		{
 			mLabelList.Clear();
 

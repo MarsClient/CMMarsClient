@@ -27,6 +27,14 @@ public class DialogItem : MonoBehaviour {
 			SetBtnPos (yesBtn, -btnOffset);
 			SetBtnPos (noBtn, btnOffset);
 		}
+		else if (dt == DiaglogType.waiting)
+		{
+			yesBtn.SetActive (false);
+			noBtn.SetActive (true);
+			message.text = dc.message;
+			noBtn.GetComponentInChildren<UILabel>().text = dc.noStr;
+			SetBtnPos (noBtn, btnMidden);
+		}
 	}
 
 	void SetBtnPos (GameObject btn, float offset)

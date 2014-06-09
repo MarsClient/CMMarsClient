@@ -369,8 +369,6 @@ static public class NGUIMath
 		for (int i = 0, imax = widgets.Length; i < imax; ++i)
 		{
 			UIWidget w = widgets[i];
-			if (!w.enabled) continue;
-
 			Vector2 size = w.relativeSize;
 			Vector2 offset = w.pivotOffset;
 			float x = (offset.x + 0.5f) * size.x;
@@ -408,72 +406,62 @@ static public class NGUIMath
 	static public Bounds CalculateRelativeWidgetBounds (Transform root, Transform child)
 	{
 		UIWidget[] widgets = child.GetComponentsInChildren<UIWidget>() as UIWidget[];
+		if (widgets.Length == 0) return new Bounds(Vector3.zero, Vector3.zero);
 
-		if (widgets.Length > 0)
+		Vector3 vMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+		Vector3 vMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+
+		Matrix4x4 toLocal = root.worldToLocalMatrix;
+
+		for (int i = 0, imax = widgets.Length; i < imax; ++i)
 		{
-			Vector3 vMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-			Vector3 vMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+			UIWidget w = widgets[i];
+			Vector2 size = w.relativeSize;
+			Vector2 offset = w.pivotOffset;
+			Transform toWorld = w.cachedTransform;
 
-			Matrix4x4 toLocal = root.worldToLocalMatrix;
-			bool isSet = false;
+			float x = (offset.x + 0.5f) * size.x;
+			float y = (offset.y - 0.5f) * size.y;
+			size *= 0.5f;
+			
+			// Start with the corner of the widget
+			Vector3 v = new Vector3(x - size.x, y - size.y, 0f);
+			
+			// Transform the coordinate from relative-to-widget to world space
+			v = toWorld.TransformPoint(v);
+			
+			// Now transform from world space to relative-to-parent space
+			v = toLocal.MultiplyPoint3x4(v);
 
-			for (int i = 0, imax = widgets.Length; i < imax; ++i)
-			{
-				UIWidget w = widgets[i];
-				if (!w.enabled) continue;
+			vMax = Vector3.Max(v, vMax);
+			vMin = Vector3.Min(v, vMin);
 
-				Vector2 size = w.relativeSize;
-				Vector2 offset = w.pivotOffset;
-				Transform toWorld = w.cachedTransform;
+			// Repeat for the other 3 corners
+			v = new Vector3(x - size.x, y + size.y, 0f);
+			v = toWorld.TransformPoint(v);
+			v = toLocal.MultiplyPoint3x4(v);
 
-				float x = (offset.x + 0.5f) * size.x;
-				float y = (offset.y - 0.5f) * size.y;
-				size *= 0.5f;
+			vMax = Vector3.Max(v, vMax);
+			vMin = Vector3.Min(v, vMin);
 
-				// Start with the corner of the widget
-				Vector3 v = new Vector3(x - size.x, y - size.y, 0f);
+			v = new Vector3(x + size.x, y - size.y, 0f);
+			v = toWorld.TransformPoint(v);
+			v = toLocal.MultiplyPoint3x4(v);
 
-				// Transform the coordinate from relative-to-widget to world space
-				v = toWorld.TransformPoint(v);
+			vMax = Vector3.Max(v, vMax);
+			vMin = Vector3.Min(v, vMin);
 
-				// Now transform from world space to relative-to-parent space
-				v = toLocal.MultiplyPoint3x4(v);
+			v = new Vector3(x + size.x, y + size.y, 0f);
+			v = toWorld.TransformPoint(v);
+			v = toLocal.MultiplyPoint3x4(v);
 
-				vMax = Vector3.Max(v, vMax);
-				vMin = Vector3.Min(v, vMin);
-
-				// Repeat for the other 3 corners
-				v = new Vector3(x - size.x, y + size.y, 0f);
-				v = toWorld.TransformPoint(v);
-				v = toLocal.MultiplyPoint3x4(v);
-
-				vMax = Vector3.Max(v, vMax);
-				vMin = Vector3.Min(v, vMin);
-
-				v = new Vector3(x + size.x, y - size.y, 0f);
-				v = toWorld.TransformPoint(v);
-				v = toLocal.MultiplyPoint3x4(v);
-
-				vMax = Vector3.Max(v, vMax);
-				vMin = Vector3.Min(v, vMin);
-
-				v = new Vector3(x + size.x, y + size.y, 0f);
-				v = toWorld.TransformPoint(v);
-				v = toLocal.MultiplyPoint3x4(v);
-
-				vMax = Vector3.Max(v, vMax);
-				vMin = Vector3.Min(v, vMin);
-				isSet = true;
-			}
-
-			if (isSet)
-			{
-				Bounds b = new Bounds(vMin, Vector3.zero);
-				b.Encapsulate(vMax);
-				return b;
-			}
+			vMax = Vector3.Max(v, vMax);
+			vMin = Vector3.Min(v, vMin);
 		}
-		return new Bounds(Vector3.zero, Vector3.zero);
+
+		Bounds b = new Bounds(vMin, Vector3.zero);
+		b.Encapsulate(vMax);
+		return b;
 	}
 
 	/// <summary>

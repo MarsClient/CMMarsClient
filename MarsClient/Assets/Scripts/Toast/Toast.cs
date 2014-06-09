@@ -127,8 +127,17 @@ public class Toast : MonoBehaviour {
 					.SetDelegateBtn (DialogBtnEvent)
 					.Show ();
 		}
+
+		if (GUILayout.Button ("hahahahhahahah"))
+		{
+			new DialogContent ()
+				.SetMessage ("test")
+					.SetNoBtn ("Have a Wait....")
+					.SetDelegateBtn (DialogBtnEvent)
+					.ShowWaiting ();
+		}
 	}
-	
+
 	void DialogBtnEvent (bool yes)
 	{
 		Debug.Log (yes);

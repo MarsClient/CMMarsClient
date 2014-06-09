@@ -48,14 +48,10 @@ public class UIButtonColor : MonoBehaviour
 	{
 		get
 		{
-			Start();
+			if (!mStarted) Init();
 			return mColor;
 		}
-		set
-		{
-			Start();
-			mColor = value;
-		}
+		set { mColor = value; }
 	}
 
 	void Start ()

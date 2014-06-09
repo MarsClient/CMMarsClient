@@ -1,7 +1,7 @@
 ----------------------------------------------
             NGUI: Next-Gen UI kit
  Copyright © 2011-2012 Tasharen Entertainment
-                Version 2.6.5b
+                Version 2.6.4
     http://www.tasharen.com/?page_id=197
             support@tasharen.com
 ----------------------------------------------
@@ -34,19 +34,6 @@ Using NGUI with JavaScript (UnityScript)? Read this first: http://www.tasharen.c
 -----------------
  Version History
 -----------------
-
-2.6.5:
-- FIX: Labels now have "Max Height", and "Max Lines" again works as expected.
-- FIX: Widgets no longer store a reference to texture and material.
-- FIX: Fix for some issues with the dynamic fonts.
-- FIX: Removed the "password" setting from UILabel in order to clear up some confusion.
-- FIX: Transparent colored shader no longer has fixed function pipeline code inside.
-- FIX: Atlas maker will now be more perforce-friendly.
-- FIX: Popup list will no longer show on Click when the Popup List script is disabled.
-- FIX: NGUIMath.Calculate functions will now ignore recently disabled widgets.
-- FIX: UIWidget will no longer attempt to create a panel until after Start().
-- FIX: UICamera.touchCount and UICamera.dragCount will now work correctly with multi-touch turned off.
-- FIX: WP8 and BB10 tweaks.
 
 2.6.4:
 - NEW: UIStretch now has the 'run once' option matching UIAnchor.
