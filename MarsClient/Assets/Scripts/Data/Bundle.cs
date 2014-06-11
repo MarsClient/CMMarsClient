@@ -11,7 +11,7 @@ public class Bundle
 	[DefaultValue (false)]
 	public bool isRegister;
 	[DefaultValue (null)]
-	public string error;
+	public Error error;
 	[DefaultValue (null)]
 	public string notice;
 	[DefaultValue (null)]

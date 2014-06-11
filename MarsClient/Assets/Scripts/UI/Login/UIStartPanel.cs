@@ -25,7 +25,11 @@ public class LoginMode
 		Error e = loginSuccess ();
 		if (e == null)
 		{
-
+			Account a = new Account ();
+			a.id = user.text;
+			a.pw = password.text;
+			NetSend.SendLogin (a);
+			new DialogContent ().SetMessage ("game.dialog.waiting").SetNoBtn ("game.dialog.no").ShowWaiting ();
 		}
 		else
 		{
@@ -35,6 +39,7 @@ public class LoginMode
 					.ShowWaiting ();
 		}
 	}
+	public void Clear () { user.text = ""; password.text = ""; }
 }
 
 [System.Serializable]
@@ -72,6 +77,8 @@ public class RegisterMode
 		}
 		return e;
 	}
+
+	public void Clear () { user.text = ""; password.text = ""; againPassword.text = ""; }
 
 	public void Register ()
 	{
@@ -123,27 +130,33 @@ public class UIStartPanel : MonoBehaviour {
 		Start ();
 	}
 
+	public void RegisterDoneLogin ()
+	{
+		loginMode.user.text = registerMode.user.text;
+		loginMode.password.text = registerMode.password.text;
+	}
+
 	void ProcessResults (Bundle bundle)
 	{
 		if (bundle.cmd == Command.Register)
 		{
-			if (bundle.error == null)
-			{
-				new DialogContent ()
-					.SetMessage ("game.register.success")
-						.SetNoBtn ("game.dialog.yes")
-						.ShowWaiting ();
-			}
-			else
-			{
-				if (bundle.error == null)
-				{
-					new DialogContent ()
-						.SetMessage ("game.register.success")
-							.SetNoBtn ("game.dialog.yes")
-							.ShowWaiting ();
-				}
-			}
+			if (bundle.error == null){ new DialogContent ().SetMessage ("game.register.success").SetYesBtn ("game.dialog.login").SetNoBtn ("game.dialog.no").SetDelegateBtn (LoginGameDelegate).Show (); }
+			else{ new DialogContent ().SetMessage (bundle.error.message).SetNoBtn ("game.dialog.yes").ShowWaiting (); registerMode.Clear (); }
+		}
+		else if (bundle.cmd == Command.Login)
+		{
+			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); }
+			else { new DialogContent ().SetMessage (bundle.error.message).SetNoBtn ("game.dialog.no").ShowWaiting (); }
+		}
+	}
+
+	void LoginGameDelegate (bool isYes)
+	{
+		if (isYes) 
+		{ 
+			RegisterDoneLogin ();
+			Back ();
+			registerMode.Clear ();
 		}
 	}
 }

@@ -30,7 +30,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	public string LOAD_SERVER_ADDRESS = "localhost:5055";
 
 
-	protected string ServerApplication = "EZServer";
+	protected string ServerApplication = "LoginServer";
 	protected PhotonPeer peer;
 	public bool ServerConnected {get; private set;}
 	
