@@ -5,9 +5,50 @@ using System.Collections;
 [System.Serializable]
 public class LoginMode
 {
+	public const string LOGIN_STATE_CHECK = "~Login.key.check";
+	public const string LOGIN_USER_KEY = "~Login.key.user";
+	public const string LOGIN_PASSWORD_KEY = "~Login.key.password";
+
+
 	public GameObject mainObj;
 	public UIInput user;
 	public UIInput password;
+	public UICheckbox checkBox;
+
+	public void init ()
+	{
+		user.text = PlayerPrefs.GetString (LOGIN_USER_KEY, "");
+		password.text = PlayerPrefs.GetString (LOGIN_PASSWORD_KEY, "");
+		if (checkBox != null)
+		{
+			checkBox.isChecked = (1 == PlayerPrefs.GetInt (LOGIN_STATE_CHECK, 0));
+			checkBox.onStateChange = (bool isState)=>
+			{
+				//Debug.Log (isState);
+				PlayerPrefs.SetInt (LOGIN_STATE_CHECK, isState ? 1 : 0);
+				if (user.text != "" && password.text != "")
+				{
+					PlayerPrefs.SetString (LOGIN_USER_KEY, user.text);
+					PlayerPrefs.SetString (LOGIN_PASSWORD_KEY, password.text);
+				}
+			};
+			if (checkBox.isChecked)
+			{
+				user.validator = (string currentText, char nextChar)=>
+				{
+					string input = currentText + nextChar.ToString ();
+					PlayerPrefs.SetString (LOGIN_USER_KEY, input);
+					return nextChar;
+				};
+				password.validator = (string currentText, char nextChar)=>
+				{
+					string input = currentText + nextChar.ToString ();
+					PlayerPrefs.SetString (LOGIN_PASSWORD_KEY, input);
+					return nextChar;
+				};
+			}
+		}
+	}
 
 	private Error loginSuccess ()
 	{
@@ -104,6 +145,7 @@ public class UIStartPanel : MonoBehaviour {
 
 	public void Start ()
 	{
+		loginMode.init ();
 		loginMode.mainObj.SetActive (true);
 		registerMode.mainObj.SetActive (false);
 

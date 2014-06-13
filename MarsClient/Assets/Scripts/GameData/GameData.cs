@@ -233,7 +233,7 @@ public class GameData	{
 			troop.def = (float) qr.GetDouble ("def");
 			troop.hpMax = (float) qr.GetDouble ("hpMax");
 			troop.hp = troop.hpMax;
-			DC.LogError (JsonConvert.SerializeObject(troop));
+			//DC.LogError (JsonConvert.SerializeObject(troop));
 			enemys.Add (troop.id, troop);
 		}
 	}
@@ -256,7 +256,7 @@ public class GameData	{
 			troop.def = (float) qr.GetDouble ("def");
 			troop.hpMax = (float) qr.GetDouble ("hpMax");
 			troop.hp = troop.hpMax;
-			DC.Log (JsonConvert.SerializeObject(troop));
+			//DC.Log (JsonConvert.SerializeObject(troop));
 			players.Add (troop.id, troop);
 		}
 	}
@@ -279,7 +279,7 @@ public class GameData	{
 			spell.pro = qr.GetString ("pro");
 			spell.act = qr.GetString ("act");
 			spell.cd = (float) qr.GetDouble ("cd");
-			DC.Log (JsonConvert.SerializeObject(spell));
+			//DC.Log (JsonConvert.SerializeObject(spell));
 			spells.Add (spell.id, spell);
 		}
 	}

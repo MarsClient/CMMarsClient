@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-using JsonFx.Json;
+using Pathfinding.Serialization.JsonFx;
 
 public class JsonConvert
 {
@@ -12,6 +12,6 @@ public class JsonConvert
 	
 	public static T DeserializeObject<T> (string json)
 	{
-		return (T)JsonReader.Deserialize (json, typeof (T));
+		return JsonReader.Deserialize<T> (json);
 	}
 }

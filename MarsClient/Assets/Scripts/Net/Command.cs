@@ -4,8 +4,9 @@ using System.Collections;
 public enum Command : byte
 {
 	Handshake,
-	Login = 5,
+	Login,
 	Register,
+	ServerList,
 	GetRoomInfo,
 	GetAllRoomInfo,
 	JoinRoom,

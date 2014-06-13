@@ -6,24 +6,27 @@ using System.Collections.Generic;
 public class Bundle
 {
 	[DefaultValue (null)]
-	public SQLiteVer sqliteVer;
-
-	[DefaultValue (false)]
-	public bool isRegister;
-	[DefaultValue (null)]
-	public Error error;
-	[DefaultValue (null)]
-	public string notice;
-	[DefaultValue (null)]
 	public Command cmd;
+
 	[DefaultValue (null)]
 	public EventCommand eventCmd;
 
 	[DefaultValue (null)]
-	public Fight figth;
+	public SQLiteVer sqliteVer;
+
+	[DefaultValue (null)]
+	public Dictionary<string, Server[]> serverList;
+
+	[DefaultValue (null)]
+	public Error error;
 
 	[DefaultValue (null)]
 	public Account account;
+
+	/*follow is old*/
+
+	[DefaultValue (null)]
+	public Fight figth;
 
 	[DefaultValue (null)]
 	public List<Player> players;

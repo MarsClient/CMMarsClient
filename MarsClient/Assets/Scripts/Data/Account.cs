@@ -15,4 +15,6 @@ public class Account
 	public string roleName;
 	[DefaultValue (0L)]
 	public long creatTime;
+
+	public Account() {}
 }
