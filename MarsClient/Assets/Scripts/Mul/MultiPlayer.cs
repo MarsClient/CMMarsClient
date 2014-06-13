@@ -5,14 +5,14 @@ public class MultiPlayer : MonoBehaviour {
 
 	void OnEnable ()
 	{
-		PhotonClient.ProcessResults += ProcessResults;
-		PhotonClient.ProcessResultSync += ProcessResultSync;
+		PhotonClient.processResults += ProcessResults;
+		PhotonClient.processResultSync += ProcessResultSync;
 	}
 
 	void OnDisable ()
 	{
-		PhotonClient.ProcessResults -= ProcessResults;
-		PhotonClient.ProcessResultSync -= ProcessResultSync;
+		PhotonClient.processResults -= ProcessResults;
+		PhotonClient.processResultSync -= ProcessResultSync;
 	}
 
 	void ProcessResults (Bundle bundle)

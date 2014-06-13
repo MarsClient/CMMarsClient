@@ -12,6 +12,8 @@ public class Server
 	public int limit; //0-normal, 1-crowd, 2-busy
 	[DefaultValue(null)]
 	public string ip;
+	[DefaultValue(null)]
+	public string belong;
 
 	public Server () {  }
 }

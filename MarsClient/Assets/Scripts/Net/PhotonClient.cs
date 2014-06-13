@@ -6,45 +6,53 @@ using DC = DebugConsole;
 using System.Security;
 using ExitGames.Client.Photon;
 
-
-public class NetEvents
-{
-	public delegate void ProcessResults (Bundle bundle);
-	public delegate void ProcessResultSync (Bundle bundle);
-}
-
 public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
-
-	/*
-	 *Events
-	 */
-	public static  NetEvents.ProcessResults ProcessResults;
-	public static  NetEvents.ProcessResultSync ProcessResultSync;
+	public delegate void ProcessResults (Bundle bundle);
+	public delegate void ProcessResultSync (Bundle bundle);
+	public static  ProcessResults processResults;
+	public static  ProcessResultSync processResultSync;
 
 
 	public static PhotonClient Instance;
 
-
 	//LOAD SERVER ADDRESS
-	public string LOAD_SERVER_ADDRESS = "localhost:5055";
+	public string LOAD_LOGIN_SERVER_ADDRESS = "localhost:5055";
+	public string LoginServerApplication = "LoginServer";
 
+	//Game Server
+	public string LOAD_GAME_ADDRESS;
+	public string GameServerApplication = "MarsLite";
 
-	protected string ServerApplication = "LoginServer";
+	public string load_address;
+	public string appserver;
+
 	protected PhotonPeer peer;
 	public bool ServerConnected {get; private set;}
-	
-	// Use this for initialization
+
+	NetRecv netRecv;
+
 	void Start () {
 
 		Instance = this;
 		Application.runInBackground = true;
-
 		this.ServerConnected = false;
-
 		DC.LogError ("Disconnected");
-
 		this.peer = new PhotonPeer(this, ConnectionProtocol.Udp);
+		SetLoginServer ();
+	}
+
+	public void SetLoginServer ()
+	{
+		load_address = LOAD_LOGIN_SERVER_ADDRESS;
+		appserver = LoginServerApplication;
+		this.Connect();
+	}
+
+	public void SetGameServer (string ip)
+	{
+		load_address = LOAD_LOGIN_SERVER_ADDRESS;
+		appserver = GameServerApplication;
 		this.Connect();
 	}
 
@@ -52,7 +60,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	{
 		try
 		{
-			this.peer.Connect(this.LOAD_SERVER_ADDRESS, this.ServerApplication);
+			this.peer.Connect(load_address, appserver);
 		}
 		catch (SecurityException se)
 		{
@@ -125,6 +133,8 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		bundle.cmd = (Command) operationResponse.OperationCode;//cmd
 		Debug.Log (json);
 		DC.LogWarning(json);
+		if (netRecv == null) netRecv = GetComponent<NetRecv>();
+		netRecv.ProcessResult (bundle);
 		CalledProcessResult (bundle);
 	}
 
@@ -146,17 +156,17 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	public void CalledProcessResult (Bundle bundle)
 	{
-		if (ProcessResults != null && bundle != null)
+		if (processResults != null && bundle != null)
 		{
-			ProcessResults (bundle);
+			processResults (bundle);
 		}
 	}
 
 	public void CalledProcessEvent (Bundle bundle)
 	{
-		if (ProcessResultSync != null && bundle != null)
+		if (processResultSync != null && bundle != null)
 		{
-			ProcessResultSync (bundle);
+			processResultSync (bundle);
 		}
 	}
 }

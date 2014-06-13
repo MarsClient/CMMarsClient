@@ -4,17 +4,7 @@ using System.Collections.Generic;
 
 public class NetRecv : MonoBehaviour {
 
-	void OnEnable ()
-	{
-		PhotonClient.ProcessResults += ProcessResult;
-	}
-
-	void OnDisable ()
-	{
-		PhotonClient.ProcessResults -= ProcessResult;
-	}
-
-	void ProcessResult (Bundle bundle)
+	public void ProcessResult (Bundle bundle)
 	{
 		if (bundle.error == null)
 		{

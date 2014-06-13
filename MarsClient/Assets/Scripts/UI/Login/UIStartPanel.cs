@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 
@@ -142,6 +142,7 @@ public class UIStartPanel : MonoBehaviour {
 
 	public LoginMode loginMode;
 	public RegisterMode registerMode;
+	public UIserverList serverList;
 
 	public void Start ()
 	{
@@ -149,7 +150,7 @@ public class UIStartPanel : MonoBehaviour {
 		loginMode.mainObj.SetActive (true);
 		registerMode.mainObj.SetActive (false);
 
-		PhotonClient.ProcessResults += ProcessResults;
+		PhotonClient.processResults += ProcessResults;
 	}
 	public void LoginGame ()
 	{
@@ -187,7 +188,7 @@ public class UIStartPanel : MonoBehaviour {
 		}
 		else if (bundle.cmd == Command.Login)
 		{
-			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); }
+			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); loginMode.mainObj.SetActive (false); serverList.gameObject.SetActive (true); }
 			else { new DialogContent ().SetMessage (bundle.error.message).SetNoBtn ("game.dialog.no").ShowWaiting (); }
 		}
 	}
