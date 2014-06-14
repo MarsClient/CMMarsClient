@@ -3,25 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using TabButton;
 
-public class UIserverList : MonoBehaviour {
+public class UIserverList : MonoBehaviour, ITabListener {
 
 
 	private UITabButton tabButton;
 
-	void OnEnable () 
+	void Start () 
 	{ 
 		if (tabButton == null)
+		{
 			tabButton = GetComponentInChildren<UITabButton>();
-		tabButton.buttonTabMeesgae += ButtonServerEvent;
-		Init ();
+			tabButton.tabListener = this;
+			Initialization ();
+		}
 	}
 
-	void OnDisable () 
-	{ 
-		tabButton.buttonTabMeesgae -= ButtonServerEvent; 
-	}
-
-	void Init ()
+	void Initialization ()
 	{
 		if (Main.Instance.serverList != null)
 		{
@@ -30,25 +27,25 @@ public class UIserverList : MonoBehaviour {
 			{
 				objs.Add ((object)k);
 			}
-			tabButton.refresh (objs, ButtonServerInit);
+			tabButton.refresh (objs);
 		}
 	}
 
-	void ButtonServerInit(UILabel label, object obj)
+	/*tabEvent*/
+	public void TabInitialization(UILabel label, object obj)
 	{
 		string key = (string)obj;
 		label.text = key;
 	}
-	void ButtonServerEvent (object obj, GameObject go, List<GameObject> btns)
+	public void TabOnClickMeesgae(object t, GameObject go, List<GameObject> btns)
 	{
 		foreach (GameObject g in btns)
 		{
 			bool isMine = (g == go);
 			g.collider.enabled = !isMine;
-//			Debug.LogError (isMine + "___" + go.name + "___" + g.name);
 			foreach (UIWidget w in g.GetComponentsInChildren<UIWidget>())
 			{
-
+				
 				w.color = isMine ? Color.grey : Color.white;
 			}
 		}

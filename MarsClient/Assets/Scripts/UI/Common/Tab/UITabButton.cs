@@ -3,15 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 namespace TabButton
 {
+	public interface ITabListener
+	{
+		void TabInitialization(UILabel label, object obj);
+		void TabOnClickMeesgae(object t, GameObject go, List<GameObject> btns);
+	}
+
 	public class UITabButton : MonoBehaviour
 	{
-		
 		private UIGrid grid;
 		public GameObject buttonPrefab;
-
+		public ITabListener tabListener;
 
 		private List<GameObject> btns = new List<GameObject> ();
-		public void refresh (List<object> t, ButtonTabInit buttonTabMeesgae)
+		public void refresh (List<object> t)
 		{
 			if (grid == null) grid = GetComponent<UIGrid> ();
 			char start = 'a';
@@ -29,20 +34,17 @@ namespace TabButton
 				}
 				go.name = (start++) + (then).ToString ();
 				btns.Add (go);
-				buttonTabMeesgae (go.GetComponentInChildren<UILabel>(), t[i]);
+				if (tabListener != null) tabListener.TabInitialization (go.GetComponentInChildren<UILabel>(), t[i]);
+				else Debug.LogError ("tabListener is null");
 				bte.SetRefresh (t[i], this);
 			}
 			grid.Reposition ();
 		}
 
-		public delegate void ButtonTabInit(UILabel label, object obj);
-
-		public delegate void ButtonTabMeesgae(object t, GameObject go, List<GameObject> btns);
-		public ButtonTabMeesgae buttonTabMeesgae;
-
 		public void CallButtonEvent (object t, GameObject go)
 		{
-			if (buttonTabMeesgae != null) buttonTabMeesgae (t, go, btns);
+			if (tabListener != null) tabListener.TabOnClickMeesgae (t, go, btns);
+			else Debug.LogError ("tabListener is null");
 		}
 	}
 }
