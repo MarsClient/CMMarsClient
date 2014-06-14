@@ -21,3 +21,11 @@ Login.Invaid.PW = 登陆密码错误
 game.dialog.login.success = 登陆成功
 Register.User.Error = 你注册的用户名已存在!!
 login register.account = 记住密码
+
+server.servername = 服务器名称
+server.role = 角色
+server.limit = 服务器负载
+server.limit1 = 低
+server.limit2 = 中
+server.limit3 = 高
+server.limit4 = 爆

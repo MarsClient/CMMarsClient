@@ -1,18 +1,18 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 namespace TabButton
 {
-	public class ButtonTabEvent : MonoBehaviour {
+	public class TabEvent : MonoBehaviour {
 
 		private object o;
-		private UITabButton tab;
-		public void SetRefresh (object t, UITabButton tab)
+		private UITabList tab;
+		public void SetRefresh (object t, UITabList tab)
 		{
 			this.o = (object)t;
 
 			this.tab = tab;
 		}
-		void OnClick ()
+		public void OnClick ()
 		{
 			if (o != null)
 			{

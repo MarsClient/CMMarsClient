@@ -5,19 +5,23 @@ namespace TabButton
 {
 	public interface ITabListener
 	{
-		void TabInitialization(UILabel label, object obj);
+		void TabInitialization(GameObject go, object obj);
 		void TabOnClickMeesgae(object t, GameObject go, List<GameObject> btns);
 	}
 
-	public class UITabButton : MonoBehaviour
+	public class UITabList : MonoBehaviour
 	{
 		private UIGrid grid;
+		public bool isInit = false;
+
+		[HideInInspector]
 		public GameObject buttonPrefab;
 		public ITabListener tabListener;
 
 		private List<GameObject> btns = new List<GameObject> ();
 		public void refresh (List<object> t)
 		{
+			Clear ();
 			if (grid == null) grid = GetComponent<UIGrid> ();
 			char start = 'a';
 			char then = 'a';
@@ -25,7 +29,7 @@ namespace TabButton
 			{
 				GameObject go = NGUITools.AddChild (grid.gameObject, buttonPrefab);
 				go.SetActive (true);
-				ButtonTabEvent bte = go.AddComponent <ButtonTabEvent>();
+				TabEvent bte = go.AddComponent <TabEvent>();
 
 				if (start > 'z')
 				{
@@ -34,17 +38,32 @@ namespace TabButton
 				}
 				go.name = (start++) + (then).ToString ();
 				btns.Add (go);
-				if (tabListener != null) tabListener.TabInitialization (go.GetComponentInChildren<UILabel>(), t[i]);
+				if (tabListener != null) tabListener.TabInitialization (go, t[i]);
 				else Debug.LogError ("tabListener is null");
 				bte.SetRefresh (t[i], this);
 			}
-			grid.Reposition ();
+			if (isInit)
+			{
+				if (btns.Count > 0) { btns[0].GetComponent<TabEvent>().OnClick (); }
+			}
+			Invoke ("LayoutBtns", 0);
 		}
+
+		void LayoutBtns () { grid.Reposition (); }
 
 		public void CallButtonEvent (object t, GameObject go)
 		{
 			if (tabListener != null) tabListener.TabOnClickMeesgae (t, go, btns);
 			else Debug.LogError ("tabListener is null");
+		}
+
+		public void Clear ()
+		{
+			foreach (GameObject o in btns)
+			{
+				Destroy (o);
+			}
+			btns.Clear ();
 		}
 	}
 }

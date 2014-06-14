@@ -4,13 +4,11 @@ using System.Collections.Generic;
 using TabButton;
 
 [RequireComponent (typeof (UITabList))]
-public class UIServerList : MonoBehaviour, ITabListener
-{
-	public GameObject prefab;
-	public Transform mark;
+public class UITabServerList : MonoBehaviour, ITabListener {
 
+	public UIServerList serverList;
+	public GameObject prefab;	
 	private UITabList tabButton;
-	
 	void Start () 
 	{ 
 		if (tabButton == null)
@@ -18,17 +16,16 @@ public class UIServerList : MonoBehaviour, ITabListener
 			tabButton = GetComponent<UITabList>();
 			tabButton.tabListener = this;
 			tabButton.buttonPrefab = prefab;
+			Initialization ();
 		}
-		mark.gameObject.SetActive (false);
 	}
-	
-	public void Initialization (Server[] servers)
+
+	void Initialization ()
 	{
-		if (servers != null)
+		if (Main.Instance.serverList != null)
 		{
-			Start ();
 			List<object> objs = new List<object> ();
-			foreach (Server k in servers)
+			foreach (string k in Main.Instance.serverList.Keys)
 			{
 				objs.Add ((object)k);
 			}
@@ -39,20 +36,21 @@ public class UIServerList : MonoBehaviour, ITabListener
 	/*tabEvent*/
 	public void TabInitialization(GameObject go, object obj)
 	{
-		ServerItem si = go.GetComponent<ServerItem>();
-		Server s = (Server) obj;
-		si.serverName.text = s.serverName;
-		si.role.text = "(0)";//TODO:
-		si.limit.text = Localization.instance.Get ("server.limit" + s.limit);
+		string key = (string)obj;
+		go.GetComponentInChildren<UILabel>().text = key;
 	}
 	public void TabOnClickMeesgae(object t, GameObject go, List<GameObject> btns)
 	{
-		mark.gameObject.SetActive (true);
-		mark.localPosition = go.transform.localPosition;
+		serverList.Initialization (Main.Instance.serverList[t.ToString ()]);
 		foreach (GameObject g in btns)
 		{
 			bool isMine = (g == go);
 			g.collider.enabled = !isMine;
+			foreach (UIWidget w in g.GetComponentsInChildren<UIWidget>())
+			{
+				
+				w.color = isMine ? Color.grey : Color.white;
+			}
 		}
 	}
 }
