@@ -10,7 +10,10 @@ public class UIServerList : MonoBehaviour, ITabListener
 	public Transform mark;
 
 	private UITabList tabButton;
-	
+
+
+	public Server currentServer = null;
+
 	void Start () 
 	{ 
 		if (tabButton == null)
@@ -47,6 +50,7 @@ public class UIServerList : MonoBehaviour, ITabListener
 	}
 	public void TabOnClickMeesgae(object t, GameObject go, List<GameObject> btns)
 	{
+		currentServer = (Server)t;
 		mark.gameObject.SetActive (true);
 		mark.localPosition = go.transform.localPosition;
 		foreach (GameObject g in btns)

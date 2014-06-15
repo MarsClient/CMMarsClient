@@ -142,7 +142,7 @@ public class UIStartPanel : MonoBehaviour {
 
 	public LoginMode loginMode;
 	public RegisterMode registerMode;
-	public GameObject serverList;
+	//public GameObject serverList;
 
 	public void Start ()
 	{
@@ -188,7 +188,7 @@ public class UIStartPanel : MonoBehaviour {
 		}
 		else if (bundle.cmd == Command.Login)
 		{
-			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); loginMode.mainObj.SetActive (false); serverList.SetActive (true); }
+			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); Dialog.instance.TweenClose (); /*loginMode.mainObj.SetActive (false);*/ PanelsManager.Instance.Close (); PanelsManager.Instance.Show (PanelType.ServerList); }
 			else { new DialogContent ().SetMessage (bundle.error.message).SetNoBtn ("game.dialog.no").ShowWaiting (); }
 		}
 	}

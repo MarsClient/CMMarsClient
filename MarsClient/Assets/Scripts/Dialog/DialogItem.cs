@@ -9,6 +9,9 @@ public class DialogItem : MonoBehaviour {
 	public UILabel message;
 	public GameObject yesBtn;
 	public GameObject noBtn;
+	private UIPanel _panel;
+	public UIPanel panel { get { if (_panel == null) _panel = GetComponent<UIPanel>(); return _panel; } }
+
 
 	public DialogContent dialogContent;
 

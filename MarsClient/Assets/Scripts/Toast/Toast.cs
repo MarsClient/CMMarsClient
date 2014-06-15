@@ -104,42 +104,42 @@ public class Toast : MonoBehaviour {
 		return go;
 	}
 
-	int i = 0;
-	void OnGUI ()
-	{
-		//Debug.LogError (parent.transform.childCount);
-		if (GUILayout.Button ("hahahahhahahah"))
-		{
-			string s = "test" + i++.ToString ();
-			ShowText (s);
-			//Debug.Log (s);
-		}
-		if (GUILayout.Button ("reset"))
-		{
-			i = 0;
-		}
-		if (GUILayout.Button ("hahahahhahahah"))
-		{
-			new DialogContent ()
-				.SetMessage ("test")
-					.SetYesBtn ("Yes")
-					.SetNoBtn ("No")
-					.SetDelegateBtn (DialogBtnEvent)
-					.Show ();
-		}
-
-		if (GUILayout.Button ("hahahahhahahah"))
-		{
-			new DialogContent ()
-				.SetMessage ("test")
-					.SetNoBtn ("Have a Wait....")
-					.SetDelegateBtn (DialogBtnEvent)
-					.ShowWaiting ();
-		}
-	}
-
-	void DialogBtnEvent (bool yes)
-	{
-		Debug.Log (yes);
-	}
+//	int i = 0;
+//	void OnGUI ()
+//	{
+//		//Debug.LogError (parent.transform.childCount);
+//		if (GUILayout.Button ("hahahahhahahah"))
+//		{
+//			string s = "test" + i++.ToString ();
+//			ShowText (s);
+//			//Debug.Log (s);
+//		}
+//		if (GUILayout.Button ("reset"))
+//		{
+//			i = 0;
+//		}
+//		if (GUILayout.Button ("hahahahhahahah"))
+//		{
+//			new DialogContent ()
+//				.SetMessage ("test")
+//					.SetYesBtn ("Yes")
+//					.SetNoBtn ("No")
+//					.SetDelegateBtn (DialogBtnEvent)
+//					.Show ();
+//		}
+//
+//		if (GUILayout.Button ("hahahahhahahah"))
+//		{
+//			new DialogContent ()
+//				.SetMessage ("test")
+//					.SetNoBtn ("Have a Wait....")
+//					.SetDelegateBtn (DialogBtnEvent)
+//					.ShowWaiting ();
+//		}
+//	}
+//
+//	void DialogBtnEvent (bool yes)
+//	{
+//		Debug.Log (yes);
+//	}
 }

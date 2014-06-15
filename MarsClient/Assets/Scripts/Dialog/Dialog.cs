@@ -42,18 +42,34 @@ public class Dialog : MonoBehaviour {
 
 	public void Show (DialogContent dc)//normal
 	{
-		dialogItem.gameObject.SetActive (true);
+		ShowActiveState ();
 		dialogItem.Refresh (dc, DiaglogType.normal);
 		//dialogItem.Refresh (dialogItem);
 	}
 
 	public void ShowWaiting (DialogContent dc)//normal
 	{
-		dialogItem.gameObject.SetActive (true);
+		ShowActiveState ();
 		dialogItem.Refresh (dc, DiaglogType.waiting);
 	}
 
+	private void ShowActiveState ()
+	{
+		dialogItem.panel.alpha = 1.0f;
+		dialogItem.gameObject.SetActive (true);
+	}
+
 	public void Close ()
+	{
+		dialogItem.gameObject.SetActive (false);
+	}
+
+	public void TweenClose ()
+	{
+		TweenAlpha.Begin (dialogItem.gameObject, 0.25f, 0).onFinished = Close;
+	}
+
+	void Close (UITweener u)
 	{
 		dialogItem.gameObject.SetActive (false);
 	}

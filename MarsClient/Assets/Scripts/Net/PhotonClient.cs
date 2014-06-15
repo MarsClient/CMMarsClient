@@ -18,11 +18,11 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	//LOAD SERVER ADDRESS
 	public string LOAD_LOGIN_SERVER_ADDRESS = "localhost:5055";
-	public string LoginServerApplication = "LoginServer";
-
+	private string LoginServerApplication = "LoginServer";
+	//private string LoginServerApplication = "MarsServer";
 	//Game Server
 	public string LOAD_GAME_ADDRESS;
-	public string GameServerApplication = "MarsLite";
+	private string GameServerApplication = "MarsServer";
 
 	public string load_address;
 	public string appserver;
@@ -38,7 +38,6 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		Application.runInBackground = true;
 		this.ServerConnected = false;
 		DC.LogError ("Disconnected");
-		this.peer = new PhotonPeer(this, ConnectionProtocol.Udp);
 		SetLoginServer ();
 	}
 
@@ -51,7 +50,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	public void SetGameServer (string ip)
 	{
-		load_address = LOAD_LOGIN_SERVER_ADDRESS;
+		load_address = ip;
 		appserver = GameServerApplication;
 		this.Connect();
 	}
@@ -60,6 +59,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	{
 		try
 		{
+			this.peer = new PhotonPeer(this, ConnectionProtocol.Udp);
 			this.peer.Connect(load_address, appserver);
 		}
 		catch (SecurityException se)

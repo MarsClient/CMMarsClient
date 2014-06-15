@@ -42,14 +42,10 @@ namespace TabButton
 				else Debug.LogError ("tabListener is null");
 				bte.SetRefresh (t[i], this);
 			}
-			if (isInit)
-			{
-				if (btns.Count > 0) { btns[0].GetComponent<TabEvent>().OnClick (); }
-			}
 			Invoke ("LayoutBtns", 0);
 		}
 
-		void LayoutBtns () { grid.Reposition (); }
+		void LayoutBtns () { grid.Reposition (); if (isInit) { if (btns.Count > 0) { btns[0].GetComponent<TabEvent>().OnClick (); } }}
 
 		public void CallButtonEvent (object t, GameObject go)
 		{

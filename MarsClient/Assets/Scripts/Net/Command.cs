@@ -7,6 +7,8 @@ public enum Command : byte
 	Login,
 	Register,
 	ServerList,
+	LoginSuccess,
+
 	GetRoomInfo,
 	GetAllRoomInfo,
 	JoinRoom,
