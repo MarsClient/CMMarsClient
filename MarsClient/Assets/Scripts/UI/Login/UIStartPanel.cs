@@ -150,7 +150,7 @@ public class UIStartPanel : MonoBehaviour {
 		loginMode.mainObj.SetActive (true);
 		registerMode.mainObj.SetActive (false);
 
-		PhotonClient.processResults += ProcessResults;
+
 	}
 	public void LoginGame ()
 	{
@@ -179,6 +179,16 @@ public class UIStartPanel : MonoBehaviour {
 		loginMode.password.text = registerMode.password.text;
 	}
 
+	void OnEnable ()
+	{
+		PhotonClient.processResults += ProcessResults;
+	}
+
+	void OnDisable ()
+	{
+		PhotonClient.processResults -= ProcessResults;
+	}
+
 	void ProcessResults (Bundle bundle)
 	{
 		if (bundle.cmd == Command.Register)
@@ -188,7 +198,7 @@ public class UIStartPanel : MonoBehaviour {
 		}
 		else if (bundle.cmd == Command.Login)
 		{
-			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); Dialog.instance.TweenClose (); /*loginMode.mainObj.SetActive (false);*/ PanelsManager.Instance.Close (); PanelsManager.Instance.Show (PanelType.ServerList); }
+			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); Dialog.instance.TweenClose (); /*loginMode.mainObj.SetActive (false);*/ PanelsManager.Close (); PanelsManager.Show (PanelType.ServerList); }
 			else { new DialogContent ().SetMessage (bundle.error.message).SetNoBtn ("game.dialog.no").ShowWaiting (); }
 		}
 	}

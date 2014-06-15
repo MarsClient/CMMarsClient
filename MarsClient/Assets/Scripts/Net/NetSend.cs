@@ -24,6 +24,11 @@ public class NetSend {
 		PhotonClient.Instance.SendServer (Command.ServerSelect, server);
 	}
 
+	public static void SendCreatRole (Role r)
+	{
+		PhotonClient.Instance.SendServer (Command.CreatRole, r);
+	}
+
 	//Follow is Older
 	/*
 	 *

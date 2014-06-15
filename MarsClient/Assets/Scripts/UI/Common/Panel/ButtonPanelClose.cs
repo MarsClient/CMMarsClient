@@ -5,6 +5,6 @@ public class ButtonPanelClose : MonoBehaviour {
 
 	void OnClick ()
 	{
-		PanelsManager.Instance.Close ();
+		PanelsManager.Close ();
 	}
 }

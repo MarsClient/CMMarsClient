@@ -33,8 +33,8 @@ public class ButtonServerSelect : MonoBehaviour {
 			}
 			if (bundle.cmd == Command.ServerSelect)
 			{
-				spin.SetActive (true);
-				PanelsManager.Instance.Close ();
+				PanelsManager.Close ();
+				PanelsManager.Show (PanelType.CreatRole);
 			}
 		}
 	}

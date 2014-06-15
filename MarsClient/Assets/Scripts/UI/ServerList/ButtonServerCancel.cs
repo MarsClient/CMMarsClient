@@ -5,8 +5,8 @@ public class ButtonServerCancel : MonoBehaviour {
 
 	void OnClick ()
 	{
-		PanelsManager.Instance.Close ();
-		PanelsManager.Instance.Show (PanelType.LoginRegister);
+		PanelsManager.Close ();
+		PanelsManager.Show (PanelType.LoginRegister);
 		PhotonClient.Instance.SetLoginServer ();
 	}
 }

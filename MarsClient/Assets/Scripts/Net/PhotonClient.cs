@@ -43,9 +43,12 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	public void SetLoginServer ()
 	{
-		load_address = LOAD_LOGIN_SERVER_ADDRESS;
-		appserver = LoginServerApplication;
-		this.Connect();
+		if (load_address != LOAD_LOGIN_SERVER_ADDRESS)
+		{
+			load_address = LOAD_LOGIN_SERVER_ADDRESS;
+			appserver = LoginServerApplication;
+			this.Connect();
+		}
 	}
 
 	public void SetGameServer (string ip)

@@ -5,13 +5,14 @@ public enum PanelType
 {
 	LoginRegister,
 	ServerList,
+	CreatRole
 }
 
 public class PanelsManager
 {
 	public readonly static PanelsManager Instance = new PanelsManager ();
 
-	public void Show (PanelType type)
+	public static void Show (PanelType type)
 	{
 		Panel p = null;
 		Panel.panels.TryGetValue (type, out p);
@@ -21,7 +22,7 @@ public class PanelsManager
 		}
 	}
 
-	public void Close ()
+	public static void Close ()
 	{
 		foreach (Panel p in Panel.panels.Values) 
 		{

@@ -11,6 +11,8 @@ public enum Command : byte
 	LinkServer,
 	ServerSelect,
 
+	CreatRole,
+
 
 	//Follow is old
 	GetRoomInfo,
