@@ -28,6 +28,7 @@ public class ButtonServerSelect : MonoBehaviour {
 						.SetNoBtn ("game.dialog.no")
 						.ShowWaiting ();
 				Dialog.instance.TweenClose ();
+				serverList.currentServer.accountId = Main.Instance.account.uniqueId;
 				NetSend.SendServerSelect (serverList.currentServer);
 			}
 			if (bundle.cmd == Command.ServerSelect)

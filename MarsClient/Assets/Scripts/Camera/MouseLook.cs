@@ -43,8 +43,8 @@ public class MouseLook : MonoBehaviour {
 		}
 		else if (axes == RotationAxes.MouseX && Input.GetMouseButton(0))
 		{
-			Debug.Log (Input.GetAxis("Mouse X"));
-			transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
+//			Debug.Log (Input.GetAxis("Mouse X"));
+			transform.Rotate(0, -Input.GetAxis("Mouse X") * sensitivityX, 0);
 		}
 //		else
 //		{

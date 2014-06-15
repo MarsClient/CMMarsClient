@@ -26,6 +26,10 @@ public class NetRecv : MonoBehaviour {
 				}*/
 				Main.Instance.account = bundle.account;
 			}
+			if (bundle.cmd == Command.ServerSelect)
+			{
+				Main.Instance.server = bundle.server;
+			}
 		}
 	}
 }
