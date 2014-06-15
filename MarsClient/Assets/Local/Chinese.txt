@@ -29,3 +29,5 @@ server.limit1 = 低
 server.limit2 = 中
 server.limit3 = 高
 server.limit4 = 爆
+server.linking = 正在连接
+server.link.success = 连接成功

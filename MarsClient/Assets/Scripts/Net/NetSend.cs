@@ -19,6 +19,15 @@ public class NetSend {
 		PhotonClient.Instance.SendServer (Command.Login, a);
 	}
 
+	public static void SendServerSelect (Server server)
+	{
+		PhotonClient.Instance.SendServer (Command.ServerSelect, server);
+	}
+
+	//Follow is Older
+	/*
+	 *
+	 */
 	public static void SendGetRoomInfo (RoomInfo room)
 	{
 		PhotonClient.Instance.SendServer (Command.GetRoomInfo, room);

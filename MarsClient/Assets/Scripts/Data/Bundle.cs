@@ -23,6 +23,9 @@ public class Bundle
 	[DefaultValue (null)]
 	public Account account;
 
+	[DefaultValue(null)]
+	 public Server server;
+
 	/*follow is old*/
 
 	[DefaultValue (null)]
