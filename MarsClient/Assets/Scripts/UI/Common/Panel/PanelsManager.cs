@@ -12,15 +12,19 @@ public class PanelsManager
 {
 	public readonly static PanelsManager Instance = new PanelsManager ();
 
-	public static Panel Show (PanelType type)
+	public static void Show (PanelType type)
+	{
+		Show (type, null);
+	}
+
+	public static void Show (PanelType type, Panel.PanelStartEvent panelStartEvent)
 	{
 		Panel p = null;
 		Panel.panels.TryGetValue (type, out p);
 		if (p != null)
-		{
-			p.Show ();
+		{	
+			p.Show (panelStartEvent);
 		}
-		return p;
 	}
 
 	public static void Close ()

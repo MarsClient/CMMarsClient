@@ -217,7 +217,11 @@ public class UIStartPanel : MonoBehaviour {
 		else if (bundle.cmd == Command.Login)
 		{
 			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); Dialog.instance.TweenClose (); /*loginMode.mainObj.SetActive (false);*/ PanelsManager.Close (); 
-				PanelsManager.Show (PanelType.ServerList).GetComponentInChildren<UITabServerList>().Initialization (); }
+				PanelsManager.Show (PanelType.ServerList, (Panel panel)=> 
+				                    {
+					UITabServerList tabServerTabList = panel.GetComponentInChildren<UITabServerList>();
+					if (tabServerTabList != null) tabServerTabList.Initialization ();
+				}); }
 			else { new DialogContent ().SetMessage (bundle.error.message).SetNoBtn ("game.dialog.no").ShowWaiting (); }
 		}
 	}
