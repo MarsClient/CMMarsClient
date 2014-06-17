@@ -46,7 +46,7 @@ public class UIServerList : MonoBehaviour, ITabListener
 		Server s = (Server) obj;
 		si.serverName.text = s.serverName;
 		si.role.text = "(0)";//TODO:
-		si.limit.text = Localization.instance.Get ("server.limit" + s.limit);
+		si.limit.text = Localization.Get ("server.limit" + s.limit);
 	}
 	public void TabOnClickMeesgae(object t, GameObject go, List<GameObject> btns)
 	{

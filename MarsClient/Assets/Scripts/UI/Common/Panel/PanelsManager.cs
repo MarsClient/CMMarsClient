@@ -12,7 +12,7 @@ public class PanelsManager
 {
 	public readonly static PanelsManager Instance = new PanelsManager ();
 
-	public static void Show (PanelType type)
+	public static Panel Show (PanelType type)
 	{
 		Panel p = null;
 		Panel.panels.TryGetValue (type, out p);
@@ -20,6 +20,7 @@ public class PanelsManager
 		{
 			p.Show ();
 		}
+		return p;
 	}
 
 	public static void Close ()

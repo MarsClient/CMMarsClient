@@ -22,9 +22,9 @@ public class DialogContent
 	
 	/**all method*/
 	public DialogContent () {}
-	public DialogContent SetMessage (string message) { this.message = Localization.instance.Get (message); return this; }
-	public DialogContent SetYesBtn (string yesStr) { this.yesStr = Localization.instance.Get (yesStr); return this; }
-	public DialogContent SetNoBtn (string noStr) { this.noStr = Localization.instance.Get (noStr); return this; }
+	public DialogContent SetMessage (string message) { this.message = Localization.Get (message); return this; }
+	public DialogContent SetYesBtn (string yesStr) { this.yesStr = Localization.Get (yesStr); return this; }
+	public DialogContent SetNoBtn (string noStr) { this.noStr = Localization.Get (noStr); return this; }
 	public DialogContent SetDelegateBtn (DialogHandle dialogHandle) { this.dialogHandle = dialogHandle; return this; }
 	
 	public void Show () { Dialog.instance.Show (this); }
@@ -66,10 +66,11 @@ public class Dialog : MonoBehaviour {
 
 	public void TweenClose ()
 	{
-		TweenAlpha.Begin (dialogItem.gameObject, 0.25f, 0).onFinished = Close;
+		TweenAlpha ta = TweenAlpha.Begin (dialogItem.gameObject, 0.25f, 0);
+		ta.AddOnFinished (CloseDialog);
 	}
 
-	void Close (UITweener u)
+	void CloseDialog ()
 	{
 		dialogItem.gameObject.SetActive (false);
 	}

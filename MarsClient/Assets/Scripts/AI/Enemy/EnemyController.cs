@@ -62,7 +62,7 @@ public class EnemyController : MonoBehaviour {
 
 		//hit move
 		Vector3 targetPos = transform.position - forward.normalized * animationItem.attackMove;
-		TweenPosition.Begin (gameObject, 0.25f, targetPos).onUpdate = onUpdate;
+		//TweenPosition.Begin (gameObject, 0.25f, targetPos).onUpdate = onUpdate;
 
 		//hit color
 		CancelInvoke ("ResetColor");

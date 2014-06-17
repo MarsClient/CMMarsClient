@@ -16,11 +16,11 @@ public class UITabServerList : MonoBehaviour, ITabListener {
 			tabButton = GetComponent<UITabList>();
 			tabButton.tabListener = this;
 			tabButton.buttonPrefab = prefab;
-			Initialization ();
+			//Initialization ();
 		}
 	}
 
-	void Initialization ()
+	public void Initialization ()
 	{
 		if (Main.Instance.serverList != null)
 		{

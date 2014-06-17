@@ -13,34 +13,50 @@ public class LoginMode
 	public GameObject mainObj;
 	public UIInput user;
 	public UIInput password;
-	public UICheckbox checkBox;
+	public UIToggle checkBox;
 
 	public void init ()
 	{
-		user.text = PlayerPrefs.GetString (LOGIN_USER_KEY, "");
-		password.text = PlayerPrefs.GetString (LOGIN_PASSWORD_KEY, "");
 		if (checkBox != null)
 		{
 			checkBox.isChecked = (1 == PlayerPrefs.GetInt (LOGIN_STATE_CHECK, 0));
-			checkBox.onStateChange = (bool isState)=>
+			//EventDelegate.Add (checkBox.onChange, OnToggle);
+			EventDelegate.Add (checkBox.onChange, ()=>
 			{
-				//Debug.Log (isState);
+				bool isState = UIToggle.current.isChecked;
 				PlayerPrefs.SetInt (LOGIN_STATE_CHECK, isState ? 1 : 0);
-				if (user.text != "" && password.text != "")
+				if (user.text != "" && password.text != "" && isState)
 				{
 					PlayerPrefs.SetString (LOGIN_USER_KEY, user.text);
 					PlayerPrefs.SetString (LOGIN_PASSWORD_KEY, password.text);
 				}
-			};
+				else if (isState == false)
+				{
+					PlayerPrefs.DeleteKey (LOGIN_USER_KEY);
+					PlayerPrefs.DeleteKey (LOGIN_PASSWORD_KEY);
+				}
+			}
+			);
+//			checkBox.onChange = (bool isState)=>
+//			{
+//				//Debug.Log (isState);
+//				PlayerPrefs.SetInt (LOGIN_STATE_CHECK, isState ? 1 : 0);
+//				if (user.text != "" && password.text != "")
+//				{
+//					PlayerPrefs.SetString (LOGIN_USER_KEY, user.text);
+//					PlayerPrefs.SetString (LOGIN_PASSWORD_KEY, password.text);
+//				}
+//			};
 			if (checkBox.isChecked)
 			{
-				user.validator = (string currentText, char nextChar)=>
+				user.onValidate = (string currentText, int charIndex, char nextChar/*string currentText, char nextChar*/)=>
 				{
 					string input = currentText + nextChar.ToString ();
+					//Debug.Log (input);
 					PlayerPrefs.SetString (LOGIN_USER_KEY, input);
 					return nextChar;
 				};
-				password.validator = (string currentText, char nextChar)=>
+				password.onValidate = (string currentText, int charIndex, char nextChar/*string currentText, char nextChar*/)=>
 				{
 					string input = currentText + nextChar.ToString ();
 					PlayerPrefs.SetString (LOGIN_PASSWORD_KEY, input);
@@ -48,6 +64,8 @@ public class LoginMode
 				};
 			}
 		}
+		user.text = PlayerPrefs.GetString (LOGIN_USER_KEY, "");
+		password.text = PlayerPrefs.GetString (LOGIN_PASSWORD_KEY, "");
 	}
 
 	private Error loginSuccess ()
@@ -198,7 +216,8 @@ public class UIStartPanel : MonoBehaviour {
 		}
 		else if (bundle.cmd == Command.Login)
 		{
-			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); Dialog.instance.TweenClose (); /*loginMode.mainObj.SetActive (false);*/ PanelsManager.Close (); PanelsManager.Show (PanelType.ServerList); }
+			if (bundle.error == null){ new DialogContent ().SetMessage ("game.dialog.login.success").SetNoBtn ("game.dialog.no").ShowWaiting (); Dialog.instance.TweenClose (); /*loginMode.mainObj.SetActive (false);*/ PanelsManager.Close (); 
+				PanelsManager.Show (PanelType.ServerList).GetComponentInChildren<UITabServerList>().Initialization (); }
 			else { new DialogContent ().SetMessage (bundle.error.message).SetNoBtn ("game.dialog.no").ShowWaiting (); }
 		}
 	}
