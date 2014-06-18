@@ -5,8 +5,6 @@ public class ButtonServerSelect : MonoBehaviour {
 
 	public UIServerList serverList;
 
-	public GameObject spin;
-
 	void OnEnable ()
 	{
 		PhotonClient.processResults += ProcessResults;
