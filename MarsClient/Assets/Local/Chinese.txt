@@ -36,3 +36,5 @@ game.role.creat = 创建角色
 game.role.input.deafult = 请输入角色名
 game.role.input.null = 角色名不能为空
 game.role.input.length = 角色名不小于2位
+game.role.success = 角色创建成功
+game.role.same.name.error = 角色名已被使用

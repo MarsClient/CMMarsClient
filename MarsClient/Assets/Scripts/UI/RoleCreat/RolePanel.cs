@@ -75,6 +75,16 @@ public class RolePanel : MonoBehaviour
 
 	void ProcessResults (Bundle bundle)
 	{
-
+		if (bundle.cmd == Command.CreatRole)
+		{
+			if (bundle.error == null)
+			{
+				new DialogContent ().SetMessage ("game.role.success").SetNoBtn ("game.dialog.no").ShowWaiting ();
+			}
+			if (bundle.error != null)
+			{
+				new DialogContent ().SetMessage (bundle.error.message).SetNoBtn ("game.dialog.no").ShowWaiting ();
+			}
+		}
 	}
 }

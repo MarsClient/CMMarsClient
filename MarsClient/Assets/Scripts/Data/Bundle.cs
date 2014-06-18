@@ -26,6 +26,9 @@ public class Bundle
 	[DefaultValue(null)]
 	 public Server server;
 
+	[DefaultValue(null)]
+	public List<Role> roles;
+
 	/*follow is old*/
 
 	[DefaultValue (null)]

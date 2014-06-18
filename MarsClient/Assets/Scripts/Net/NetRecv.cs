@@ -32,6 +32,10 @@ public class NetRecv : MonoBehaviour {
 			{
 				Main.Instance.server = bundle.server;
 			}
+			if (bundle.cmd == Command.CreatRole)
+			{
+				//
+			}
 		}
 	}
 }

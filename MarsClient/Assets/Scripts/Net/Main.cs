@@ -10,6 +10,7 @@ public class Main : MonoBehaviour
 	public Dictionary<string, Server[]> serverList;
 	public Account account;
 	public Server server;
+	public List<Role> roles;
 
 	void Awake () { if (Instance == null) { Instance = this; DontDestroyOnLoad (gameObject); } else if (Instance != this) Destroy (gameObject);}
 
