@@ -4,12 +4,14 @@ using System.Collections.Generic;
 
 public class NetRecv : MonoBehaviour {
 
+	private bool isInit = true;
 	public void ProcessResult (Bundle bundle)
 	{
 		if (bundle.error == null)
 		{
-			if (bundle.cmd == Command.Handshake)
+			if (bundle.cmd == Command.Handshake && isInit)
 			{
+				isInit = false;
 				Main.Instance.sqliteVer = bundle.sqliteVer;
 				StartCoroutine (GameData.Instance.reload ());
 			}

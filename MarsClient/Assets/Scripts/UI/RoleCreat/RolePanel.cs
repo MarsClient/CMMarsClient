@@ -67,6 +67,12 @@ public class RolePanel : MonoBehaviour
 		creatMode.StartCreat ();
 	}
 
+	void BackOnClick ()
+	{
+		PanelsManager.Close ();
+		PanelsManager.Show (PanelType.ServerList);
+	}
+
 	void ProcessResults (Bundle bundle)
 	{
 
