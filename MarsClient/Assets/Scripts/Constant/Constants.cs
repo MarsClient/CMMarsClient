@@ -4,8 +4,8 @@ using System.Collections;
 public enum PRO
 {
 	ZS,
-	WS,
 	FS,
+	WS
 }
 public class Constants
 {

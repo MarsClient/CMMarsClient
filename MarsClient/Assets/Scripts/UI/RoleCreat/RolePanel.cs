@@ -1,13 +1,66 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using TabButton;
 
 [System.Serializable]
-public class CreatMode
+public class CreatMode : ITabListener
 {
+	#region ITabListener implementation
+
+	public void TabInitialization (GameObject go, object obj)
+	{
+		//TODO:
+	}
+
+	public void TabOnClickMeesgae (object t, GameObject go, List<GameObject> btns)
+	{
+		foreach (GameObject g in btns)
+		{
+			bool isMine = (g == go);
+			g.collider.enabled = !isMine;
+			foreach (UISprite w in g.GetComponentsInChildren<UISprite>())
+			{
+				
+				w.color = isMine ? Color.grey : Color.white;
+			}
+		}
+		if (go.transform.parent == tabList1.transform) 
+		{
+			pro = (PRO) t;
+			//Debug.Log ("PRO: " + (int)t);
+		}
+		if (go.transform.parent == tabList2.transform) 
+		{
+			sex = (int) t;
+			//Debug.Log ("SEX: " + (int)t);
+		}
+
+	}
+
+	#endregion
+
 	public UIInput input;
+
+	public UITabList tabList1;
+	public UITabList tabList2;
+
+
+	private int sex = 0;
+	private PRO pro = PRO.ZS;
+
+	public void Init ()
+	{
+		tabList1.tabListener = this;
+		tabList1.refresh ();
+		tabList2.tabListener = this;
+		tabList2.refresh ();
+	}
+
 	private Error Ctrat ()
 	{
-		string inputStr = input.text;
+		string inputStr = input.text; 
+
 		Error e = null;
 		if (inputStr != "")
 		{
@@ -41,16 +94,30 @@ public class CreatMode
 			r.accountId = Main.Instance.account.uniqueId;
 			r.roleName = input.text;
 			r.level = 1;
-			r.profession = PRO.ZS.ToString ();
+			r.sex = sex;
+			r.profession = pro.ToString ();
 			NetSend.SendCreatRole(r);
 		}
 	}
+}
+
+[System.Serializable]
+public class RoleListMode
+{
+	public UILabel name;
+
 }
 
 public class RolePanel : MonoBehaviour 
 {
 
 	public CreatMode creatMode; 
+	public RoleListMode roleListMode;
+
+	void Start ()
+	{
+		creatMode.Init ();
+	}
 
 	void OnEnable ()
 	{

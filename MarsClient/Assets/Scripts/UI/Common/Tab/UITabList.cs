@@ -19,6 +19,25 @@ namespace TabButton
 		public ITabListener tabListener;
 
 		private List<GameObject> btns = new List<GameObject> ();
+
+		public void refresh ()
+		{
+
+			for (int i = 0; i < transform.childCount; i++)
+			{
+				Transform go = transform.FindChild (i.ToString ());
+				if (go != null)
+				{
+					TabEvent bte = go.gameObject.AddComponent <TabEvent>();
+					if (tabListener != null) tabListener.TabInitialization (go.gameObject, null);
+					else Debug.LogError ("tabListener is null");
+					bte.SetRefresh (i, this);
+					btns.Add (go.gameObject);
+				}
+			}
+			LayoutBtns ();
+		}
+
 		public void refresh (List<object> t)
 		{
 			Clear ();
@@ -45,7 +64,7 @@ namespace TabButton
 			Invoke ("LayoutBtns", 0);
 		}
 
-		void LayoutBtns () { grid.Reposition (); if (isInit) { if (btns.Count > 0) { btns[0].GetComponent<TabEvent>().OnClick (); } }}
+		void LayoutBtns () { if (grid != null) grid.Reposition (); if (isInit) { if (btns.Count > 0) { btns[0].GetComponent<TabEvent>().OnClick (); } }}
 
 		public void CallButtonEvent (object t, GameObject go)
 		{

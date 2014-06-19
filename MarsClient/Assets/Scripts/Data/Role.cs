@@ -14,6 +14,8 @@ public class Role
 	public string profession;//zs fs
 	[DefaultValue (0)]
 	public int level;
+	[DefaultValue(0)]
+	public int sex;//0-male, 1-female
 
 
 	[DefaultValue (0F)]

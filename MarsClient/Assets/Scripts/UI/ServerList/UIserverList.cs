@@ -33,7 +33,7 @@ public class UIServerList : MonoBehaviour, ITabListener
 			List<object> objs = new List<object> ();
 			foreach (Server k in servers)
 			{
-				objs.Add ((object)k);
+				if (k.isSwitch == true) { objs.Add ((object)k); }
 			}
 			tabButton.refresh (objs);
 		}
