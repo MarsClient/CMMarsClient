@@ -41,7 +41,14 @@ public class UIRoleList : MonoBehaviour, ITabListener {
 			tabButton.buttonPrefab = prefab;
 		}
 	}
-	
+
+	void OnEnable ()
+	{
+		bool isActive = (Main.Instance == null || Main.Instance.roles == null || Main.Instance.roles.Count == 0);
+		//SetCreatRole (isActive);
+		if (isActive == false) { Initialization (Main.Instance.roles); }
+	}
+
 	public void Initialization (List<Role> roles)
 	{
 		if (roles != null)

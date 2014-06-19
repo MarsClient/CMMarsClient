@@ -124,7 +124,7 @@ public class RolePanel : MonoBehaviour
 	{
 		bool isActive = (Main.Instance == null || Main.Instance.roles == null || Main.Instance.roles.Count == 0);
 		SetCreatRole (isActive);
-		if (isActive == false) { roleList.Initialization (Main.Instance.roles); }
+		//if (isActive == false) { roleList.Initialization (Main.Instance.roles); }
 		PhotonClient.processResults += ProcessResults;
 	}
 
@@ -174,6 +174,13 @@ public class RolePanel : MonoBehaviour
 			if (bundle.error == null)
 			{
 				new DialogContent ().SetMessage ("game.role.success").SetNoBtn ("game.dialog.no").ShowWaiting ();
+				Dialog.instance.TweenClose ();
+				if (Main.Instance.roles.Contains (bundle.role) == false)
+				{ 
+					//Debug.Log (bundle.role.roleId);
+					Main.Instance.roles.Add (bundle.role);
+				}
+				BackToRoleList ();
 			}
 			if (bundle.error != null)
 			{
