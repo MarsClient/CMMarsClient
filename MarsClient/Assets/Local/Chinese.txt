@@ -38,8 +38,17 @@ game.role.input.null = 角色名不能为空
 game.role.input.length = 角色名不小于2位
 game.role.success = 角色创建成功
 game.role.same.name.error = 角色名已被使用
-game.role.zs = 战士
-game.role.fs = 法师
-game.role.ws = 武僧
+game.role.ZS = 战士
+game.role.FS = 法师
+game.role.WS = 武僧
 game.role.male = 男
 game.role.female = 女
+game.role.enter.game = 进入游戏
+game.role.role.name = 角色名:
+game.role.level.pro = 等级:{0} {1}
+button.cret.role = 创建角色
+button.selecr.server = 选择服务器
+
+
+
+

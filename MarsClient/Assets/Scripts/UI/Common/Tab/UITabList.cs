@@ -64,7 +64,7 @@ namespace TabButton
 			Invoke ("LayoutBtns", 0);
 		}
 
-		void LayoutBtns () { if (grid != null) grid.Reposition (); if (isInit) { if (btns.Count > 0) { btns[0].GetComponent<TabEvent>().OnClick (); } }}
+		void LayoutBtns () { if (grid != null) { grid.Reposition (); UIScrollView scrollView = GetComponent<UIScrollView>(); if ( scrollView != null) scrollView.ResetPosition ();} if (isInit) { if (btns.Count > 0) { btns[0].GetComponent<TabEvent>().OnClick (); } }}
 
 		public void CallButtonEvent (object t, GameObject go)
 		{

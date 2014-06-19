@@ -19,27 +19,26 @@ public class CreatMode : ITabListener
 		{
 			bool isMine = (g == go);
 			g.collider.enabled = !isMine;
-			foreach (UISprite w in g.GetComponentsInChildren<UISprite>())
-			{
-				
-				w.color = isMine ? Color.grey : Color.white;
-			}
+			//Debug.Log (w.name);
+			g.GetComponent<UISprite>().color = isMine ? Color.grey : Color.white;
 		}
 		if (go.transform.parent == tabList1.transform) 
 		{
+//			go.GetComponentInChildren <UISprite>().color = Color.grey;
 			pro = (PRO) t;
-			//Debug.Log ("PRO: " + (int)t);
+//			Debug.Log ("PRO: " + (int)t);
 		}
 		if (go.transform.parent == tabList2.transform) 
 		{
+			//go.GetComponentInChildren <UISprite>().color = Color.grey;
 			sex = (int) t;
-			//Debug.Log ("SEX: " + (int)t);
+//			Debug.Log ("SEX: " + (int)t);
 		}
 
 	}
 
 	#endregion
-
+	public GameObject mainObj;
 	public UIInput input;
 
 	public UITabList tabList1;
@@ -104,8 +103,8 @@ public class CreatMode : ITabListener
 [System.Serializable]
 public class RoleListMode
 {
-	public UILabel name;
-
+	public GameObject mainObj;
+	public UILabel roleName;
 }
 
 public class RolePanel : MonoBehaviour 
@@ -113,6 +112,8 @@ public class RolePanel : MonoBehaviour
 
 	public CreatMode creatMode; 
 	public RoleListMode roleListMode;
+	public UIRoleList roleList;
+
 
 	void Start ()
 	{
@@ -121,7 +122,16 @@ public class RolePanel : MonoBehaviour
 
 	void OnEnable ()
 	{
+		bool isActive = (Main.Instance == null || Main.Instance.roles == null || Main.Instance.roles.Count == 0);
+		SetCreatRole (isActive);
+		if (isActive == false) { roleList.Initialization (Main.Instance.roles); }
 		PhotonClient.processResults += ProcessResults;
+	}
+
+	void SetCreatRole (bool isActive)
+	{
+		creatMode.mainObj.SetActive (isActive);
+		roleListMode.mainObj.SetActive (!isActive);
 	}
 
 	void OnDisable ()
@@ -134,10 +144,27 @@ public class RolePanel : MonoBehaviour
 		creatMode.StartCreat ();
 	}
 
+	void BackToRoleList ()
+	{
+		if (Main.Instance.roles != null && Main.Instance.roles.Count > 0)
+		{
+			SetCreatRole (false);
+		}
+		else
+		{
+			BackOnClick ();
+		}
+	}
+
 	void BackOnClick ()
 	{
 		PanelsManager.Close ();
 		PanelsManager.Show (PanelType.ServerList);
+	}
+
+	void CreatOnClick ()
+	{
+		SetCreatRole (true);
 	}
 
 	void ProcessResults (Bundle bundle)
