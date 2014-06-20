@@ -11,6 +11,7 @@ public class Main : MonoBehaviour
 	public Account account;
 	public Server server;
 	public List<Role> roles;
+	public Role role;
 
 	void Awake () { if (Instance == null) { Instance = this; DontDestroyOnLoad (gameObject); } else if (Instance != this) Destroy (gameObject);}
 

@@ -34,6 +34,11 @@ public class NetSend {
 		PhotonClient.Instance.SendServer (Command.EnterGame, r);
 	}
 
+	public static void SendChat (Message message)
+	{
+		PhotonClient.Instance.SendServer (Command.SendChat, message);
+	}
+
 	public static void SendAbortDiscount ()
 	{
 		PhotonClient.Instance.SendServer (Command.AbortDiscount);

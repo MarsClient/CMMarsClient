@@ -22,14 +22,14 @@ public class ChatInput : MonoBehaviour
 		if (mInput == null) {  mInput = GetComponent<UIInput>(); }
 		mInput.label.maxLineCount = 1;
 
-		if (fillWithDummyData && textList != null)
-		{
-			for (int i = 0; i < 30; ++i)
-			{
-				textList.Add(((i % 2 == 0) ? "[FFFFFF]" : "[AAAAAA]") +
-					"This is an example paragraph for the text list, testing line " + i + "[-]");
-			}
-		}
+//		if (fillWithDummyData && textList != null)
+//		{
+//			for (int i = 0; i < 30; ++i)
+//			{
+//				textList.Add(((i % 2 == 0) ? "[FFFFFF]" : "[AAAAAA]") +
+//					"This is an example paragraph for the text list, testing line " + i + "[-]");
+//			}
+//		}
 	}
 
 
@@ -51,7 +51,10 @@ public class ChatInput : MonoBehaviour
 
 			if (!string.IsNullOrEmpty(text))
 			{
-				textList.Add(text);
+				Role r = Main.Instance.role;
+				string content = string.Format (Message.MESSAGE_FORMAT, r.accountId.ToString () + "," + r.roleId.ToString (), r.roleName) + text;
+				textList.scrollValue = 1;
+				textList.Add(content);
 				mInput.value = "";
 				mInput.isSelected = false;
 			}

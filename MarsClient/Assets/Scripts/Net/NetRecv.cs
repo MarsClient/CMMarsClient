@@ -33,9 +33,10 @@ public class NetRecv : MonoBehaviour {
 				Main.Instance.server = bundle.server;
 				Main.Instance.roles = bundle.roles;
 			}
-			if (bundle.cmd == Command.CreatRole)
+			if (bundle.cmd == Command.EnterGame)
 			{
-				//
+				Main.Instance.role = bundle.role;
+				UISceneLoading.LoadingScnens ("PublicZone");
 			}
 		}
 		else

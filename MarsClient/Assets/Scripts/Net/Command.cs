@@ -15,19 +15,12 @@ public enum Command : byte
 
 	EnterGame,
 
+	SendChat,
 
+
+	//Last
 	NetError,
 	AbortDiscount,
-
-	//Follow is old
-	GetRoomInfo,
-	GetAllRoomInfo,
-	JoinRoom,
-	QuitRoom,
-	RoomActorBorning,
-	RoomActorActionUpdate,
-	RoomSpeak,
-	UpdatePlayer,
 }
 
 public enum EventCommand: byte

@@ -48,15 +48,15 @@ public class UISceneLoading : MonoBehaviour {
 		}
 	}
 
-	void OnGUI ()
-	{
-		if (GUILayout.Button ("Spell1"))
-		{
-			UISceneLoading.LoadingScnens ("Splash");
-		}
-		if (GUILayout.Button ("Spell2"))
-		{
-
-		}
-	}
+//	void OnGUI ()
+//	{
+//		if (GUILayout.Button ("Spell1"))
+//		{
+//			UISceneLoading.LoadingScnens ("Splash");
+//		}
+//		if (GUILayout.Button ("Spell2"))
+//		{
+//
+//		}
+//	}
 }
