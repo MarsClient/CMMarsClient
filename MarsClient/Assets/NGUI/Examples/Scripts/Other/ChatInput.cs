@@ -4,14 +4,13 @@ using UnityEngine;
 /// Very simple example of how to use a TextList with a UIInput for chat.
 /// </summary>
 
-[RequireComponent(typeof(UIInput))]
 [AddComponentMenu("NGUI/Examples/Chat Input")]
 public class ChatInput : MonoBehaviour
 {
 	public UITextList textList;
 	public bool fillWithDummyData = false;
 
-	UIInput mInput;
+	public UIInput mInput;
 
 	/// <summary>
 	/// Add some dummy text to the text list.
@@ -19,7 +18,8 @@ public class ChatInput : MonoBehaviour
 
 	void Start ()
 	{
-		mInput = GetComponent<UIInput>();
+
+		if (mInput == null) {  mInput = GetComponent<UIInput>(); }
 		mInput.label.maxLineCount = 1;
 
 		if (fillWithDummyData && textList != null)
@@ -30,6 +30,12 @@ public class ChatInput : MonoBehaviour
 					"This is an example paragraph for the text list, testing line " + i + "[-]");
 			}
 		}
+	}
+
+
+	public void OnClick ()
+	{
+		OnSubmit ();
 	}
 
 	/// <summary>

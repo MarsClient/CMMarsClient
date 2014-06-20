@@ -52,6 +52,9 @@ button.selecr.server = 选择服务器
 game.server.same = 登陆失败,请重新登陆
 game.server.net.error = 网络出现错误,请重新登陆
 
+game.chat.default = 请输入聊天的内容
+game.chat.send = 发送
+
 
 
 
