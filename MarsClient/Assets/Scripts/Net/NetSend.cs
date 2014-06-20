@@ -43,33 +43,33 @@ public class NetSend {
 	/*
 	 *
 	 */
-	public static void SendGetRoomInfo (RoomInfo room)
-	{
-		PhotonClient.Instance.SendServer (Command.GetRoomInfo, room);
-	}
-
-	public static void SendJoinRoom (RoomInfo room)
-	{
-		PhotonClient.Instance.SendServer (Command.JoinRoom, room);
-	}
-
-	public static void SendGetAllRoomInfo ()
-	{
-		PhotonClient.Instance.SendServer (Command.GetAllRoomInfo);
-	}
-
-	public static void SendQuitRoom ()
-	{
-		PhotonClient.Instance.SendServer (Command.QuitRoom);
-	}
-
-	public static void SendRoomSpeak (Message message)
-	{
-		PhotonClient.Instance.SendServer (Command.RoomSpeak, message);
-	}
-
-	public static void SendUpdatePlayerPos (Player p)
-	{
-		PhotonClient.Instance.SendServer (Command.UpdatePlayer, p);
-	}
+//	public static void SendGetRoomInfo (RoomInfo room)
+//	{
+//		PhotonClient.Instance.SendServer (Command.GetRoomInfo, room);
+//	}
+//
+//	public static void SendJoinRoom (RoomInfo room)
+//	{
+//		PhotonClient.Instance.SendServer (Command.JoinRoom, room);
+//	}
+//
+//	public static void SendGetAllRoomInfo ()
+//	{
+//		PhotonClient.Instance.SendServer (Command.GetAllRoomInfo);
+//	}
+//
+//	public static void SendQuitRoom ()
+//	{
+//		PhotonClient.Instance.SendServer (Command.QuitRoom);
+//	}
+//
+//	public static void SendRoomSpeak (Message message)
+//	{
+//		PhotonClient.Instance.SendServer (Command.RoomSpeak, message);
+//	}
+//
+//	public static void SendUpdatePlayerPos (Player p)
+//	{
+//		PhotonClient.Instance.SendServer (Command.UpdatePlayer, p);
+//	}
 }

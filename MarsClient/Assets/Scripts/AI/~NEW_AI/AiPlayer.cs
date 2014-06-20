@@ -60,7 +60,7 @@ public class AiPlayer : MonoBehaviour
 			p.zRo = (float) ((double) transform.forward.z);
 			p.actionId = (int)c;
 			p.roleName = Main.Instance.account.roleName;
-			NetSend.SendUpdatePlayerPos (p); 
+			//NetSend.SendUpdatePlayerPos (p); 
 		}
 	}
 	#endregion

@@ -43,14 +43,14 @@ public class Bundle
 	[DefaultValue(null)]
 	public Player player;
 
-	[DefaultValue (null)]
-	public User user;
-	[DefaultValue (null)]
-	public RoomInfo room;
-	[DefaultValue (null)]
-	public List<RoomInfo> rooms;
-	[DefaultValue (null)]
-	public Message mesaage;
-	[DefaultValue (null)]
-	public RoomMember roomMember;
+//	[DefaultValue (null)]
+//	public User user;
+//	[DefaultValue (null)]
+//	public RoomInfo room;
+//	[DefaultValue (null)]
+//	public List<RoomInfo> rooms;
+//	[DefaultValue (null)]
+//	public Message mesaage;
+//	[DefaultValue (null)]
+//	public RoomMember roomMember;
 }
