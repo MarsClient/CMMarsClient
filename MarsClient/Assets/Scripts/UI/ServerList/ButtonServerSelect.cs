@@ -17,22 +17,31 @@ public class ButtonServerSelect : MonoBehaviour {
 
 	void ProcessResults (Bundle bundle)
 	{
-		if (bundle.error == null)
+
+		if (bundle.cmd == Command.LinkServer)
 		{
-			if (bundle.cmd == Command.LinkServer)
+			new DialogContent ()
+				.SetMessage("server.link.success")
+					.SetNoBtn ("game.dialog.no")
+					.ShowWaiting ();
+			serverList.currentServer.accountId = Main.Instance.account.uniqueId;
+			NetSend.SendServerSelect (serverList.currentServer);
+		}
+		if (bundle.cmd == Command.ServerSelect)
+		{
+			Debug.Log (bundle.error);
+			if (bundle.error == null)
 			{
-				new DialogContent ()
-					.SetMessage("server.link.success")
-						.SetNoBtn ("game.dialog.no")
-						.ShowWaiting ();
 				Dialog.instance.TweenClose ();
-				serverList.currentServer.accountId = Main.Instance.account.uniqueId;
-				NetSend.SendServerSelect (serverList.currentServer);
-			}
-			if (bundle.cmd == Command.ServerSelect)
-			{
 				PanelsManager.Close ();
 				PanelsManager.Show (PanelType.CreatRole);
+			}
+			else
+			{
+				new DialogContent ()
+					.SetMessage(bundle.error.message)
+						.SetNoBtn ("game.dialog.no")
+						.ShowWaiting ();
 			}
 		}
 	}

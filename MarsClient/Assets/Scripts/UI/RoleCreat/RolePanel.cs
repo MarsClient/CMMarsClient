@@ -104,7 +104,6 @@ public class CreatMode : ITabListener
 public class RoleListMode
 {
 	public GameObject mainObj;
-	public UILabel roleName;
 }
 
 public class RolePanel : MonoBehaviour 
@@ -160,11 +159,17 @@ public class RolePanel : MonoBehaviour
 	{
 		PanelsManager.Close ();
 		PanelsManager.Show (PanelType.ServerList);
+		NetSend.SendAbortDiscount ();
 	}
 
 	void CreatOnClick ()
 	{
 		SetCreatRole (true);
+	}
+
+	void EnterGameOnClick ()
+	{
+		NetSend.SendEnterGame (roleList.role);
 	}
 
 	void ProcessResults (Bundle bundle)

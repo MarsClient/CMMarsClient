@@ -21,20 +21,18 @@ public class UIRoleList : MonoBehaviour, ITabListener {
 			RoleItem roleItem = g.GetComponent<RoleItem>();
 
 			roleItem.SetColor (isMine);
-//			if (isMine == true) { roleItem.ableClick ();  }
-//			else roleItem.disableClick ();
 		}
 		role = (Role) t;
-		rolePanel.roleListMode.roleName.text = role.roleName;
+		roleName.text = role.roleName;
 
 	}
 	#endregion
 
 	public GameObject prefab;
-	public RolePanel rolePanel;
+	public UILabel roleName;
 
 	private UITabList tabButton;
-	private Role role;
+	public Role role;
 	
 	void Start () 
 	{

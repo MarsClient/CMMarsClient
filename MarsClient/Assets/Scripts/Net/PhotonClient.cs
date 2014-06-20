@@ -169,4 +169,9 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 			processResultSync (bundle);
 		}
 	}
+
+	private void OnApplicationQuit ()
+	{
+		NetSend.SendAbortDiscount ();
+	}
 }

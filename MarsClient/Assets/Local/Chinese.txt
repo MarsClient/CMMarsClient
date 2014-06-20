@@ -49,6 +49,9 @@ game.role.level.pro = 等级:{0} {1}
 button.cret.role = 创建角色
 button.selecr.server = 选择服务器
 
+game.server.same = 登陆失败,请重新登陆
+game.server.net.error = 网络出现错误,请重新登陆
+
 
 
 

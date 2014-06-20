@@ -29,6 +29,16 @@ public class NetSend {
 		PhotonClient.Instance.SendServer (Command.CreatRole, r);
 	}
 
+	public static void SendEnterGame (Role r)
+	{
+		PhotonClient.Instance.SendServer (Command.EnterGame, r);
+	}
+
+	public static void SendAbortDiscount ()
+	{
+		PhotonClient.Instance.SendServer (Command.AbortDiscount);
+	}
+
 	//Follow is Older
 	/*
 	 *

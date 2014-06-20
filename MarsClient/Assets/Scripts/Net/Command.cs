@@ -13,6 +13,11 @@ public enum Command : byte
 
 	CreatRole,
 
+	EnterGame,
+
+
+
+	AbortDiscount,
 
 	//Follow is old
 	GetRoomInfo,
