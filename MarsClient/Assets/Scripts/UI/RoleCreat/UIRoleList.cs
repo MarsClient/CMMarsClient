@@ -24,10 +24,14 @@ public class UIRoleList : MonoBehaviour, ITabListener {
 //			if (isMine == true) { roleItem.ableClick ();  }
 //			else roleItem.disableClick ();
 		}
+		role = (Role) t;
+		rolePanel.roleListMode.roleName.text = role.roleName;
+
 	}
 	#endregion
 
 	public GameObject prefab;
+	public RolePanel rolePanel;
 
 	private UITabList tabButton;
 	private Role role;
