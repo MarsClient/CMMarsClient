@@ -29,7 +29,6 @@ public class ButtonServerSelect : MonoBehaviour {
 		}
 		if (bundle.cmd == Command.ServerSelect)
 		{
-			Debug.Log (bundle.error);
 			if (bundle.error == null)
 			{
 				Dialog.instance.TweenClose ();

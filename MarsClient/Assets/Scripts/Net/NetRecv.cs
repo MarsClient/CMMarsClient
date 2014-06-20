@@ -38,5 +38,24 @@ public class NetRecv : MonoBehaviour {
 				//
 			}
 		}
+		else
+		{
+			if (bundle.cmd == Command.NetError)
+			{
+				new DialogContent ()
+					.SetMessage(bundle.error.message)
+						.SetNoBtn ("game.dialog.yes")
+						.SetDelegateBtn (DialogIndexDelegate)
+						.ShowWaiting ();
+
+			}
+		}
 	}
+
+	void DialogIndexDelegate (bool isBy)
+	{
+		PanelsManager.Close ();
+		PanelsManager.Show (PanelType.ServerList);
+	}
+
 }

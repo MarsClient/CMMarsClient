@@ -16,7 +16,7 @@ public enum Command : byte
 	EnterGame,
 
 
-
+	NetError,
 	AbortDiscount,
 
 	//Follow is old
