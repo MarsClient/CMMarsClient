@@ -53,6 +53,18 @@ public class NetRecv : MonoBehaviour {
 					}
 				}
 			}
+			if (bundle.cmd == Command.InitAllPlayers)
+			{
+				Main.Instance.onlineRoles = bundle.onlineRoles;
+			}
+			if (bundle.cmd == Command.UpdatePlayer)
+			{
+
+			}
+			if (bundle.cmd == Command.DestroyPlayer)
+			{
+				
+			}
 		}
 		else
 		{

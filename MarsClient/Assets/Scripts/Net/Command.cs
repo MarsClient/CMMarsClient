@@ -17,6 +17,10 @@ public enum Command : byte
 
 	SendChat,
 
+	InitAllPlayers,
+	AddNewPlayer,
+	UpdatePlayer,
+	DestroyPlayer,
 
 	//Last
 	NetError,

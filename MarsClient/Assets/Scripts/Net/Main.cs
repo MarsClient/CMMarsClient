@@ -16,6 +16,7 @@ public class Main : MonoBehaviour
 	public List<Role> roles;
 	public Role role;
 	public Dictionary<ChatType, List<Message>> messages = new Dictionary<ChatType, List<Message>> ();
+	public List<Role> onlineRoles = new List<Role> ();
 
 
 	public List<Message> Getmessages ()
@@ -45,6 +46,7 @@ public class Main : MonoBehaviour
 	public void Clear ()
 	{
 		messages.Clear ();
+		roles.Clear ();
 	}
 
 

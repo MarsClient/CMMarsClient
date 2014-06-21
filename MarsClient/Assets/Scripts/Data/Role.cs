@@ -16,6 +16,10 @@ public class Role
 	public int level;
 	[DefaultValue(0)]
 	public int sex;//0-male, 1-female
+	[DefaultValue(0F)]
+	public float x;
+	[DefaultValue(0F)]
+	public float z;
 
 
 	[DefaultValue (0F)]
