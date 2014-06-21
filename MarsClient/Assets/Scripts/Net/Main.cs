@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent (typeof (FpsCounter))]
 public class Main : MonoBehaviour 
 {
 	public static Main Instance;
