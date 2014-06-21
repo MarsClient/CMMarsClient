@@ -1,5 +1,6 @@
 using UnityEngine;
-
+using System.Collections;
+using System.Collections.Generic;
 /// <summary>
 /// Very simple example of how to use a TextList with a UIInput for chat.
 /// </summary>
@@ -8,39 +9,54 @@ using UnityEngine;
 public class ChatInput : MonoBehaviour
 {
 	public UITextList textList;
-	public bool fillWithDummyData = false;
-
 	public UIInput mInput;
 
-	/// <summary>
-	/// Add some dummy text to the text list.
-	/// </summary>
+	public UIPopupList popupList;
 
+	private ChatType currentChatType;
+	private string currentKey;
+	
 	void Start ()
 	{
 
 		if (mInput == null) {  mInput = GetComponent<UIInput>(); }
 		mInput.label.maxLineCount = 1;
 
-//		if (fillWithDummyData && textList != null)
-//		{
-//			for (int i = 0; i < 30; ++i)
-//			{
-//				textList.Add(((i % 2 == 0) ? "[FFFFFF]" : "[AAAAAA]") +
-//					"This is an example paragraph for the text list, testing line " + i + "[-]");
-//			}
-//		}
+		currentKey = popupList.value;
+		getChatType (currentKey);
+		EventDelegate.Add (popupList.onChange, ()=>
+		{
+			if (UIPopupList.current != null)
+			{
+				currentKey = UIPopupList.current.value;
+				getChatType (currentKey);
+			}
+		});
+		ShowAllContent ();
 	}
 
+	public void ShowAllContent ()
+	{
+		if (textList != null)
+		{
+			foreach (Message message in Main.Instance.Getmessages ())
+			{
+				textList.Add (message.content);
+			}
+		}
+	}
+
+	void getChatType (string key)
+	{
+		string[] str = key.Split ('.');
+		currentChatType = (ChatType) int.Parse(str[str.Length - 1]);
+		Debug.Log (currentChatType);
+	}
 
 	public void OnClick ()
 	{
 		OnSubmit ();
 	}
-
-	/// <summary>
-	/// Submit notification is sent by UIInput when 'enter' is pressed or iOS/Android keyboard finalizes input.
-	/// </summary>
 
 	public void OnSubmit ()
 	{
@@ -52,12 +68,44 @@ public class ChatInput : MonoBehaviour
 			if (!string.IsNullOrEmpty(text))
 			{
 				Role r = Main.Instance.role;
-				string content = string.Format (Message.MESSAGE_FORMAT, r.accountId.ToString () + "," + r.roleId.ToString (), r.roleName) + text;
+				string content = "";
+				if (r != null)
+				{
+					content = "[" + Localization.Get(currentKey) + "]" + string.Format (Message.MESSAGE_FORMAT, r.accountId.ToString () + "," + r.roleId.ToString (), r.roleName) + text;
+
+					Message message = new Message ();
+					message.chatType = currentChatType;
+					message.sender = r;
+					message.content = content;
+					NetSend.SendChat (message);
+				}
+				else
+				{
+					content = text;
+				}
 				textList.scrollValue = 1;
 				textList.Add(content);
 				mInput.value = "";
 				mInput.isSelected = false;
 			}
+		}
+	}
+
+	void OnEnable ()
+	{
+		PhotonClient.processResults += ProcessResults;
+	}
+	
+	void OnDisable ()
+	{
+		PhotonClient.processResults -= ProcessResults;
+	}
+	
+	void ProcessResults (Bundle bundle)
+	{
+		if (bundle.cmd == Command.SendChat)
+		{
+			textList.Add (bundle.message.content);
 		}
 	}
 }

@@ -38,6 +38,21 @@ public class NetRecv : MonoBehaviour {
 				Main.Instance.role = bundle.role;
 				UISceneLoading.LoadingScnens ("PublicZone");
 			}
+			if (bundle.cmd == Command.SendChat)
+			{
+				Message message = bundle.message;
+				if (message != null)
+				{
+					if (Main.Instance.messages.ContainsKey (message.chatType) == false)
+					{
+						Main.Instance.messages.Add (message.chatType, new List<Message>());
+					}
+					else
+					{
+						Main.Instance.messages[message.chatType].Add (message);
+					}
+				}
+			}
 		}
 		else
 		{

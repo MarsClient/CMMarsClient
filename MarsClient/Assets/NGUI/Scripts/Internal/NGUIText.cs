@@ -1236,7 +1236,7 @@ static public class NGUIText
 				{
 					if (underline)
 					{
-						ch = '_';
+						ch = ' ';
 					}
 					else if (strikethrough)
 					{
@@ -1376,7 +1376,7 @@ static public class NGUIText
 				// Underline and strike-through contributed by Rudy Pangestu.
 				if (underline || strikethrough)
 				{
-					GlyphInfo dash = GetGlyph(strikethrough ? '-' : '_', prev);
+					GlyphInfo dash = GetGlyph(strikethrough ? '-' : ' ', prev);
 					if (dash == null) continue;
 
 					if (uvs != null)
