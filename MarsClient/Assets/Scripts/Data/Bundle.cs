@@ -32,16 +32,19 @@ public class Bundle
 	[DefaultValue(null)]
 	public Role role;
 
+	[DefaultValue(null)]
+	public Message message;
+
 	/*follow is old*/
 
-	[DefaultValue (null)]
-	public Fight figth;
-
-	[DefaultValue (null)]
-	public List<Player> players;
-
-	[DefaultValue(null)]
-	public Player player;
+//	[DefaultValue (null)]
+//	public Fight figth;
+//
+//	[DefaultValue (null)]
+//	public List<Player> players;
+//
+//	[DefaultValue(null)]
+//	public Player player;
 
 //	[DefaultValue (null)]
 //	public User user;
