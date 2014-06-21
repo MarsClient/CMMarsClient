@@ -15,6 +15,8 @@ public class ChatInput : MonoBehaviour
 
 	private ChatType currentChatType;
 	private string currentKey;
+
+	public bool isOne;
 	
 	void Start ()
 	{
@@ -93,12 +95,14 @@ public class ChatInput : MonoBehaviour
 
 	void OnEnable ()
 	{
-		PhotonClient.processResults += ProcessResults;
+		if (isOne)
+			PhotonClient.processResults += ProcessResults;
 	}
 	
 	void OnDisable ()
 	{
-		PhotonClient.processResults -= ProcessResults;
+		if(isOne)
+			PhotonClient.processResults -= ProcessResults;
 	}
 	
 	void ProcessResults (Bundle bundle)
