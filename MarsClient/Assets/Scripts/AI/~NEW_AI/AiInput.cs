@@ -21,7 +21,7 @@ public class AiInput : MonoBehaviour {
 		UpdateMove (new Vector3 (x, 0, z));
 
 		//attack
-		if (Input.GetMouseButton (0))
+		if (Input.GetMouseButton (0) && UISceneLoading.currentLoadName != UISceneLoading.PUBLIC_ZONE)
 		{
 			aiPlayer.NormalAttack ();
 		}

@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour {
 	public Vector3 startPos;
 	public Transform target;
 
-	void Start ()
+	void Awake ()
 	{
 		instance = this;
 		if (target != null)
