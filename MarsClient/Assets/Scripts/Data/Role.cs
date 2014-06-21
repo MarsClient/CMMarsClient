@@ -20,6 +20,8 @@ public class Role
 	public float x;
 	[DefaultValue(0F)]
 	public float z;
+	[DefaultValue(0)]
+	public float exp;
 
 
 	[DefaultValue (0F)]
