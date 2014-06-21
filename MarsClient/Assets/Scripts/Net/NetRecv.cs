@@ -36,7 +36,7 @@ public class NetRecv : MonoBehaviour {
 			if (bundle.cmd == Command.EnterGame)
 			{
 				Main.Instance.role = bundle.role;
-				UISceneLoading.LoadingScnens ("PublicZone");
+				UISceneLoading.LoadingScnens (UISceneLoading.PUBLIC_ZONE);
 			}
 			if (bundle.cmd == Command.SendChat)
 			{
@@ -61,17 +61,20 @@ public class NetRecv : MonoBehaviour {
 				new DialogContent ()
 					.SetMessage(bundle.error.message)
 						.SetNoBtn ("game.dialog.yes")
-						.SetDelegateBtn (DialogIndexDelegate)
+						.SetDelegateBtn ((bool isBy)=>
+						{
+							UISceneLoading.LoadingScnens (UISceneLoading.SPLASH, (string loadName)=>
+							{
+								NetSend.SendAbortDiscount ();
+								PhotonClient.Instance.LoadingLoginServer ();
+//								Debug.Log ("&&&&&&&&&&" + loadName);
+//								PanelsManager.Close ();
+//								PanelsManager.Show (PanelType.ServerList);
+							});
+						})
 						.ShowWaiting ();
 
 			}
 		}
 	}
-
-	void DialogIndexDelegate (bool isBy)
-	{
-		PanelsManager.Close ();
-		PanelsManager.Show (PanelType.ServerList);
-	}
-
 }

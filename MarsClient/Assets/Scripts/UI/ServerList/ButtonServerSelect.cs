@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ButtonServerSelect : MonoBehaviour {
@@ -49,7 +49,7 @@ public class ButtonServerSelect : MonoBehaviour {
 	{
 		if (serverList.currentServer != null)
 		{
-			PhotonClient.Instance.SetGameServer (serverList.currentServer.ip);
+			PhotonClient.Instance.LoadingGameServer (serverList.currentServer.ip);
 			new DialogContent ()
 				.SetMessage("server.linking")
 					.SetNoBtn ("game.dialog.no")

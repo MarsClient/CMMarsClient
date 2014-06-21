@@ -38,17 +38,17 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		Application.runInBackground = true;
 		this.ServerConnected = false;
 		DC.LogError ("Disconnected");
-		SetLoginServer ();
+		LoadingLoginServer ();
 	}
 
-	public void SetLoginServer ()
+	public void LoadingLoginServer ()
 	{
 		load_address = LOAD_LOGIN_SERVER_ADDRESS;
 		appserver = LoginServerApplication;
 		this.Connect();
 	}
 
-	public void SetGameServer (string ip)
+	public void LoadingGameServer (string ip)
 	{
 		load_address = ip;
 		appserver = GameServerApplication;
@@ -172,6 +172,8 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	private void OnApplicationQuit ()
 	{
+		Update ();
 		NetSend.SendAbortDiscount ();
+		Update ();
 	}
 }

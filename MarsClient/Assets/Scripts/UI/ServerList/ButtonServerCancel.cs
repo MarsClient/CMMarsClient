@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class ButtonServerCancel : MonoBehaviour {
@@ -7,6 +7,6 @@ public class ButtonServerCancel : MonoBehaviour {
 	{
 		PanelsManager.Close ();
 		PanelsManager.Show (PanelType.LoginRegister);
-		PhotonClient.Instance.SetLoginServer ();
+		PhotonClient.Instance.LoadingLoginServer ();
 	}
 }
