@@ -19,8 +19,8 @@ public class AiInput : MonoBehaviour {
 		float x = Input.GetKey (KeyCode.A) ? 1 : Input.GetKey (KeyCode.D) ? -1 : 0 ;
 		float z = Input.GetKey (KeyCode.S) ? 1 : Input.GetKey (KeyCode.W) ? -1 : 0 ;
 #elif UNITY_ANDROID || UNITY_IPHONE
-		float x = Joystick.Joystick.getPosition.x;
-		float z = Joystick.Joystick.getPosition.z;
+		float x = Joystick.getPosition.x;
+		float z = Joystick.getPosition.y;
 #endif
 		UpdateMove (new Vector3 (x, 0, z));
 		//attack
