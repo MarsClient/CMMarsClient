@@ -52,4 +52,9 @@ public class ObjectPool {
 		objects[path] = gos;
 		return go;
 	}
+
+	public void Clear ()
+	{
+		objects.Clear ();
+	}
 }

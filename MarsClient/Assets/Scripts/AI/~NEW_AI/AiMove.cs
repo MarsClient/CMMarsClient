@@ -27,7 +27,7 @@ public class AiMove : MonoBehaviour {
 	// ai move dir
 	private Vector3 m_dir = Vector3.zero;
 
-	void Start () 
+	void Awake () 
 	{
 		characterController = GetComponent <CharacterController>();
 

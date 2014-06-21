@@ -11,22 +11,25 @@ public class AiInput : MonoBehaviour {
 		aiPlayer = GetComponent <AiPlayer> ();
 		aiMove = GetComponent<AiMove> ();
 	}
-	
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
+
 	void Update ()
 	{
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
 		//move
 		float x = Input.GetKey (KeyCode.A) ? 1 : Input.GetKey (KeyCode.D) ? -1 : 0 ;
 		float z = Input.GetKey (KeyCode.S) ? 1 : Input.GetKey (KeyCode.W) ? -1 : 0 ;
+#elif UNITY_ANDROID || UNITY_IPHONE
+		float x = Joystick.Joystick.getPosition.x;
+		float z = Joystick.Joystick.getPosition.z;
+#endif
 		UpdateMove (new Vector3 (x, 0, z));
-
 		//attack
 		if (Input.GetMouseButton (0) && UISceneLoading.currentLoadName != UISceneLoading.PUBLIC_ZONE)
 		{
 			aiPlayer.NormalAttack ();
 		}
 	}
-#elif UNITY_ANDROID || UNITY_IPHONE
+#if UNITY_ANDROID || UNITY_IPHONE
 	public void MobliePlatform ()
 	{
 		aiPlayer.NormalAttack ();

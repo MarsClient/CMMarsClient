@@ -30,4 +30,8 @@ public class MultiPlayer : MonoBehaviour {
 	{
 	}
 
+	public void OnDestroy ()
+	{
+		ObjectPool.Instance.Clear ();
+	}
 }
