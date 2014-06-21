@@ -9,9 +9,9 @@ public class UISceneLoading : MonoBehaviour {
 
 	public delegate void OnSenceLoadingDone (string str);
 
-	public static OnSenceLoadingDone onSenceLoadingDone;
+	public static OnSenceLoadingDone currentOnSenceLoadingDone;
 	public static UISceneLoading instance;
-	public static string loadName = "Splash";
+	public static string currentLoadName = "Splash";
 
 	public UISlider slider;
 
@@ -23,12 +23,12 @@ public class UISceneLoading : MonoBehaviour {
 
 	public static void LoadingScnens (string loadName)
 	{
-		UISceneLoading.LoadingScnens (loadName, null);
+		LoadingScnens (loadName, null);
 	}
 	public static void LoadingScnens (string loadName, OnSenceLoadingDone onSenceLoadingDone)
 	{
-		UISceneLoading.onSenceLoadingDone = onSenceLoadingDone;
-		UISceneLoading.loadName = loadName;
+		currentOnSenceLoadingDone = onSenceLoadingDone;
+		currentLoadName = loadName;
 		Application.LoadLevel ("Loading");
 	}
 
@@ -36,18 +36,18 @@ public class UISceneLoading : MonoBehaviour {
 	private AsyncOperation async;
 	IEnumerator  Start ()
 	{
-		if (UISceneLoading.loadName != null)
+		if (currentLoadName != null)
 		{
-			async = Application.LoadLevelAdditiveAsync (UISceneLoading.loadName);
-			//UISceneLoading.loadName = null;
+			async = Application.LoadLevelAdditiveAsync (currentLoadName);
+			//loadName = null;
 			yield return async;
 			yield return new WaitForSeconds (0.5f);
-			if (UISceneLoading.onSenceLoadingDone != null)
+			if (currentOnSenceLoadingDone != null)
 			{
-				UISceneLoading.onSenceLoadingDone (UISceneLoading.loadName);
+				currentOnSenceLoadingDone (currentLoadName);
 			}
-			UISceneLoading.loadName = null;
-			UISceneLoading.onSenceLoadingDone = null;
+			//currentLoadName = null;
+			currentOnSenceLoadingDone = null;
 			Destroy (gameObject);
 		}
 	}
@@ -71,7 +71,7 @@ public class UISceneLoading : MonoBehaviour {
 //	{
 //		if (GUILayout.Button ("Spell1"))
 //		{
-//			UISceneLoading.LoadingScnens ("Splash");
+//			LoadingScnens ("Splash");
 //		}
 //		if (GUILayout.Button ("Spell2"))
 //		{

@@ -63,13 +63,28 @@ public class NetRecv : MonoBehaviour {
 						.SetNoBtn ("game.dialog.yes")
 						.SetDelegateBtn ((bool isBy)=>
 						{
-							UISceneLoading.LoadingScnens (UISceneLoading.SPLASH, (string loadName)=>
+							if (UISceneLoading.currentLoadName != UISceneLoading.SPLASH)
 							{
-								NetSend.SendAbortDiscount ();
-								PhotonClient.Instance.LoadingLoginServer ();
-//								Debug.Log ("&&&&&&&&&&" + loadName);
-//								PanelsManager.Close ();
-//								PanelsManager.Show (PanelType.ServerList);
+								UISceneLoading.LoadingScnens (UISceneLoading.SPLASH, (string loadName)=>
+								{
+									Debug.Log (loadName);
+									NetSend.SendAbortDiscount ();
+									PhotonClient.Instance.LoadingLoginServer ();
+
+									PanelsManager.Close ();
+									PanelsManager.Show (PanelType.ServerList, (Panel panel)=>
+									                    {
+										UITabServerList tabServerTabList = panel.GetComponentInChildren<UITabServerList>();
+										if (tabServerTabList != null) tabServerTabList.Initialization ();
+									});
+
+								});
+							}
+							PanelsManager.Close ();
+							PanelsManager.Show (PanelType.ServerList, (Panel panel)=>
+							{
+								UITabServerList tabServerTabList = panel.GetComponentInChildren<UITabServerList>();
+								if (tabServerTabList != null) tabServerTabList.Initialization ();
 							});
 						})
 						.ShowWaiting ();
