@@ -52,7 +52,7 @@ public class ChatInput : MonoBehaviour
 	{
 		string[] str = key.Split ('.');
 		currentChatType = (ChatType) int.Parse(str[str.Length - 1]);
-		Debug.Log (currentChatType);
+//		Debug.Log (currentChatType);
 	}
 
 	public void OnClick ()
@@ -73,7 +73,9 @@ public class ChatInput : MonoBehaviour
 				string content = "";
 				if (r != null)
 				{
-					content = "[" + Localization.Get(currentKey) + "]" + string.Format (Message.MESSAGE_FORMAT, r.accountId.ToString () + "," + r.roleId.ToString (), r.roleName) + text;
+					string channel = Localization.Get(currentKey);
+					string sender = string.Format (Message.MESSAGE_FORMAT, Message.CLICKINFO_ROLE + "," + r.accountId.ToString () + "," + r.roleName, r.roleName);
+					content = channel + sender + text;
 
 					Message message = new Message ();
 					message.chatType = currentChatType;
@@ -90,6 +92,19 @@ public class ChatInput : MonoBehaviour
 				mInput.value = "";
 				mInput.isSelected = false;
 			}
+		}
+	}
+
+	public void ClickInfo (string[] infos)
+	{
+//		Debug.Log (infos[0] + "____" + Message.CLICKINFO_ROLE);
+		if (infos[0] == Message.CLICKINFO_ROLE)
+		{	
+			long accountId = long.Parse (infos[1]);
+			string roleName = infos[2];
+			string show = string.Format (Localization.Get ("game.chat.send.secret"), roleName);
+//			popupList.value = show;
+			//Debug.Log (show);
 		}
 	}
 

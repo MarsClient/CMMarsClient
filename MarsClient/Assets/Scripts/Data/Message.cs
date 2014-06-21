@@ -15,6 +15,9 @@ public class Message
 {
 	public const string MESSAGE_FORMAT = "[url={0}][u][ffff00][{1}]: [-][/u][/url]";
 
+	public const string CLICKINFO_ROLE = "ROLE_INFO";
+	public const string CLICKINFO_EQUIP = "EQUIP_INFO,";
+
 
 	[DefaultValue (null)]
 	public ChatType chatType;

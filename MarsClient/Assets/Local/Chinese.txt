@@ -54,9 +54,10 @@ game.server.net.error = 网络出现错误,请重新登陆
 
 game.chat.default = 请输入聊天的内容
 game.chat.send = 发送
-game.chat.world.1 = [986e6b]世界[-]
-game.chat.person.2 =[c96dbf]密语:[-]
-game.chat.system.3 = 系统
+game.chat.send.secret = [c96dbf]发送给【{0}】
+game.chat.world.1 = [986e6b]【世界】
+game.chat.person.2 =[c96dbf]【密语】
+game.chat.system.3 = 【系统】
 
 
 
