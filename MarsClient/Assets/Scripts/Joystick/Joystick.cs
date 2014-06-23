@@ -10,7 +10,9 @@ public class Joystick : MonoBehaviour {
 		get{
 			if (instance == null)
 			{
-				instance = GameObject.FindObjectOfType(typeof (Joystick)) as Joystick;
+				GameObject go = Resources.Load ("Joystick", typeof (GameObject)) as GameObject;
+				instance = go.GetComponent<Joystick> ();
+				//instance = GameObject.FindObjectOfType(typeof (Joystick)) as Joystick;
 			}
 			return instance.position;
 		}
