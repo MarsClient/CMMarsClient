@@ -12,32 +12,43 @@ public class UISceneLoading : MonoBehaviour {
 	public static OnSenceLoadingDone currentOnSenceLoadingDone;
 	public static UISceneLoading instance;
 	public static string currentLoadName = "Splash";
+	public static bool isAssetBundle = false;
 
 	public UISlider slider;
 
 	//public static void Load
 
-	void Awake () { instance = this; }
+	void Awake () { instance = this; slider.value = 0; }
 	void OnDisable () { instance = null; }
-
 
 	public static void LoadingScnens (string loadName)
 	{
-		LoadingScnens (loadName, null);
+		LoadingScnens (loadName, null, false);
 	}
-	public static void LoadingScnens (string loadName, OnSenceLoadingDone onSenceLoadingDone)
+
+	public static void LoadingScnens (string loadName, bool _isAssetBundle)
 	{
+		LoadingScnens (loadName, null, _isAssetBundle);
+	}
+	public static void LoadingScnens (string loadName, OnSenceLoadingDone onSenceLoadingDone, bool _isAssetBundle)
+	{
+		isAssetBundle = _isAssetBundle;
 		currentOnSenceLoadingDone = onSenceLoadingDone;
 		currentLoadName = loadName;
 		Application.LoadLevel ("Loading");
+		if (_isAssetBundle == true)
+		{
+			AssetLoader.Instance.Download (loadName, true);
+		}
 	}
 
 
 	private AsyncOperation async;
 	IEnumerator  Start ()
 	{
-		if (currentLoadName != null)
+		if (currentLoadName != null && isAssetBundle == false)
 		{
+			isAssetBundle = false;
 			async = Application.LoadLevelAdditiveAsync (currentLoadName);
 			//loadName = null;
 			yield return async;
@@ -50,6 +61,20 @@ public class UISceneLoading : MonoBehaviour {
 			currentOnSenceLoadingDone = null;
 			Destroy (gameObject);
 		}
+	}
+
+	public IEnumerator LoadAssetBundleScenes (AsyncOperation async)
+	{
+		this.async  = async;
+		yield return async;
+		yield return new WaitForSeconds (0.5f);
+		if (currentOnSenceLoadingDone != null)
+		{
+			currentOnSenceLoadingDone (currentLoadName);
+		}
+		//currentLoadName = null;
+		currentOnSenceLoadingDone = null;
+		Destroy (gameObject);
 	}
 
 	void Update ()

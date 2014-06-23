@@ -36,7 +36,7 @@ public class NetRecv : MonoBehaviour {
 			if (bundle.cmd == Command.EnterGame)
 			{
 				Main.Instance.role = bundle.role;
-				UISceneLoading.LoadingScnens (UISceneLoading.PUBLIC_ZONE);
+				UISceneLoading.LoadingScnens (UISceneLoading.PUBLIC_ZONE, null, true);
 			}
 			if (bundle.cmd == Command.SendChat)
 			{
@@ -90,7 +90,7 @@ public class NetRecv : MonoBehaviour {
 										if (tabServerTabList != null) tabServerTabList.Initialization ();
 									});
 
-								});
+								}, false);
 							}
 							PanelsManager.Close ();
 							PanelsManager.Show (PanelType.ServerList, (Panel panel)=>

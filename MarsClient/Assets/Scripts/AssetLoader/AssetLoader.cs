@@ -1,137 +1,73 @@
-﻿using UnityEngine;
-using System;
-using System.IO;
-using System.Text;
+﻿using System; 
+using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class AssetLoader : MonoBehaviour {
 
+	string scenePath = "";
 
-	public static readonly string PathURL = 
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR
-		Application.dataPath + "/MGRes/AD/";
-#elif UNITY_ANDROID   //安卓  
-		"/mnt/sdcard/MGRes/";
-#elif UNITY_IPHONE  //iPhone  
-	Application.dataPath + "/MGRes/IOS/";
-#else  
-	string.Empty;  
-#endif 
+	public static AssetLoader Instance;
 
-	//private Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle> ();
-
-	private Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject> ();
-	public static AssetLoader instance; void Awake () { instance = this; }
-
-	public delegate void LoadAssetComplete ();
-	public LoadAssetComplete loadAssetComplete;
-
-	[HideInInspector]
-	public bool isSuccess = false;
-
-	public void Start ()
+	public void Awake ()
 	{
-		StartCoroutine (LoadAssetRes ());
-		StartCoroutine (GameData.Instance.reload ());
+		Instance = this;
+		scenePath = 
+	#if UNITY_STANDALONE_WIN || UNITY_EDITOR
+	"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";
+	#elif UNITY_ANDROID
+	"";
+	#elif UNITY_IPHONE
+	"";
+	#endif
+
 	}
 
-	List<string> GetPathName ()
+	public void Download (string fileName, bool isScene = false)
 	{
-		List<string> paths = new List<string> ();
-
-		foreach (string file in Directory.GetDirectories (PathURL))
+		if (isScene == true)
 		{
-			foreach (string child in Directory.GetFiles (file))
-			{
-				if (child.Contains (".meta") == false)
-				{
-					paths.Add ("file://" + child);
-					//Debug.Log ("file://" + child);
-				}
-			}
-		}
-		return paths;
-	}
-
-	private IEnumerator LoadAssetRes ()
-	{
-		float last = Time.time;
-		DebugConsole.Log ("<----Start Init Resource--->");
-		List<string> paths = GetPathName ();
-		DebugConsole.Log (paths.Count);
-		if (paths.Count > 0)
-		{
-			foreach (string p in paths)
-			{
-				WWW bundle = new WWW(p);  
-				yield return bundle;
-				if (bundle.error == null)
-				{
-					//assetBundles.Add (p, bundle.assetBundle);
-					GameObject prefab = (GameObject) bundle.assetBundle.mainAsset;
-					prefabs.Add (prefab.name, prefab);
-					bundle.assetBundle.Unload (false);
-					//Debug.Log (prefabs[prefab.name]);
-					bundle.Dispose();
-					bundle = null;
-				}
-				else
-				{
-					Debug.LogError (p + "Load error<-------------->" + bundle.error );
-					DebugConsole.LogError (p + "Load error");
-				}
-			}
-			//Debug.Log ();
-//			foreach (KeyValuePair<string, AssetBundle> kvp in assetBundles)
-//			{
-//				Debug.Log (kvp.Value + "______" + kvp.Key);
-//			}
-			DebugConsole.Log ("<----Init Resource Success--->Cost Time" + (Time.time - last));
-			isSuccess = true;
-			if (loadAssetComplete != null)
-			{
-				loadAssetComplete ();
-			}
-		} 
-	}
-
-
-	public GameObject getIdByPrefabs (string id)
-	{
-		return prefabs[id];
-	}
-
-	public void clear ()
-	{
-		prefabs.Clear ();
-		Resources.UnloadUnusedAssets();
-	}
-
-	void OnGUI ()
-	{
-		if (GUI.Button (new Rect (400,0, 100, 100), "Load Next"))
-		{  
-			clear ();
-			Application.LoadLevel ("PublicZone");
-		}  
-	}
-
-	/*IEnumerator delayDownload ()
-	{
-		WWW www = new WWW ("ftp://qq459127484:kanni789@002.3vftp.com/Users.txt");
-		yield return www;
-		Debug.Log (www.progress);
-		if (www.error == null)
-		{
-			if (www.isDone)
-			{
-				Debug.Log (www.text);
-			}
+			StartCoroutine (DownloadScenes (fileName));
 		}
 		else
 		{
-			Debug.Log ("Download error");
+
 		}
-	}*/
+	}
+
+	IEnumerator DownloadScenes (string sc)
+	{ 
+		string path = scenePath + sc + ".unity3d";
+		//Debug.LogError (path);
+		WWW scene = new WWW(path);  
+		yield return scene;  
+		if (scene.error == null)
+		{
+			AssetBundle bundle = scene.assetBundle;  
+			//Application.LoadLevel (sc);
+			StartCoroutine (UISceneLoading.instance.LoadAssetBundleScenes ( Application.LoadLevelAdditiveAsync (sc)));  
+		}
+		else
+		{
+			Debug.LogError (scene.error + "  and" + sc);
+		}
+	}
+
+	IEnumerator DownloadAssetBundle (string sc)
+	{
+		yield return null;  
+	}
+
+	void OnDisable ()
+	{
+		Resources.UnloadUnusedAssets();
+	}
+
+//	void OnGUI ()
+//	{
+//		//Debug.LogError (parent.transform.childCount);
+//		if (GUILayout.Button ("hahahahhahahah"))
+//		{
+//			Download ("PublicZone.unity3d");
+//		}
+//	}
 }
