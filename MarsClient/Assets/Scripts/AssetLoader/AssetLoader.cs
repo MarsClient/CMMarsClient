@@ -20,18 +20,18 @@ public class AssetLoader : MonoBehaviour {
 #if UNITY_ANDROID
 	"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";;
 #elif UNITY_IPHONE
-	"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";;
+	"file://" + Application.dataPath + "/A_MarsRes/IOS/SC/";;
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR
 	"file://" + Application.dataPath + "/A_MarsRes/PC/SC/";
 #endif
 
 		assetBundlePath = 
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR
-			"file://" + Application.dataPath + "/A_MarsRes/Android/{0}/{1}";
-#elif UNITY_ANDROID
-"";
+#if UNITY_ANDROID
+		"file://" + Application.dataPath + "/A_MarsRes/Android/{0}/{1}";;
 #elif UNITY_IPHONE
-"";
+		"file://" + Application.dataPath + "/A_MarsRes/IOS/{0}/{1}";
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
+	"file://" + Application.dataPath + "/A_MarsRes/Android/{0}/{1}";
 #endif
 
 	}
