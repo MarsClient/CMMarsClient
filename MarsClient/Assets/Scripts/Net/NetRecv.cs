@@ -75,29 +75,29 @@ public class NetRecv : MonoBehaviour {
 						.SetNoBtn ("game.dialog.yes")
 						.SetDelegateBtn ((bool isBy)=>
 						{
-							if (UISceneLoading.currentLoadName != UISceneLoading.SPLASH)
+							//if (UISceneLoading.currentLoadName != UISceneLoading.SPLASH)
+							//{
+							UISceneLoading.LoadingScnens (UISceneLoading.SPLASH, (string loadName)=>
 							{
-								UISceneLoading.LoadingScnens (UISceneLoading.SPLASH, (string loadName)=>
-								{
-									Debug.Log (loadName);
-									NetSend.SendAbortDiscount ();
-									PhotonClient.Instance.LoadingLoginServer ();
+								Debug.Log (loadName);
+								NetSend.SendAbortDiscount ();
+								PhotonClient.Instance.LoadingLoginServer ();
 
-									PanelsManager.Close ();
-									PanelsManager.Show (PanelType.ServerList, (Panel panel)=>
-									                    {
-										UITabServerList tabServerTabList = panel.GetComponentInChildren<UITabServerList>();
-										if (tabServerTabList != null) tabServerTabList.Initialization ();
-									});
+								PanelsManager.Close ();
+								PanelsManager.Show (PanelType.ServerList, (Panel panel)=>
+								                    {
+									UITabServerList tabServerTabList = panel.GetComponentInChildren<UITabServerList>();
+									if (tabServerTabList != null) tabServerTabList.Initialization ();
+								});
 
-								}, false);
-							}
-							PanelsManager.Close ();
-							PanelsManager.Show (PanelType.ServerList, (Panel panel)=>
-							{
-								UITabServerList tabServerTabList = panel.GetComponentInChildren<UITabServerList>();
-								if (tabServerTabList != null) tabServerTabList.Initialization ();
-							});
+							}, false);
+							//}
+//							PanelsManager.Close ();
+//							PanelsManager.Show (PanelType.ServerList, (Panel panel)=>
+//							{
+//								UITabServerList tabServerTabList = panel.GetComponentInChildren<UITabServerList>();
+//								if (tabServerTabList != null) tabServerTabList.Initialization ();
+//							});
 						})
 						.ShowWaiting ();
 

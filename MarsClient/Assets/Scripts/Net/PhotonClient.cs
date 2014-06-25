@@ -95,6 +95,12 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 			this.ServerConnected = true;
 			break;
 		case StatusCode.Disconnect:
+			if (netRecv == null) netRecv = GetComponent<NetRecv>();
+			Bundle bundle = new Bundle ();
+			bundle.error = new Error ();
+			bundle.error.message = "game.server.net.error";
+			bundle.cmd = Command.NetError;
+			netRecv.ProcessResult (bundle);
 			this.ServerConnected = false;
 			break;
 		}
@@ -170,10 +176,10 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		}
 	}
 
-	private void OnApplicationQuit ()
-	{
-		Update ();
-		NetSend.SendAbortDiscount ();
-		Update ();
-	}
+//	private void OnApplicationQuit ()
+//	{
+//		//Update ();
+//		NetSend.SendAbortDiscount ();
+//		//Update ();
+//	}
 }
