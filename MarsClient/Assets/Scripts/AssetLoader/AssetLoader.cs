@@ -17,12 +17,12 @@ public class AssetLoader : MonoBehaviour {
 	{
 		Instance = this;
 		scenePath = 
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR
-	"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";
-#elif UNITY_ANDROID
-	"";
+#if UNITY_ANDROID
+	"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";;
 #elif UNITY_IPHONE
-	"";
+	"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";;
+#elif UNITY_STANDALONE_WIN || UNITY_EDITOR
+	"file://" + Application.dataPath + "/A_MarsRes/PC/SC/";
 #endif
 
 		assetBundlePath = 
