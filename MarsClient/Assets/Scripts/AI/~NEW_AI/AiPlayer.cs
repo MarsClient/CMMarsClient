@@ -17,7 +17,7 @@ public class AiPlayer : MonoBehaviour
 	}
 	void OnDisable ()
 	{
-		if (aiAnt.aiMove == null || aiAnt == null) return;
+		if (aiAnt == null || aiAnt.aiMove == null) return;
 		aiAnt.aiMove.moveEvent -= MoveEvent;
 		aiAnt.attackDelegate -= AttackDelegate;
 	}

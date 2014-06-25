@@ -23,16 +23,16 @@ public class ObjectPool {
 		_Instance = null;
 	}
 
-	public GameObject LoadObject (string path)
+	public GameObject LoadObject (GameObject path)
 	{
 		return LoadObject (path, Vector3.zero);
 	}
 
-	public GameObject LoadObject (string path, Vector3 pos)
+	public GameObject LoadObject (GameObject path, Vector3 pos)
 	{
 		List<GameObject> gos = null;
 		GameObject go;
-		if (objects.TryGetValue (path, out gos) == false)
+		if (objects.TryGetValue (path.name, out gos) == false)
 		{
 			gos = new List<GameObject>();
 		}
@@ -45,11 +45,11 @@ public class ObjectPool {
 				return g;
 			}
 		}
-		go = Resources.Load (path, typeof(GameObject)) as GameObject;
+		go = path;//Resources.Load (path, typeof(GameObject)) as GameObject;
 		go = GameObject.Instantiate (go) as GameObject;//NGUITools.AddChild(go);
 		go.transform.position = pos;
 		gos.Add (go);
-		objects[path] = gos;
+		objects[path.name] = gos;
 		return go;
 	}
 

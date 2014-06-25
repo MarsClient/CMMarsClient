@@ -21,7 +21,7 @@ public abstract class HitUnit : MonoBehaviour {
 			ac.Play (Clip.Hit);
 		}
 
-		ObjectPool.Instance.LoadObject ("EF/EF0001", hitPos.position);
+//		ObjectPool.Instance.LoadObject ("EF/EF0001", hitPos.position);
 		ExtraEvent (info, fe);
 		//hit color
 		CancelInvoke ("ResetColor");

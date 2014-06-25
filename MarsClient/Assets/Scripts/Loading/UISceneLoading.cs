@@ -38,7 +38,7 @@ public class UISceneLoading : MonoBehaviour {
 		Application.LoadLevel ("Loading");
 		if (_isAssetBundle == true)
 		{
-			AssetLoader.Instance.Download (loadName, true);
+			AssetLoader.Instance.DownloadScenes (loadName);
 		}
 	}
 
@@ -52,14 +52,7 @@ public class UISceneLoading : MonoBehaviour {
 			async = Application.LoadLevelAdditiveAsync (currentLoadName);
 			//loadName = null;
 			yield return async;
-			yield return new WaitForSeconds (0.5f);
-			if (currentOnSenceLoadingDone != null)
-			{
-				currentOnSenceLoadingDone (currentLoadName);
-			}
-			//currentLoadName = null;
-			currentOnSenceLoadingDone = null;
-			Destroy (gameObject);
+			DelaySuccessLoading ();
 		}
 	}
 
@@ -67,14 +60,22 @@ public class UISceneLoading : MonoBehaviour {
 	{
 		this.async  = async;
 		yield return async;
-		yield return new WaitForSeconds (0.5f);
+		//DelaySuccessLoading ();
+
+	}
+
+	public void DelaySuccessLoading ()
+	{
+		//yield return new WaitForSeconds (0.5f);
 		if (currentOnSenceLoadingDone != null)
 		{
 			currentOnSenceLoadingDone (currentLoadName);
 		}
 		//currentLoadName = null;
 		currentOnSenceLoadingDone = null;
-		Destroy (gameObject);
+		TweenAlpha.Begin (gameObject, 2f, 0);
+		Destroy (gameObject, 2f);
+
 	}
 
 	void Update ()

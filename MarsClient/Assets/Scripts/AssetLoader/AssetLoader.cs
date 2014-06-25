@@ -11,7 +11,7 @@ public class AssetLoader : MonoBehaviour {
 	public static AssetLoader Instance;
 
 	public Dictionary<string, GameObject> assetBundles = new Dictionary<string, GameObject> ();
-
+	public delegate void DownloadFinishCallBack (List <object> gos);
 
 	public void Awake ()
 	{
@@ -42,24 +42,22 @@ public class AssetLoader : MonoBehaviour {
 		assetBundles.TryGetValue (fileName, out go);
 		if (go == null)
 		{
-			Download (fileName);
+			DownloadScenes (fileName);
 		}
 		return go;
 	}
 
-	public void Download (string fileName, bool isScene = false)
+	public void DownloadScenes (string fileName)
 	{
-		if (isScene == true)
-		{
-			StartCoroutine (DownloadScenes (fileName));
-		}
-		else
-		{
-			StartCoroutine (DownloadAssetBundle (fileName));
-		}
+		StartCoroutine (_DownloadScenes (fileName));
 	}
 
-	IEnumerator DownloadScenes (string sc)
+	public void DownloadAssetbundle (string[] fileName, DownloadFinishCallBack callback)
+	{
+		StartCoroutine (DownloadAssetBundle (fileName, callback));
+	}
+
+	IEnumerator _DownloadScenes (string sc)
 	{ 
 		string path = scenePath + sc + ".unity3d";
 		//Debug.LogError (path);
@@ -77,25 +75,40 @@ public class AssetLoader : MonoBehaviour {
 		}
 	}
 
-	IEnumerator DownloadAssetBundle (string sc)
+	IEnumerator DownloadAssetBundle (string[] scs, DownloadFinishCallBack callback)
 	{
-		string path = string.Format (assetBundlePath, sc.Substring (0, 2), sc + ".assetbundle");
-		Debug.LogError (path);
-		WWW www = new WWW (path);
-		yield return www;
-		if (www.error == null)
+		List<object> gos = new List<object> ();
+		foreach (string sc in scs)
 		{
-			GameObject go = (GameObject) www.assetBundle.mainAsset;
-			if (assetBundles.ContainsKey (sc) == false)
+			string path = string.Format (assetBundlePath, sc.Substring (0, 2), sc + ".assetbundle");
+	//		Debug.LogError (path);
+			WWW www = new WWW (path);
+			yield return www;
+			if (www.error == null)
 			{
-				assetBundles.Add (sc, go);
+				GameObject go = (GameObject) www.assetBundle.mainAsset;
+//				if (assetBundles.ContainsKey (sc) == false)
+//				{
+//					assetBundles.Add (sc, go);
+//				}
+//				else
+//				{
+//					assetBundles[sc] = go;
+//				}
+				//Debug.LogError (assetBundles.Count);
+				gos.Add (go);
+				www.Dispose ();
+				www = null;
 			}
-			else
-			{
-				assetBundles[sc] = go;
-			}
-			www.Dispose ();
-			www = null;
+		}
+		Callback (callback, gos);
+	}
+
+	void Callback (DownloadFinishCallBack callback, List <object> gos)
+	{
+		if (callback != null)
+		{
+			callback (gos);
 		}
 	}
 

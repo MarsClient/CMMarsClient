@@ -58,7 +58,7 @@ public class EnemyController : MonoBehaviour {
 			animationController.Play (animationItem.targetClip);
 		}
 		transform.forward = forward;
-		ObjectPool.Instance.LoadObject ("EF/EF0001", hitPos.position);
+//		ObjectPool.Instance.LoadObject ("EF/EF0001", hitPos.position);
 
 		//hit move
 		Vector3 targetPos = transform.position - forward.normalized * animationItem.attackMove;
