@@ -13,6 +13,7 @@ public class AssetLoader : MonoBehaviour {
 	void Awake () {if (Instance == null) { Instance = this; DontDestroyOnLoad (gameObject); } else if (Instance != this) Destroy (gameObject); }
 
 	public Dictionary<string, GameObject> assetBundles = new Dictionary<string, GameObject> ();
+	public Dictionary<string, AssetBundle> scAssetBundles = new Dictionary<string, AssetBundle> ();
 	public delegate void DownloadFinishCallBack (List <object> gos);
 
 	public void Start ()
@@ -61,18 +62,28 @@ public class AssetLoader : MonoBehaviour {
 	IEnumerator _DownloadScenes (string sc)
 	{ 
 		string path = scenePath + sc + ".unity3d";
-		//Debug.LogError (path);
-		WWW www = new WWW(path);  
-		yield return www;  
-		if (www.error == null)
+		if (scAssetBundles.ContainsKey (sc) == false || scAssetBundles[sc] == null)
 		{
-			AssetBundle bundle = www.assetBundle;  
-			//Application.LoadLevel (sc);
-			StartCoroutine (UISceneLoading.instance.LoadAssetBundleScenes ( Application.LoadLevelAdditiveAsync (sc)));  
+			//Debug.LogError (path);
+			WWW www = new WWW(path);  
+			yield return www;  
+			if (www.error == null)
+			{
+				AssetBundle bundle = www.assetBundle;  
+				//Application.LoadLevel (sc);
+				scAssetBundles.Add (sc, bundle);
+			}
+			else
+			{
+				Debug.LogError (www.error + "  and" + sc);
+			}
 		}
+		Debug.Log (UISceneLoading.instance);
+		if (UISceneLoading.instance != null)
+			StartCoroutine (UISceneLoading.instance.LoadAssetBundleScenes ( Application.LoadLevelAdditiveAsync (sc)));  
 		else
 		{
-			Debug.LogError (www.error + "  and" + sc);
+			Application.LoadLevelAdditiveAsync (sc);
 		}
 	}
 
