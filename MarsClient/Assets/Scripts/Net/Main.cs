@@ -10,10 +10,10 @@ public class Main : MonoBehaviour
 
 
 	public SQLiteVer sqliteVer;
-	public Dictionary<string, Server[]> serverList;
+	public Dictionary<string, Server[]> serverList = new Dictionary<string, Server[]> ();
 	public Account account;
 	public Server server;
-	public List<Role> roles;
+	public List<Role> roles = new List<Role> ();
 	public Role role;
 	public Dictionary<ChatType, List<Message>> messages = new Dictionary<ChatType, List<Message>> ();
 	public List<Role> onlineRoles = new List<Role> ();

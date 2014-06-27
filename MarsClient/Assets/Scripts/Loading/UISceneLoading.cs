@@ -32,6 +32,7 @@ public class UISceneLoading : MonoBehaviour {
 	}
 	public static void LoadingScnens (string loadName, OnSenceLoadingDone onSenceLoadingDone, bool _isAssetBundle)
 	{
+		AssetLoader.Instance.OnDisable ();
 		isAssetBundle = _isAssetBundle;
 		currentOnSenceLoadingDone = onSenceLoadingDone;
 		currentLoadName = loadName;

@@ -6,6 +6,8 @@ using TabButton;
 [System.Serializable]
 public class CreatMode : ITabListener
 {
+	public GameObject modelBg;
+	private Dictionary <PRO, GameObject> PROS = new Dictionary<PRO, GameObject>();
 	#region ITabListener implementation
 
 	public void TabInitialization (GameObject go, object obj)
@@ -24,15 +26,17 @@ public class CreatMode : ITabListener
 		}
 		if (go.transform.parent == tabList1.transform) 
 		{
-//			go.GetComponentInChildren <UISprite>().color = Color.grey;
-			pro = (PRO) t;
-//			Debug.Log ("PRO: " + (int)t);
+			pro = (PRO) ((int) t + Constants.START_ID);
+			foreach (KeyValuePair<PRO, GameObject> kvp in PROS)
+			{
+				kvp.Value.SetActive (kvp.Key == pro);
+			}
+			//Debug.Log ("PRO: " + (int)t);
 		}
 		if (go.transform.parent == tabList2.transform) 
 		{
-			//go.GetComponentInChildren <UISprite>().color = Color.grey;
 			sex = (int) t;
-//			Debug.Log ("SEX: " + (int)t);
+			//Debug.Log ("SEX: " + (int)t);
 		}
 
 	}
@@ -48,12 +52,48 @@ public class CreatMode : ITabListener
 	private int sex = 0;
 	private PRO pro = PRO.ZS;
 
+
+	string[] pros = new string[3];
 	public void Init ()
 	{
-		tabList1.tabListener = this;
+		new DialogContent ()
+			.SetMessage ("server.link.success.after")
+				.SetNoBtn ("game.dialog.no")
+				.ShowWaiting ();
+
+
+		if (tabList1.tabListener == null)
+			tabList1.tabListener = this;
 		tabList1.refresh ();
-		tabList2.tabListener = this;
+		if (tabList2.tabListener == null)
+			tabList2.tabListener = this;
 		tabList2.refresh ();
+
+		pros[0] = Constants.PRO + ((int)PRO.ZS).ToString () + Constants.PRO_CREAT;
+		pros[1] = Constants.PRO + ((int)PRO.FS).ToString () + Constants.PRO_CREAT;
+		pros[2] = Constants.PRO + ((int)PRO.DZ).ToString () + Constants.PRO_CREAT;
+		
+		AssetLoader.Instance.DownloadAssetbundle (pros, CallBack);
+	}
+
+	void CallBack (List<object> gos)
+	{
+		foreach (object o in gos)
+		{
+			GameObject go = (GameObject) o;
+			PRO p = PRO.NULL;
+			if (go.name == pros[0] ) p = PRO.ZS;
+			else if (go.name == pros[1] ) p = PRO.FS;
+			else if (go.name == pros[2] ) p = PRO.DZ;
+			GameObject role = NGUITools.AddChild (modelBg, go);
+
+			role.SetActive (false);
+			if (p != PRO.NULL) PROS.Add (p, role);
+		}
+//		UISceneLoading.instance.DelaySuccessLoading ();
+//		Debug.Log ("Done");
+		Dialog.instance.TweenClose ();
+		PROS[pro].SetActive (true);
 	}
 
 	private Error Ctrat ()
@@ -108,28 +148,33 @@ public class RoleListMode
 
 public class RolePanel : MonoBehaviour 
 {
-
 	public CreatMode creatMode; 
 	public RoleListMode roleListMode;
 	public UIRoleList roleList;
 
-
+	private bool isCreatInit = false;
 	void Start ()
 	{
-		creatMode.Init ();
+		bool isActive = (Main.Instance == null || Main.Instance.roles == null || Main.Instance.roles.Count == 0);
+		SetCreatRole (isActive);
+		//creatMode.Init ();
 	}
 
 	void OnEnable ()
 	{
-		bool isActive = (Main.Instance == null || Main.Instance.roles == null || Main.Instance.roles.Count == 0);
-		SetCreatRole (isActive);
 		//if (isActive == false) { roleList.Initialization (Main.Instance.roles); }
+
 		PhotonClient.processResults += ProcessResults;
 	}
 
 	void SetCreatRole (bool isActive)
 	{
 		creatMode.mainObj.SetActive (isActive);
+		if (isActive == true && isCreatInit == false)
+		{
+			isCreatInit = true;
+			creatMode.Init ();
+		}
 		roleListMode.mainObj.SetActive (!isActive);
 	}
 
@@ -148,6 +193,7 @@ public class RolePanel : MonoBehaviour
 		if (Main.Instance.roles != null && Main.Instance.roles.Count > 0)
 		{
 			SetCreatRole (false);
+			creatMode.modelBg.SetActive (false);
 		}
 		else
 		{
@@ -164,6 +210,7 @@ public class RolePanel : MonoBehaviour
 
 	void CreatOnClick ()
 	{
+		creatMode.modelBg.SetActive (true);
 		SetCreatRole (true);
 	}
 

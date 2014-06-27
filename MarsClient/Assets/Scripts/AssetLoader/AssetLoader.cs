@@ -80,25 +80,34 @@ public class AssetLoader : MonoBehaviour {
 		List<object> gos = new List<object> ();
 		foreach (string sc in scs)
 		{
-			string path = string.Format (assetBundlePath, sc.Substring (0, 2), sc + ".assetbundle");
-	//		Debug.LogError (path);
-			WWW www = new WWW (path);
-			yield return www;
-			if (www.error == null)
+			if (assetBundles.ContainsKey (sc) == false || assetBundles[sc] == null)
 			{
-				GameObject go = (GameObject) www.assetBundle.mainAsset;
-//				if (assetBundles.ContainsKey (sc) == false)
-//				{
-//					assetBundles.Add (sc, go);
-//				}
-//				else
-//				{
-//					assetBundles[sc] = go;
-//				}
-				//Debug.LogError (assetBundles.Count);
-				gos.Add (go);
-				www.Dispose ();
-				www = null;
+				string path = string.Format (assetBundlePath, sc.Substring (0, 2), sc + ".assetbundle");
+		//		Debug.LogError (path);
+				WWW www = new WWW (path);
+				yield return www;
+				if (www.error == null)
+				{
+					Debug.Log (sc);
+					GameObject go = (GameObject) www.assetBundle.mainAsset;
+	//				if (assetBundles.ContainsKey (sc) == false)
+	//				{
+	//					assetBundles.Add (sc, go);
+	//				}
+	//				else
+	//				{
+	//					assetBundles[sc] = go;
+	//				}
+					//Debug.LogError (assetBundles.Count);
+					gos.Add (go);
+					www.Dispose ();
+					www = null;
+					assetBundles.Add (sc, go);
+				}
+			}
+			else
+			{
+				gos.Add (assetBundles[sc]);
 			}
 		}
 		Callback (callback, gos);
@@ -112,7 +121,7 @@ public class AssetLoader : MonoBehaviour {
 		}
 	}
 
-	void OnDisable ()
+	public void OnDisable ()
 	{
 		Resources.UnloadUnusedAssets();
 	}

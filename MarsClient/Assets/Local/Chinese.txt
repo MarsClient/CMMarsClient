@@ -31,6 +31,7 @@ server.limit3 = 高
 server.limit4 = 爆
 server.linking = 正在连接
 server.link.success = 连接成功
+server.link.success.after = 资源初始化...
 
 game.role.creat = 创建角色
 game.role.input.deafult = 请输入角色名
@@ -40,7 +41,7 @@ game.role.success = 角色创建成功
 game.role.same.name.error = 角色名已被使用
 game.role.ZS = 战士
 game.role.FS = 法师
-game.role.WS = 武僧
+game.role.WS = 盗贼
 game.role.male = 男
 game.role.female = 女
 game.role.enter.game = 进入游戏
