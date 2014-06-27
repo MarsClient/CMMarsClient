@@ -73,11 +73,13 @@ public class UIRoleList : MonoBehaviour, ITabListener {
 	{
 		if (roles != null)
 		{
-			new DialogContent ()
-				.SetMessage ("server.link.success.after")
-					.SetNoBtn ("game.dialog.no")
-					.ShowWaiting ();
-
+			if (PROS.Count <= 0)
+			{
+				new DialogContent ()
+					.SetMessage ("server.link.success.after")
+						.SetNoBtn ("game.dialog.no")
+						.ShowWaiting ();
+			}
 
 
 			Start ();
@@ -107,7 +109,8 @@ public class UIRoleList : MonoBehaviour, ITabListener {
 			else if (go.name == pros[1] ) p = PRO.FS;
 			else if (go.name == pros[2] ) p = PRO.DZ;
 			GameObject _role = NGUITools.AddChild (modelBg, go);
-			
+			AiInput input = _role.GetComponent<AiInput>();
+			input.enabled = false;
 			_role.SetActive (false);
 			if (p != PRO.NULL) PROS.Add (p, _role);
 		}

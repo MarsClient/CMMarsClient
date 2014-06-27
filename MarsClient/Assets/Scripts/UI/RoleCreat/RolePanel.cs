@@ -56,10 +56,13 @@ public class CreatMode : ITabListener
 	string[] pros = new string[3];
 	public void Init ()
 	{
-		new DialogContent ()
-			.SetMessage ("server.link.success.after")
-				.SetNoBtn ("game.dialog.no")
-				.ShowWaiting ();
+		if (PROS.Count <= 0)
+		{
+			new DialogContent ()
+				.SetMessage ("server.link.success.after")
+					.SetNoBtn ("game.dialog.no")
+					.ShowWaiting ();
+		}
 
 
 		if (tabList1.tabListener == null)
