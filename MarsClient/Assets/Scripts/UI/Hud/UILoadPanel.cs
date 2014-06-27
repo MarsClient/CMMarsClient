@@ -21,7 +21,7 @@ public class UILoadPanel : MonoBehaviour {
 		foreach (string p in panels)
 		{
 			GameObject res_go =  Resources.Load ("UI/" + p, typeof (GameObject)) as GameObject;
-			GameObject panel = GameObject.Instantiate (res_go) as GameObject;
+			GameObject panel = NGUITools.AddChild (anchor, res_go);
 		}
 	}
 }
