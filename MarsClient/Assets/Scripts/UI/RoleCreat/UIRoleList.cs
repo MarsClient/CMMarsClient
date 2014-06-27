@@ -114,7 +114,14 @@ public class UIRoleList : MonoBehaviour, ITabListener {
 		//		UISceneLoading.instance.DelaySuccessLoading ();
 		Debug.Log ("Done");
 		Dialog.instance.TweenClose ();
-		PRO pro = (PRO) Enum.Parse (typeof (PRO), role.profession);
-		PROS[pro].SetActive (true);
+		if (role != null)
+		{
+			PRO pro = (PRO) Enum.Parse (typeof (PRO), role.profession);
+			if (pro != PRO.NULL)
+			{
+
+				PROS[pro].SetActive (true);
+			}
+		}
 	}
 }

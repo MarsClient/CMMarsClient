@@ -66,8 +66,9 @@ public class Dialog : MonoBehaviour {
 
 	public void TweenClose ()
 	{
-		TweenAlpha ta = TweenAlpha.Begin (dialogItem.gameObject, 0.25f, 0);
-		ta.AddOnFinished (CloseDialog);
+		Close ();
+//		TweenAlpha ta = TweenAlpha.Begin (dialogItem.gameObject, 0.25f, 0);
+//		ta.AddOnFinished (CloseDialog);
 	}
 
 	void CloseDialog ()

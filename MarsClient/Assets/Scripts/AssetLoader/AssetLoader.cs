@@ -10,12 +10,13 @@ public class AssetLoader : MonoBehaviour {
 
 	public static AssetLoader Instance;
 
+	void Awake () {if (Instance == null) { Instance = this; DontDestroyOnLoad (gameObject); } else if (Instance != this) Destroy (gameObject); }
+
 	public Dictionary<string, GameObject> assetBundles = new Dictionary<string, GameObject> ();
 	public delegate void DownloadFinishCallBack (List <object> gos);
 
-	public void Awake ()
+	public void Start ()
 	{
-		Instance = this;
 		scenePath = 
 #if UNITY_ANDROID
 	"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";;
