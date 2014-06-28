@@ -152,7 +152,7 @@ public class AiAnimation : MonoBehaviour {
 			if (isExist == true)
 			{
 				//Debug.Log (m_Animation.IsPlaying (animationInfo.animationClip.name) +  "___" + clip);
-				if (m_Animation.IsPlaying (animationInfo.animationClip.name)) { return; }
+				//if (m_Animation.IsPlaying (animationInfo.animationClip.name)) { return; }
 				clip = c;
 				m_Animation.CrossFade (animationInfo.animationClip.name);
 			}

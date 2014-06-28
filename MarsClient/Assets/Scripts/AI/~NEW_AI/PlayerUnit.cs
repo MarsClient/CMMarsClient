@@ -41,7 +41,9 @@ public class PlayerUnit : HitUnit {
 			role = r;
 			transform.position = new Vector3 (r.x, 0, r.z);
 			transform.forward = new Vector3 (r.xRo, 0, r.zRo);
-			m_ac.Play ((Clip) r.action);
+			Clip c = (Clip) r.action;
+//			Debug.LogError (c);
+			m_ac.Play (c);
 		}
 	}
 
@@ -62,6 +64,13 @@ public class PlayerUnit : HitUnit {
 			if (role != null && role.roleId == bundle.role.roleId)
 			{
 				RefreshMulPlayerState (bundle.role);
+			}
+		}
+		if (bundle.cmd == Command.DestroyPlayer)
+		{
+			if (role != null && role.roleId == bundle.role.roleId)
+			{
+				Destroy (gameObject);
 			}
 		}
 	}
