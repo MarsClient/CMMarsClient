@@ -38,6 +38,7 @@ public class AiPlayer : MonoBehaviour
 			{
 				lastPos = transform.position;
 				PlayerStateNet (c);
+				//Debug.Log ("______" + c);
 			}
 		}
 		else
@@ -50,17 +51,17 @@ public class AiPlayer : MonoBehaviour
 	#region Player State .Net
 	void PlayerStateNet (Clip c)
 	{
-		if (Main.Instance.account != null)
+		if (Main.Instance.role != null)
 		{
-			Player p = new Player();
-			p.uniqueId = Main.Instance.account.uniqueId;
-			p.x = (float) ((double) transform.position.x);
-			p.z = (float) ((double) transform.position.z);
-			p.xRo = (float) ((double) transform.forward.x);
-			p.zRo = (float) ((double) transform.forward.z);
-			p.actionId = (int)c;
-			p.roleName = Main.Instance.account.roleName;
-			//NetSend.SendUpdatePlayerPos (p); 
+			//Player p = new Player();
+
+			Main.Instance.role.x = (float) transform.position.x;
+			Main.Instance.role.z = (float) transform.position.z;
+			Main.Instance.role.xRo = (float) transform.forward.x;
+			Main.Instance.role.zRo = (float) transform.forward.z;
+			Main.Instance.role.action = (int)c;
+			//Debug.LogError (transform.forward);
+			NetSend.SendUpdatePlayer (Main.Instance.role);
 		}
 	}
 	#endregion

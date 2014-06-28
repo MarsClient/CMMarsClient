@@ -33,4 +33,37 @@ public class PlayerUnit : HitUnit {
 			label.text = role.roleName;
 		}
 	}
+
+	public void RefreshMulPlayerState (Role r)
+	{
+		if (r != null)
+		{
+			role = r;
+			transform.position = new Vector3 (r.x, 0, r.z);
+			transform.forward = new Vector3 (r.xRo, 0, r.zRo);
+			m_ac.Play ((Clip) r.action);
+		}
+	}
+
+	void OnEnable ()
+	{
+		PhotonClient.processResults += ProcessResults;
+	}
+
+	void OnDisable ()
+	{
+		PhotonClient.processResults -= ProcessResults;
+	}
+
+	void ProcessResults (Bundle bundle)
+	{
+		if (bundle.cmd == Command.UpdatePlayer)
+		{
+			if (role != null && role.roleId == bundle.role.roleId)
+			{
+				RefreshMulPlayerState (bundle.role);
+			}
+		}
+	}
+
 }

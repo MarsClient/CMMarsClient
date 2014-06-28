@@ -36,6 +36,7 @@ public class NetRecv : MonoBehaviour {
 			if (bundle.cmd == Command.EnterGame)
 			{
 				Main.Instance.role = bundle.role;
+				Main.Instance.onlineRoles = bundle.onlineRoles;
 				UISceneLoading.LoadingScnens (UISceneLoading.PUBLIC_ZONE, null, true);
 			}
 			if (bundle.cmd == Command.SendChat)

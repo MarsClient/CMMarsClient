@@ -33,8 +33,13 @@ public class MultiPlayer : MonoBehaviour {
 			if (p != PRO.NULL) PROS.Add (p, role);
 		}
 		UISceneLoading.instance.DelaySuccessLoading ();
-		Debug.Log ("Done");
+		Debug.Log ("Done" + Main.Instance.onlineRoles.Count);
 		AddNewPro (Main.Instance.role);
+
+		foreach (Role r in Main.Instance.onlineRoles)
+		{
+			AddNewPro (r);
+		}
 	}
 
 	void AddNewPro (Role role)
@@ -48,36 +53,47 @@ public class MultiPlayer : MonoBehaviour {
 		{
 			GameObject r = ObjectPool.Instance.LoadObject (go);
 			r.name = role.accountId.ToString ();
-			r.GetComponent <HitUnit>().DataRefresh (role);
-			CameraController.instance.initialize (r.transform);
+			PlayerUnit hit = r.GetComponent <PlayerUnit>();
+			hit.DataRefresh (role);
+
 			r.SetActive (true);
+
+			if (role.roleId != Main.Instance.role.roleId)
+			{
+				hit.RefreshMulPlayerState (role);
+				Destroy (r.GetComponent<AiPlayer>());
+				Destroy (r.GetComponent<AiInput>());
+				return;
+			}
+			CameraController.instance.initialize (r.transform);
 		}
 	}
 
-	void OnEnable ()
-	{
-		PhotonClient.processResults += ProcessResults;
-		PhotonClient.processResultSync += ProcessResultSync;
-	}
-
-	void OnDisable ()
-	{
-		PhotonClient.processResults -= ProcessResults;
-		PhotonClient.processResultSync -= ProcessResultSync;
-		PROS.Clear ();
-	}
-
-	void ProcessResults (Bundle bundle)
-	{
-
-	}
-
-	void ProcessResultSync (Bundle bundle)
-	{
-	}
+//	void OnEnable ()
+//	{
+//		PhotonClient.processResults += ProcessResults;
+//		PhotonClient.processResultSync += ProcessResultSync;
+//	}
+//
+//	void OnDisable ()
+//	{
+//		PhotonClient.processResults -= ProcessResults;
+//		PhotonClient.processResultSync -= ProcessResultSync;
+//		PROS.Clear ();
+//	}
+//
+//	void ProcessResults (Bundle bundle)
+//	{
+//
+//	}
+//
+//	void ProcessResultSync (Bundle bundle)
+//	{
+//	}
 
 	public void OnDestroy ()
 	{
+		PROS.Clear ();
 		ObjectPool.Instance.Clear ();
 	}
 }
