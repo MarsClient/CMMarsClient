@@ -53,7 +53,7 @@ public class MultiPlayer : MonoBehaviour {
 		PROS.TryGetValue (pro, out go);
 		if (go != null)
 		{
-			GameObject r = ObjectPool.Instance.LoadObject (go);
+			GameObject r = GameObject.Instantiate (go) as GameObject;
 			r.name = role.accountId.ToString ();
 			PlayerUnit hit = r.GetComponent <PlayerUnit>();
 			hit.DataRefresh (role);
