@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 public class AssetLoader : MonoBehaviour {
 
+	public UIFont normalFont;
+
+
+
 	private string scenePath = "";
 	private string assetBundlePath = "";
 

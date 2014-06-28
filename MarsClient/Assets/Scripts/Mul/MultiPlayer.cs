@@ -48,6 +48,7 @@ public class MultiPlayer : MonoBehaviour {
 		{
 			GameObject r = ObjectPool.Instance.LoadObject (go);
 			r.name = role.accountId.ToString ();
+			r.GetComponent <HitUnit>().DataRefresh (role);
 			CameraController.instance.initialize (r.transform);
 			r.SetActive (true);
 		}

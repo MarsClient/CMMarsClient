@@ -8,6 +8,7 @@ public abstract class HitUnit : MonoBehaviour {
 	
 	public Transform hitPos;
 
+	public UILabel label;
 
 	public void Hitted (AnimationInfo info, FrameEvent fe)
 	{
@@ -47,5 +48,14 @@ public abstract class HitUnit : MonoBehaviour {
 		}
 	}
 
+	public void updateUIShow ()
+	{
+		if (label != null)
+		{
+			label.transform.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
+		}
+	}
+
 	public virtual void ExtraEvent (AnimationInfo info, FrameEvent fe) {  }
+	public virtual void DataRefresh (object t) { }
 }
