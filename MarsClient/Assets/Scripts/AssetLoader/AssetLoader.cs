@@ -24,21 +24,31 @@ public class AssetLoader : MonoBehaviour {
 	{
 		scenePath = 
 #if UNITY_ANDROID
-	"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";;
+		"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";;
+			//"file:///mnt/sdcard/MarsRes/SC/";;
 #elif UNITY_IPHONE
 	"file://" + Application.dataPath + "/A_MarsRes/IOS/SC/";;
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR
 	"file://" + Application.dataPath + "/A_MarsRes/PC/SC/";
 #endif
+		if (Application.platform == RuntimePlatform.Android)
+		{
+			scenePath = "file:///mnt/sdcard/MarsRes/SC/";;
+		}
 
 		assetBundlePath = 
 #if UNITY_ANDROID
 		"file://" + Application.dataPath + "/A_MarsRes/Android/{0}/{1}";;
+			//"file:///mnt/sdcard/MarsRes/{0}/{1}";
 #elif UNITY_IPHONE
 		"file://" + Application.dataPath + "/A_MarsRes/IOS/{0}/{1}";
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR
 	"file://" + Application.dataPath + "/A_MarsRes/Android/{0}/{1}";
 #endif
+		if (Application.platform == RuntimePlatform.Android)
+		{
+			assetBundlePath = "file:///mnt/sdcard/MarsRes/{0}/{1}";
+		}
 
 	}
 
@@ -99,7 +109,7 @@ public class AssetLoader : MonoBehaviour {
 			if (assetBundles.ContainsKey (sc) == false || assetBundles[sc] == null)
 			{
 				string path = string.Format (assetBundlePath, sc.Substring (0, 2), sc + ".assetbundle");
-		//		Debug.LogError (path);
+				//Debug.LogError (path);
 				WWW www = new WWW (path);
 				yield return www;
 				if (www.error == null)

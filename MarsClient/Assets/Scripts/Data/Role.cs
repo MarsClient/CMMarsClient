@@ -24,8 +24,14 @@ public class Role
 	public float xRo;//xRotation
 	[DefaultValue (0F)]
 	public float zRo;//yRotation
+	[DefaultValue (0)]
+	public int action;
+	[DefaultValue (0)]
+	public int region;//0-public, else is roomid;
+
 	[DefaultValue(0)]
-	public float exp;
+	public int exp;
+
 
 
 	[DefaultValue (0F)]
