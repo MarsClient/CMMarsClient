@@ -44,6 +44,8 @@ public class MultiPlayer : MonoBehaviour {
 
 	void AddNewPro (Role role)
 	{
+		if (role == null)
+			return;
 		GameObject go = null;
 		PRO pro = (PRO) Enum.Parse (typeof (PRO), role.profession);
 //		object o = ((object) role.profession);
@@ -69,23 +71,25 @@ public class MultiPlayer : MonoBehaviour {
 		}
 	}
 
-//	void OnEnable ()
-//	{
-//		PhotonClient.processResults += ProcessResults;
-//		PhotonClient.processResultSync += ProcessResultSync;
-//	}
-//
-//	void OnDisable ()
-//	{
-//		PhotonClient.processResults -= ProcessResults;
-//		PhotonClient.processResultSync -= ProcessResultSync;
-//		PROS.Clear ();
-//	}
-//
-//	void ProcessResults (Bundle bundle)
-//	{
-//
-//	}
+	void OnEnable ()
+	{
+		PhotonClient.processResults += ProcessResults;
+		//PhotonClient.processResultSync += ProcessResultSync;
+	}
+
+	void OnDisable ()
+	{
+		PhotonClient.processResults -= ProcessResults;
+		//PhotonClient.processResultSync -= ProcessResultSync;
+	}
+
+	void ProcessResults (Bundle bundle)
+	{
+		if (bundle.cmd == Command.AddNewPlayer)
+		{
+			AddNewPro (bundle.role);
+		}
+	}
 //
 //	void ProcessResultSync (Bundle bundle)
 //	{
