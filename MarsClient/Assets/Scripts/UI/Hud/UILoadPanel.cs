@@ -10,6 +10,7 @@ public class UILoadPanel : MonoBehaviour {
 	{
 		//creat root;
 		GameObject res_go =  Resources.Load ("UI/UI Root (Hud)", typeof (GameObject)) as GameObject;
+		res_go.transform.position = new Vector3 (0,0,-10000);
 		GameObject root = GameObject.Instantiate (res_go) as GameObject;
 		UIHudManager hudManager = root.GetComponent<UIHudManager>();
 		anchor = hudManager.anchor;
