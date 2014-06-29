@@ -51,7 +51,7 @@ public class AiPlayer : MonoBehaviour
 	#region Player State .Net
 	void PlayerStateNet (Clip c)
 	{
-		if (Main.Instance.role != null)
+		if (Main.Instance!=null && Main.Instance.role != null)
 		{
 			//Player p = new Player();
 
