@@ -63,28 +63,25 @@ public class CreatAssetBundle : Editor {
 		bt = BuildTarget.iPhone;
 #endif
 
-		Object[] SelectedAsset = Selection.GetFiltered (typeof(Object), SelectionMode.Assets);  
+		Object[] SelectedAsset = Selection.GetFiltered (typeof(Object), SelectionMode.DeepAssets);  
 		foreach (Object obj in SelectedAsset)   
 		{
-			string file = "SC";
-			string targetPath = Application.dataPath + "/A_MarsRes/" + PathURL + "/" + file;
-			DirectoryInfo dict = new DirectoryInfo(targetPath);
-
-			if (dict.Exists == false)
+			string sourcePath = AssetDatabase.GetAssetPath (obj);
+			if (sourcePath.Contains (".unity"))
 			{
-				string path =  AssetDatabase.CreateFolder ("Assets/A_MarsRes/" + PathURL, file);
+				string file = "SC";
+				string targetPath = Application.dataPath + "/A_MarsRes/" + PathURL + "/" + file;
+				DirectoryInfo dict = new DirectoryInfo(targetPath);
+
+				if (dict.Exists == false)
+				{
+					string path =  AssetDatabase.CreateFolder ("Assets/A_MarsRes/" + PathURL, file);
+				}
+				targetPath += "/" + obj.name + ".unity3d";  
+				string  []levels = {string.Format ("Assets/Scenes/{0}.unity", obj.name)};//set scene who need
+				BuildPipeline.BuildPlayer( null, targetPath,bt, BuildOptions.BuildAdditionalStreamedScenes);
+				Debug.Log (targetPath);
 			}
-			targetPath += "/" + obj.name + ".unity3d";  
-			string  []levels = {string.Format ("Assets/Scenes/{0}.unity", obj.name)};//set scene who need
-			//Debug.Log (levels[0]);
-			BuildPipeline.BuildPlayer( null, targetPath,bt, BuildOptions.BuildAdditionalStreamedScenes);
-			Debug.Log (targetPath);
-			//Clear
-//			
-//			string Path = Application.dataPath + "/Scenes.unity3d";
-//			string  []levels = {"Assets/Scenes/test.unity"};//set scene who need
-//			//scene package
-//			BuildPipeline.BuildPlayer( levels, Path,BuildTarget.Android, BuildOptions.BuildAdditionalStreamedScenes);
 		}
 			AssetDatabase.Refresh ();
 	}
