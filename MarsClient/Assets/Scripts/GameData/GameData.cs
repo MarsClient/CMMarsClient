@@ -9,15 +9,17 @@ public class GameData	{
 
 	public const int DbVersion = 1;
 
+	public bool isLoadingSuccess = false;
+
 	private string LoginDbUrl (string name)
 	{
 		//TODO:
 		return Main.Instance.sqliteVer.url;// + name;
 	}
 
-	private Dictionary<string, Troop> enemys = new Dictionary<string, Troop> ();//enemys
-	private Dictionary<string, Troop> players = new Dictionary<string, Troop> ();//player
-	private Dictionary<string, Spell> spells = new Dictionary<string, Spell>();//spells
+	private Dictionary<long, GameItem> gameItems = new Dictionary<long, GameItem>();
+	private Dictionary<long, GameSpell> gameSpells = new Dictionary<long, GameSpell>();
+	private Dictionary<long, GameNPC> gameNPCs = new Dictionary<long, GameNPC>();
 
 	public GameData ()
 	{}
@@ -131,10 +133,11 @@ public class GameData	{
 			//Debug.Log ("NEW***********" + getVersion(db));
 		}
 
-		LoadTroops (db);
-		LoadPlayers (db);
-		LoadSpells (db);
-
+		LoadGameItme (db);
+		LoadGameSpell (db);
+		LoadGameNpc (db);
+		isLoadingSuccess = true;
+		UISceneLoading.instance.DelaySuccessLoading ();
 		db.Close ();
 	}
 
@@ -215,7 +218,68 @@ public class GameData	{
 		return false;
 	}
 
-	void LoadTroops (SQLiteDB db)
+	void LoadGameItme (SQLiteDB db)
+	{
+		gameItems.Clear ();
+		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM GameItem");
+		while (qr.Step ())
+		{
+			GameItem gameItem = new GameItem ();
+			gameItem.id = long.Parse (qr.GetString ("id"));
+			gameItem.type = qr.GetString ("type");
+			gameItem.func = qr.GetString ("func");
+			gameItem.belong = qr.GetString ("belong");
+			gameItem.model = qr.GetString ("model");
+			gameItem.cd = qr.GetInteger ("cd");
+			gameItem.icon = qr.GetString ("icon");
+			gameItem.desc = qr.GetString ("desc");
+			gameItem.name = qr.GetString ("name");
+			gameItems.Add (gameItem.id, gameItem);
+		}
+	}
+
+	void LoadGameSpell (SQLiteDB db)
+	{
+		gameSpells.Clear ();
+		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM GameSpell");
+		while (qr.Step ())
+		{
+			GameSpell gameSpell = new GameSpell ();
+			gameSpell.id = long.Parse  (qr.GetString ("id"));
+			gameSpell.type = qr.GetString ("type");
+			gameSpell.func = qr.GetString ("func");
+			gameSpell.belong = qr.GetString ("belong");
+			gameSpell.model = qr.GetString ("model");
+			gameSpell.cd = qr.GetInteger ("cd");
+			gameSpell.icon = qr.GetString ("icon");
+			gameSpell.desc = qr.GetString ("desc");
+			gameSpell.name = qr.GetString ("name");
+			gameSpell.pro = qr.GetString ("pro");
+			gameSpell.shoottype = qr.GetInteger ("shoottype");
+			gameSpells.Add (gameSpell.id, gameSpell);
+		}
+	}
+
+	void LoadGameNpc (SQLiteDB db)
+	{
+		gameNPCs.Clear ();
+		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM GameNPC");
+		while (qr.Step ())
+		{
+			GameNPC gameNPC = new GameNPC ();
+			gameNPC.id = long.Parse  (qr.GetString ("id"));
+			gameNPC.type = qr.GetString ("type");
+			gameNPC.model = qr.GetString ("model");
+			gameNPC.icon = qr.GetString ("icon");
+			gameNPC.desc = qr.GetString ("desc");
+			gameNPC.name = qr.GetString ("name");
+			gameNPC.talkNum = qr.GetInteger ("talkNum");
+			gameNPC.region = qr.GetInteger ("region");
+			gameNPCs.Add (gameNPC.id, gameNPC);
+		}
+	}
+
+	/*void LoadTroops (SQLiteDB db)
 	{
 		enemys.Clear ();
 		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM Troops"); 
@@ -335,5 +399,5 @@ public class GameData	{
 		Spell s = new Spell();
 		s._dmg = 1;
 		return s;
-	}
+	}*/
 }

@@ -53,7 +53,10 @@ public class UISceneLoading : MonoBehaviour {
 			async = Application.LoadLevelAdditiveAsync (currentLoadName);
 			//loadName = null;
 			yield return async;
-			DelaySuccessLoading ();
+			if (GameData.Instance.isLoadingSuccess)
+			{
+				DelaySuccessLoading ();
+			}
 		}
 	}
 
