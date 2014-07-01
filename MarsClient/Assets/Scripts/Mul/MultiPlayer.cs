@@ -45,6 +45,8 @@ public class MultiPlayer : MonoBehaviour {
 
 	void NpcCallBack (List<object> gos)
 	{
+		GameObject npcManager = new GameObject ("NpcManager");
+		npcManager.AddComponent <NpcManager>();
 		foreach (object o in gos)
 		{
 			//Debug.LogError (o.ToString());
@@ -53,7 +55,9 @@ public class MultiPlayer : MonoBehaviour {
 			if (npc != null)
 			{
 				GameObject r = GameObject.Instantiate (go) as GameObject;
+				r.transform.parent = npcManager.transform;
 				NpcController npcController = r.GetComponent<NpcController>();
+
 				npcController.Refresh (npc);
 			}
 		}

@@ -85,7 +85,8 @@ public class AssetLoader : MonoBehaviour {
 			{
 				AssetBundle bundle = www.assetBundle;  
 				//Application.LoadLevel (sc);
-				scAssetBundles.Add (sc, bundle);
+				scAssetBundles[sc] = bundle;
+				//scAssetBundles.Add (sc, bundle);
 			}
 			else
 			{
@@ -129,7 +130,8 @@ public class AssetLoader : MonoBehaviour {
 					gos.Add (go);
 					www.Dispose ();
 					www = null;
-					assetBundles.Add (sc, go);
+					assetBundles[sc] = go;
+					//assetBundles.Add (sc, go);
 				}
 			}
 			else
