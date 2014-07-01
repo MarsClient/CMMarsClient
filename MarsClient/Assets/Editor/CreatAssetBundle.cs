@@ -30,7 +30,11 @@ public class CreatAssetBundle : Editor {
 		Object[] SelectedAsset = Selection.GetFiltered (typeof(Object), SelectionMode.DeepAssets);  
 		foreach (Object obj in SelectedAsset)   
 		{  
-			string file = obj.name.Substring (0,2);
+			string sourcePath = AssetDatabase.GetAssetPath (obj);
+			string[] paths = sourcePath.Split ('/');
+			string file = paths[paths.Length - 2];
+			Debug.Log (file);
+			//string file = obj.name.Substring (0,2);
 			string targetPath = Application.dataPath + "/A_MarsRes/" + PathURL + "/" + file;
 			DirectoryInfo dict = new DirectoryInfo(targetPath);
 
@@ -47,7 +51,7 @@ public class CreatAssetBundle : Editor {
 			else   
 			{  
 				Debug.Log(obj.name +"Creat fail");  
-			}  
+			}
 		}  
 		AssetDatabase.Refresh ();     
 	}  
