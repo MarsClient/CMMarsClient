@@ -19,7 +19,12 @@ public class GameData	{
 
 	private Dictionary<long, GameItem> gameItems = new Dictionary<long, GameItem>();
 	private Dictionary<long, GameSpell> gameSpells = new Dictionary<long, GameSpell>();
-	private Dictionary<long, GameNPC> gameNPCs = new Dictionary<long, GameNPC>();
+
+	private Dictionary<long, GameNPC> gameNPCs = new Dictionary<long, GameNPC>();//key is id
+	private Dictionary<string, GameNPC> gameNPCsModel = new Dictionary<string, GameNPC>();
+
+
+	private Dictionary <string, string> gameStrings = new Dictionary<string, string> ();
 
 	public GameData ()
 	{}
@@ -136,6 +141,7 @@ public class GameData	{
 		LoadGameItme (db);
 		LoadGameSpell (db);
 		LoadGameNpc (db);
+		LoadgameStrings (db);
 		isLoadingSuccess = true;
 		UISceneLoading.instance.DelaySuccessLoading ();
 		db.Close ();
@@ -234,6 +240,9 @@ public class GameData	{
 			gameItem.icon = qr.GetString ("icon");
 			gameItem.desc = qr.GetString ("desc");
 			gameItem.name = qr.GetString ("name");
+			gameItem.value = qr.GetInteger ("value");
+			gameItem.gold = qr.GetInteger ("gold");
+			gameItem.gem = qr.GetInteger ("gem");
 			gameItems.Add (gameItem.id, gameItem);
 		}
 	}
@@ -263,6 +272,7 @@ public class GameData	{
 	void LoadGameNpc (SQLiteDB db)
 	{
 		gameNPCs.Clear ();
+		gameNPCsModel.Clear ();
 		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM GameNPC");
 		while (qr.Step ())
 		{
@@ -275,8 +285,52 @@ public class GameData	{
 			gameNPC.name = qr.GetString ("name");
 			gameNPC.talkNum = qr.GetInteger ("talkNum");
 			gameNPC.region = qr.GetInteger ("region");
+			gameNPC.x = (float) qr.GetDouble ("x");
+			gameNPC.z = (float) qr.GetDouble ("z");
+			gameNPC.roY = (float) qr.GetDouble ("roY");
+
+			gameNPCsModel.Add (gameNPC.model, gameNPC);
 			gameNPCs.Add (gameNPC.id, gameNPC);
 		}
+	}
+
+	void LoadgameStrings (SQLiteDB db)
+	{
+		gameStrings.Clear ();
+		//gameNPCsModel.Clear ();
+		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM GameString");
+		while (qr.Step ())
+		{
+			string key = qr.GetString ("key");
+			string value = qr.GetString ("value");
+			gameStrings.Add (key, value);
+
+		}
+	}
+
+	public string[] getAllNpcsModel ()//get path
+	{
+		string[] models = new string[gameNPCs.Count];
+		int i = 0;
+		foreach (KeyValuePair<long, GameNPC> kvp in gameNPCs)
+		{
+			models[i++] = Constants.NPC +  kvp.Value.model;
+		}
+		return models;
+	}
+
+	public GameNPC getNpcByModel (string model)
+	{
+		GameNPC npc = null;
+		gameNPCsModel.TryGetValue (model, out npc);
+		return npc;
+	}
+
+	public string getLocalString (string key)
+	{
+		string str = key;
+		gameStrings.TryGetValue (key, out str);
+		return str;
 	}
 
 	/*void LoadTroops (SQLiteDB db)

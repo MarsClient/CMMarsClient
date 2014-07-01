@@ -8,8 +8,10 @@ public class GameNPC : GameBase {
 	public int talkNum;
 	[DefaultValue(0)]
 	public int region;
-	[DefaultValue(0)]
-	public int x;
-	[DefaultValue(0)]
-	public int z;
+	[DefaultValue(0f)]
+	public float x;
+	[DefaultValue(0f)]
+	public float z;
+	[DefaultValue(0f)]
+	public float roY;
 }

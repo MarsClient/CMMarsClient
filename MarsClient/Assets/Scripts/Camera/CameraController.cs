@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour {
 	void Awake ()
 	{
 		instance = this;
+		startPos = transform.position - Vector3.zero;
 		if (target != null)
 		{
 			initialize (target);
@@ -20,7 +21,7 @@ public class CameraController : MonoBehaviour {
 	public void initialize (Transform target)
 	{
 		this.target = target;
-		startPos = transform.position - target.position;
+//		startPos = transform.position - target.position;
 	}
 
 	void LateUpdate ()

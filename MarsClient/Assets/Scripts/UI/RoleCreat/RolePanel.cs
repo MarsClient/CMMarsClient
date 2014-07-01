@@ -72,9 +72,9 @@ public class CreatMode : ITabListener
 			tabList2.tabListener = this;
 		tabList2.refresh ();
 
-		pros[0] = Constants.PRO + ((int)PRO.ZS).ToString () + Constants.PRO_CREAT;
-		pros[1] = Constants.PRO + ((int)PRO.FS).ToString () + Constants.PRO_CREAT;
-		pros[2] = Constants.PRO + ((int)PRO.DZ).ToString () + Constants.PRO_CREAT;
+		pros[0] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.ZS).ToString () + Constants.PRO_CREAT;
+		pros[1] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.FS).ToString () + Constants.PRO_CREAT;
+		pros[2] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.DZ).ToString () + Constants.PRO_CREAT;
 		
 		AssetLoader.Instance.DownloadAssetbundle (pros, CallBack);
 	}
@@ -85,9 +85,9 @@ public class CreatMode : ITabListener
 		{
 			GameObject go = (GameObject) o;
 			PRO p = PRO.NULL;
-			if (go.name == pros[0] ) p = PRO.ZS;
-			else if (go.name == pros[1] ) p = PRO.FS;
-			else if (go.name == pros[2] ) p = PRO.DZ;
+			if (go.name == pros[0].Split ('/')[1] ) p = PRO.ZS;
+			else if (go.name == pros[1].Split ('/')[1] ) p = PRO.FS;
+			else if (go.name == pros[2].Split ('/')[1] ) p = PRO.DZ;
 			GameObject role = NGUITools.AddChild (modelBg, go);
 
 			role.SetActive (false);

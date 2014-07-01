@@ -11,7 +11,11 @@ public enum PRO
 public class Constants
 {
 	public const int START_ID = 100001;
-	public const string PRO = "RO";
+	public const string PRO = "RO/";
 	public const string  PRO_CREAT = "_Creat";
+
+
+
+	public const string NPC = "NPC/";
 
 }

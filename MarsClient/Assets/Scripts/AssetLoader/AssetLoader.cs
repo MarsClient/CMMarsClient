@@ -108,7 +108,8 @@ public class AssetLoader : MonoBehaviour {
 		{
 			if (assetBundles.ContainsKey (sc) == false || assetBundles[sc] == null)
 			{
-				string path = string.Format (assetBundlePath, sc.Substring (0, 2), sc + ".assetbundle");
+				string[] files = sc.Split('/');
+				string path = string.Format (assetBundlePath, files[0], files[1] + ".assetbundle");
 				//Debug.LogError (path);
 				WWW www = new WWW (path);
 				yield return www;

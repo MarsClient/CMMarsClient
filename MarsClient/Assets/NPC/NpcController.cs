@@ -3,12 +3,28 @@ using System.Collections;
 
 public class NpcController : MonoBehaviour {
 
+	GameNPC gameNpc;
+
 	public UILabel label;
-	void Statrt ()
+//	void Statrt ()
+//	{
+//		if (label != null)
+//		{
+//			label.transform.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
+//		}
+//	}
+
+	public void Refresh (GameNPC _gameNpc)
 	{
+		this.gameNpc = _gameNpc;
+		transform.position = new Vector3 (_gameNpc.x, 0, _gameNpc.z);
+		transform.rotation = Quaternion.Euler (new Vector3 (0, _gameNpc.roY, 0));
 		if (label != null)
 		{
+			Debug.Log (_gameNpc.name);
 			label.transform.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
 		}
+		label.bitmapFont = AssetLoader.Instance.normalFont;
+		label.text = GameData.Instance.getLocalString (_gameNpc.name);
 	}
 }
