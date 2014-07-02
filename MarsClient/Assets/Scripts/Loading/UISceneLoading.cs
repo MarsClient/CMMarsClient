@@ -18,8 +18,8 @@ public class UISceneLoading : MonoBehaviour {
 
 	//public static void Load
 
-	void Awake () { instance = this; slider.value = 0; }
-	void OnDisable () { instance = null; }
+	void OnEnable () { instance = this; slider.value = 0; }
+	//void OnDisable () { instance = null; }
 
 	public static void LoadingScnens (string loadName)
 	{
@@ -32,6 +32,7 @@ public class UISceneLoading : MonoBehaviour {
 	}
 	public static void LoadingScnens (string loadName, OnSenceLoadingDone onSenceLoadingDone, bool _isAssetBundle)
 	{
+		AssetLoader.Instance.OnDisable ();
 		isAssetBundle = _isAssetBundle;
 		currentOnSenceLoadingDone = onSenceLoadingDone;
 		currentLoadName = loadName;
@@ -40,7 +41,8 @@ public class UISceneLoading : MonoBehaviour {
 		{
 			AssetLoader.Instance.DownloadScenes (loadName);
 		}
-		AssetLoader.Instance.OnDisable ();
+
+		//
 	}
 
 
@@ -75,6 +77,7 @@ public class UISceneLoading : MonoBehaviour {
 		{
 			currentOnSenceLoadingDone (currentLoadName);
 		}
+		slider.value = 1;
 		//currentLoadName = null;
 		currentOnSenceLoadingDone = null;
 		TweenAlpha.Begin (gameObject, 2f, 0);

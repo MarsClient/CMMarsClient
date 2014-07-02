@@ -78,7 +78,7 @@ public class AssetLoader : MonoBehaviour {
 		string path = scenePath + sc + ".unity3d";
 		if (scAssetBundles.ContainsKey (sc) == false || scAssetBundles[sc] == null)
 		{
-			//Debug.LogError (path);
+			Debug.LogError (path);
 			WWW www = new WWW(path);  
 			yield return www;  
 			if (www.error == null)
@@ -86,6 +86,7 @@ public class AssetLoader : MonoBehaviour {
 				AssetBundle bundle = www.assetBundle;  
 				//Application.LoadLevel (sc);
 				scAssetBundles[sc] = bundle;
+				//bundle.Unload (false);
 				//scAssetBundles.Add (sc, bundle);
 			}
 			else
@@ -95,7 +96,9 @@ public class AssetLoader : MonoBehaviour {
 		}
 		Debug.Log (UISceneLoading.instance);
 		if (UISceneLoading.instance != null)
+		{
 			StartCoroutine (UISceneLoading.instance.LoadAssetBundleScenes ( Application.LoadLevelAdditiveAsync (sc)));  
+		}
 		else
 		{
 			Application.LoadLevelAdditiveAsync (sc);
@@ -154,6 +157,11 @@ public class AssetLoader : MonoBehaviour {
 
 	public void OnDisable ()
 	{
+		foreach (KeyValuePair<string, AssetBundle> kvp in scAssetBundles)
+		{
+			kvp.Value.Unload (false);
+		}
+		scAssetBundles.Clear ();
 		Resources.UnloadUnusedAssets();
 		GC.Collect ();
 	}
