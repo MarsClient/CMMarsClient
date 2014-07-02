@@ -105,4 +105,16 @@ public class NetRecv : MonoBehaviour {
 			}
 		}
 	}
+
+	void OnGUI ()
+	{
+		if (GUILayout.Button ("test"))
+		{
+			Bundle bundle = new Bundle ();
+			bundle.error = new Error ();
+			bundle.error.message = "game.server.net.error";
+			bundle.cmd = Command.NetError;
+			ProcessResult (bundle);
+		}
+	}
 }

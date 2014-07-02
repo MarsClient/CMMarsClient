@@ -16,7 +16,7 @@ public class AssetLoader : MonoBehaviour {
 
 	void Awake () {if (Instance == null) { Instance = this; DontDestroyOnLoad (gameObject); } else if (Instance != this) Destroy (gameObject); }
 
-	public Dictionary<string, GameObject> assetBundles = new Dictionary<string, GameObject> ();
+	public Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle> ();
 	public Dictionary<string, AssetBundle> scAssetBundles = new Dictionary<string, AssetBundle> ();
 	public delegate void DownloadFinishCallBack (List <object> gos);
 
@@ -52,16 +52,16 @@ public class AssetLoader : MonoBehaviour {
 
 	}
 
-	public GameObject TryGameObjectByAssetBundles (string fileName)
-	{
-		GameObject go = null;
-		assetBundles.TryGetValue (fileName, out go);
-		if (go == null)
-		{
-			DownloadScenes (fileName);
-		}
-		return go;
-	}
+//	public GameObject TryGameObjectByAssetBundles (string fileName)
+//	{
+//		GameObject go = null;
+//		assetBundles.TryGetValue (fileName, out go);
+//		if (go == null)
+//		{
+//			DownloadScenes (fileName);
+//		}
+//		return go;
+//	}
 
 	public void DownloadScenes (string fileName)
 	{
@@ -117,7 +117,8 @@ public class AssetLoader : MonoBehaviour {
 				if (www.error == null)
 				{
 					Debug.Log (sc);
-					GameObject go = (GameObject) www.assetBundle.mainAsset;
+					AssetBundle assetBundle = www.assetBundle;
+					GameObject go = (GameObject) assetBundle.mainAsset;
 	//				if (assetBundles.ContainsKey (sc) == false)
 	//				{
 	//					assetBundles.Add (sc, go);
@@ -128,15 +129,16 @@ public class AssetLoader : MonoBehaviour {
 	//				}
 					//Debug.LogError (assetBundles.Count);
 					gos.Add (go);
+					assetBundles[sc] = assetBundle;
 					www.Dispose ();
 					www = null;
-					assetBundles[sc] = go;
+					assetBundle.Unload (false);
 					//assetBundles.Add (sc, go);
 				}
 			}
 			else
 			{
-				gos.Add (assetBundles[sc]);
+				gos.Add (assetBundles[sc].mainAsset);
 			}
 		}
 		Callback (callback, gos);
@@ -153,6 +155,7 @@ public class AssetLoader : MonoBehaviour {
 	public void OnDisable ()
 	{
 		Resources.UnloadUnusedAssets();
+		GC.Collect ();
 	}
 
 //	void OnGUI ()
