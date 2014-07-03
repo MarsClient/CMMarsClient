@@ -78,7 +78,7 @@ public class AssetLoader : MonoBehaviour {
 		string path = scenePath + sc + ".unity3d";
 		if (scAssetBundles.ContainsKey (sc) == false || scAssetBundles[sc] == null)
 		{
-			Debug.LogError (path);
+//			Debug.LogError (path);
 			WWW www = new WWW(path);  
 			yield return www;  
 			if (www.error == null)

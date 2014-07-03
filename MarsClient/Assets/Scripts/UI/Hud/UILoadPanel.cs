@@ -25,4 +25,12 @@ public class UILoadPanel : MonoBehaviour {
 			GameObject panel = NGUITools.AddChild (anchor, res_go);
 		}
 	}
+
+
+	public static void LoadingPanel ()
+	{
+		GameObject go = Resources.Load ("UI/PublicZone", typeof (GameObject)) as GameObject;
+		GameObject.Instantiate (go);
+		Debug.Log (go);
+	}
 }
