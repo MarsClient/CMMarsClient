@@ -708,7 +708,7 @@ ModelImporter:
       takeName: 
       firstFrame: 948
       lastFrame: 993
-      wrapMode: 0
+      wrapMode: 2
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0

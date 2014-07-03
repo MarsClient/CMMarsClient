@@ -32,6 +32,8 @@ public class FrameEvent
 	public string method;
 	public float antDisatnce; //>0 forward. <0 back. =0 dont move, when animationing.
 	public float antMoveSpd; // about ant distance, mean that att or spell move spell
+	public bool isHit;// attack hitted
+	public bool isFall; // attack falled
 }
 [System.Serializable]
 public class AnimationInfo

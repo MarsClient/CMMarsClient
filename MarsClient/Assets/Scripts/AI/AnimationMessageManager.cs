@@ -1,7 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AnimationMessageManager : MonoBehaviour {
+public interface IAnimationListener
+{
+	void IdleMessage (string info);
+	void AttackMessage (string info);
+	void AnimationMove (string info);
+}
+
+public class AnimationMessageManager : MonoBehaviour, IAnimationListener {
 
 	private AiAnimation aiAnimation;
 
@@ -10,14 +17,12 @@ public class AnimationMessageManager : MonoBehaviour {
 		aiAnimation = transform.parent.GetComponent<AiAnimation>();
 	}
 
-	void IdleMessage (string info)
+	public void IdleMessage (string info)
 	{
-		//Clip c = (Clip) int.Parse (info)
-		//Debug.Log (info);
 		aiAnimation.IdleMessage ();
 	}
 
-	void AttackMessage (string info)
+	public void AttackMessage (string info)
 	{
 		string[] infos = info.Split (',');
 		int c = int.Parse (infos[0]);
@@ -25,22 +30,12 @@ public class AnimationMessageManager : MonoBehaviour {
 		aiAnimation.AttackMessage (c, eventIndex);
 	}
 
-	void AnimationMove (string info)
+	public void AnimationMove (string info)
 	{
 		string[] infos = info.Split (',');
 		int c = int.Parse (infos[0]);
 		int eventIndex = int.Parse (infos[1]);
 		aiAnimation.AnimationMove (c, eventIndex);
 	}
-
-//	void AttackAOEMessage (string info)
-//	{
-//		int c = int.Parse (info);
-//		aiAnimation.AttackMessage (c);
-//	}
-
-	/*void SpellAssault (int c)
-	{
-		aiAnimation.SpellAssault (c);
-	}*/
+	
 }

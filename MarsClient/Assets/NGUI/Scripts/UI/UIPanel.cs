@@ -898,12 +898,12 @@ public class UIPanel : UIRect
 		base.OnInit();
 
 		// Apparently having a rigidbody helps
-		if (rigidbody == null)
-		{
-			Rigidbody rb = gameObject.AddComponent<Rigidbody>();
-			rb.isKinematic = true;
-			rb.useGravity = false;
-		}
+//		if (rigidbody == null)
+//		{
+//			Rigidbody rb = gameObject.AddComponent<Rigidbody>();
+//			rb.isKinematic = true;
+//			rb.useGravity = false;
+//		}
 
 		FindParent();
 		mRebuild = true;

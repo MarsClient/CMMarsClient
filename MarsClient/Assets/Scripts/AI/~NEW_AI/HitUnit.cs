@@ -12,21 +12,30 @@ public abstract class HitUnit : MonoBehaviour {
 
 	public void Hitted (AnimationInfo info, FrameEvent fe)
 	{
-		if (info.clip == Clip.Spell1)
-		{
-			if (ac.isFall == false) { ac.Play (Clip.Fall); }
-			else return;
-		}
-		else if (ac.isFall == false)
+//		if (info.clip == Clip.Spell1)
+//		{
+//			if (ac.isFall == false) { ac.Play (Clip.Fall); }
+//			else return;
+//		}
+//		else if (ac.isFall == false)
+//		{
+//			ac.Play (Clip.Hit);
+//		}
+		//
+		if (fe.isHit)
 		{
 			ac.Play (Clip.Hit);
+		}
+		else if (fe.isFall)
+		{
+			ac.Play (Clip.Fall);
 		}
 
 //		ObjectPool.Instance.LoadObject ("EF/EF0001", hitPos.position);
 		ExtraEvent (info, fe);
 		//hit color
 		CancelInvoke ("ResetColor");
-		SetColor (0.8f);
+		SetColor (1.0f);
 		Invoke ("ResetColor", 0.1f);
 	}
 	
