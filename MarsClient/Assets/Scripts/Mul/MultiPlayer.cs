@@ -11,9 +11,6 @@ public abstract class MultiPlayer : MonoBehaviour {
 
 	public void Start ()
 	{
-
-
-
 		pros[0] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.ZS).ToString ();
 		pros[1] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.FS).ToString ();
 		pros[2] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.DZ).ToString ();
