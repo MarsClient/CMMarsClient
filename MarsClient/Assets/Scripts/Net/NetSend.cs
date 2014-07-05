@@ -54,6 +54,11 @@ public class NetSend {
 		PhotonClient.Instance.SendServer (Command.AbortDiscount);
 	}
 
+	public static void SendEnterFight (Fight fight)
+	{
+		PhotonClient.Instance.SendServer (Command.AbortDiscount, fight);
+	}
+
 	//Follow is Older
 	/*
 	 *

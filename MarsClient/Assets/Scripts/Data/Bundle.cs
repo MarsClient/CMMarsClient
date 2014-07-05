@@ -38,6 +38,9 @@ public class Bundle
 	[DefaultValue(null)]
 	public Message message;
 
+	[DefaultValue (null)]
+	public Fight fight;
+
 	/*follow is old*/
 
 //	[DefaultValue (null)]
