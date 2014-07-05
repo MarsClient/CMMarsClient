@@ -22,6 +22,8 @@ public enum Command : byte
 	UpdatePlayer,
 	DestroyPlayer,
 
+	EnterFight,
+
 	//Last
 	NetError,
 	AbortDiscount,
