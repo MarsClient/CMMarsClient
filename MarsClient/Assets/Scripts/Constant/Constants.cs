@@ -17,5 +17,6 @@ public class Constants
 
 
 	public const string NPC = "NPC/";
+	public const string ENEMYS = "Enemys/";
 
 }

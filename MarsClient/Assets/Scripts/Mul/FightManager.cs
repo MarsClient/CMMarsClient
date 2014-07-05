@@ -9,10 +9,10 @@ public class FightManager : MultiPlayer {
 		base.Start ();
 	}
 
-	#region implemented abstract members of MultiPlayer
 	public override void LoadingDoneRoles ()
 	{
 		UISceneLoading.instance.DelaySuccessLoading ();
 	}
-	#endregion
+
+	//public void
 }

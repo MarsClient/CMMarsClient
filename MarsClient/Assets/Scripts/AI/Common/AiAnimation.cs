@@ -210,4 +210,9 @@ public class AiAnimation : MonoBehaviour {
 		AnimationInfo info = GetInfoByClip ((Clip) c);
 		aiMove.startMoveDir (info, info.getEvent (eventIndex));
 	}
+
+	public void AnimationFx (int c, int eventIndex)
+	{
+		//TODO:
+	}
 }
