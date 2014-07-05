@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public class AiEnemy : MonoBehaviour 
 {
 	public static List<AiEnemy> enemys = new List<AiEnemy>();
-	public Transform hitPos;
 	public Transform target;
 	public float attDistance = 2;
 
