@@ -61,6 +61,8 @@ game.chat.world.1 = [986e6b]【世界】
 game.chat.person.2 =[c96dbf]【密语】
 game.chat.system.3 = 【系统】
 
+game.fight.messgae = 你是否进入{0}副本..... 
+
 
 
 

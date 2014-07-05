@@ -32,7 +32,18 @@ public class NpcController : MonoBehaviour {
 
 	void OnClick ()
 	{
-		UISceneLoading.LoadingScnens ("LV00001A", null, true);
-		Debug.Log (gameNpc.name);
+		new DialogContent()
+			.SetMessage("game.fight.messgae")
+				.SetYesBtn ("game.dialog.yes")
+				.SetNoBtn ("game.dialog.no")
+				.SetDelegateBtn (EnterFight)
+				.Show ();
+		//UISceneLoading.LoadingScnens ("LV00001A", null, true);
+		//Debug.Log (gameNpc.name);
+	}
+
+	void EnterFight (bool isBy)
+	{
+		Debug.Log (isBy);
 	}
 }

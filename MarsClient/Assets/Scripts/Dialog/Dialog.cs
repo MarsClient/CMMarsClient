@@ -22,9 +22,9 @@ public class DialogContent
 	
 	/**all method*/
 	public DialogContent () {}
-	public DialogContent SetMessage (string message) { this.message = Localization.Get (message); return this; }
-	public DialogContent SetYesBtn (string yesStr) { this.yesStr = Localization.Get (yesStr); return this; }
-	public DialogContent SetNoBtn (string noStr) { this.noStr = Localization.Get (noStr); return this; }
+	public DialogContent SetMessage (string message, params string[] objs ) { this.message = string.Format (Localization.Get (message), objs); return this; }
+	public DialogContent SetYesBtn (string yesStr, params string[] objs) { this.yesStr = string.Format (Localization.Get (yesStr), objs); return this; }
+	public DialogContent SetNoBtn (string noStr, params string[] objs) { this.noStr = string.Format (Localization.Get (noStr), objs); return this; }
 	public DialogContent SetDelegateBtn (DialogHandle dialogHandle) { this.dialogHandle = dialogHandle; return this; }
 	
 	public void Show () { Dialog.instance.Show (this); }
