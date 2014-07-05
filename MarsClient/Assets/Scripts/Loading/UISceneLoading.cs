@@ -18,7 +18,9 @@ public class UISceneLoading : MonoBehaviour {
 
 	//public static void Load
 
-	void OnEnable () { instance = this; slider.value = 0; }
+	void Awake () { if (instance == null) { instance = this; DontDestroyOnLoad (gameObject); } else if (instance != this) Destroy (gameObject);}
+
+	void OnEnable () {  StartCoroutine (LoadingNewSc ()); slider.value = 0; }
 	//void OnDisable () { instance = null; }
 
 	public static void LoadingScnens (string loadName)
@@ -47,7 +49,7 @@ public class UISceneLoading : MonoBehaviour {
 
 
 	private AsyncOperation async;
-	IEnumerator  Start ()
+	IEnumerator  LoadingNewSc ()
 	{
 		if (currentLoadName != null && isAssetBundle == false)
 		{

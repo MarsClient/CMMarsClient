@@ -1,0 +1,18 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class FightManager : MultiPlayer {
+
+
+	void Start ()
+	{
+		base.Start ();
+	}
+
+	#region implemented abstract members of MultiPlayer
+	public override void LoadingDoneRoles ()
+	{
+		UISceneLoading.instance.DelaySuccessLoading ();
+	}
+	#endregion
+}

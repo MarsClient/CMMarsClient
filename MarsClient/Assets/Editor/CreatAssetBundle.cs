@@ -71,6 +71,8 @@ public class CreatAssetBundle : Editor {
 		foreach (Object obj in SelectedAsset)   
 		{
 			string sourcePath = AssetDatabase.GetAssetPath (obj);
+
+
 			if (sourcePath.Contains (".unity"))
 			{
 				string file = "SC";
@@ -82,8 +84,18 @@ public class CreatAssetBundle : Editor {
 					string path =  AssetDatabase.CreateFolder ("Assets/A_MarsRes/" + PathURL, file);
 				}
 				targetPath += "/" + obj.name + ".unity3d";  
-				string  []levels = {string.Format ("Assets/Scenes/{0}.unity", obj.name)};//set scene who need
-				BuildPipeline.BuildPlayer( null, targetPath,bt, BuildOptions.BuildAdditionalStreamedScenes);
+
+				//string navMeshPath = sourcePath.Replace (".unity", "");
+				string[] levels = { sourcePath };//set scene who need
+				//bool isExit = File.Exists (navMeshPath);
+//				if (isExit)
+//				{
+//					levels = new string[1]{ navMeshPath };
+//				}
+				//Debug.LogError ();//NavMesh.asset
+
+
+				BuildPipeline.BuildPlayer( levels, targetPath,bt, BuildOptions.BuildAdditionalStreamedScenes);
 				Debug.Log (targetPath);
 			}
 		}

@@ -32,7 +32,7 @@ public class NpcController : MonoBehaviour {
 
 	void OnClick ()
 	{
-
+		UISceneLoading.LoadingScnens ("LV00001A", null, true);
 		Debug.Log (gameNpc.name);
 	}
 }

@@ -68,9 +68,9 @@ public class AssetLoader : MonoBehaviour {
 		StartCoroutine (_DownloadScenes (fileName));
 	}
 
-	public void DownloadAssetbundle (string[] fileName, DownloadFinishCallBack callback)
+	public void DownloadAssetbundle (string[] fileName, DownloadFinishCallBack callback, bool isDontDestory = false)
 	{
-		StartCoroutine (DownloadAssetBundle (fileName, callback));
+		StartCoroutine (DownloadAssetBundle (fileName, callback, isDontDestory));
 	}
 
 	IEnumerator _DownloadScenes (string sc)
@@ -97,7 +97,9 @@ public class AssetLoader : MonoBehaviour {
 		Debug.Log (UISceneLoading.instance);
 		if (UISceneLoading.instance != null)
 		{
-			StartCoroutine (UISceneLoading.instance.LoadAssetBundleScenes ( Application.LoadLevelAdditiveAsync (sc)));  
+			//Application.LoadLevelAdditive (sc);
+			Application.LoadLevel (sc);
+			//StartCoroutine (UISceneLoading.instance.LoadAssetBundleScenes ( Application.LoadLevelAdditiveAsync (sc)));  
 		}
 		else
 		{
@@ -105,7 +107,7 @@ public class AssetLoader : MonoBehaviour {
 		}
 	}
 
-	IEnumerator DownloadAssetBundle (string[] scs, DownloadFinishCallBack callback)
+	IEnumerator DownloadAssetBundle (string[] scs, DownloadFinishCallBack callback, bool isDontDestory)
 	{
 		List<object> gos = new List<object> ();
 		foreach (string sc in scs)
@@ -135,7 +137,10 @@ public class AssetLoader : MonoBehaviour {
 					assetBundles[sc] = assetBundle;
 					www.Dispose ();
 					www = null;
-					assetBundle.Unload (false);
+					if (isDontDestory)
+					{
+						assetBundle.Unload (false);
+					}
 					//assetBundles.Add (sc, go);
 				}
 			}

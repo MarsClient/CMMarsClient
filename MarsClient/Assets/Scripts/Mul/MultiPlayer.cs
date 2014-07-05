@@ -3,22 +3,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class MultiPlayer : MonoBehaviour {
+public abstract class MultiPlayer : MonoBehaviour {
 
-	private Dictionary <PRO, GameObject> PROS = new Dictionary<PRO, GameObject>();
+	protected Dictionary <PRO, GameObject> PROS = new Dictionary<PRO, GameObject>();
 
 	string[] pros = new string[3];
 
-	void Start ()
+	public void Start ()
 	{
-		UILoadPanel.LoadingPanel ();
+
 
 
 		pros[0] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.ZS).ToString ();
 		pros[1] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.FS).ToString ();
 		pros[2] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.DZ).ToString ();
 
-		AssetLoader.Instance.DownloadAssetbundle (pros, CallBack);
+		AssetLoader.Instance.DownloadAssetbundle (pros, CallBack, true);
 
 
 	}
@@ -36,38 +36,16 @@ public class MultiPlayer : MonoBehaviour {
 			role.SetActive (false);
 			if (p != PRO.NULL) PROS.Add (p, role);
 		}
-		AssetLoader.Instance.DownloadAssetbundle (GameData.Instance.getAllNpcsModel(), NpcCallBack);
+
 		Debug.Log ("Done" + Main.Instance.onlineRoles.Count);
 		AddNewPro (Main.Instance.role);
 
-		foreach (Role r in Main.Instance.onlineRoles)
-		{
-			AddNewPro (r);
-		}
+		LoadingDoneRoles ();
 	}
 
-	void NpcCallBack (List<object> gos)
-	{
-		GameObject npcManager = new GameObject ("NpcManager");
-		npcManager.AddComponent <NpcManager>();
-		foreach (object o in gos)
-		{
-			//Debug.LogError (o.ToString());
-			GameObject go = (GameObject) o;
-			GameNPC npc = GameData.Instance.getNpcByModel (go.name);
-			if (npc != null)
-			{
-				GameObject r = GameObject.Instantiate (go) as GameObject;
-				r.transform.parent = npcManager.transform;
-				NpcController npcController = r.GetComponent<NpcController>();
 
-				npcController.Refresh (npc);
-			}
-		}
-		UISceneLoading.instance.DelaySuccessLoading ();
-	}
 
-	void AddNewPro (Role role)
+	protected void AddNewPro (Role role)
 	{
 		if (role == null)
 			return;
@@ -96,39 +74,5 @@ public class MultiPlayer : MonoBehaviour {
 		}
 	}
 
-	void AddNpc (GameNPC npc)
-	{
-		if (npc == null) return;
-
-	}
-
-	void OnEnable ()
-	{
-		PhotonClient.processResults += ProcessResults;
-		//PhotonClient.processResultSync += ProcessResultSync;
-	}
-
-	void OnDisable ()
-	{
-		PhotonClient.processResults -= ProcessResults;
-		//PhotonClient.processResultSync -= ProcessResultSync;
-	}
-
-	void ProcessResults (Bundle bundle)
-	{
-		if (bundle.cmd == Command.AddNewPlayer)
-		{
-			AddNewPro (bundle.role);
-		}
-	}
-//
-//	void ProcessResultSync (Bundle bundle)
-//	{
-//	}
-
-	public void OnDestroy ()
-	{
-		PROS.Clear ();
-		ObjectPool.Instance.Clear ();
-	}
+	public abstract void LoadingDoneRoles ();
 }
