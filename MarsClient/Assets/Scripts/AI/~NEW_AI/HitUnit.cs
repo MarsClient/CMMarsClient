@@ -10,6 +10,8 @@ public abstract class HitUnit : MonoBehaviour {
 
 	public UILabel label;
 
+	public GameObject go;
+
 	public void Hitted (AnimationInfo info, FrameEvent fe)
 	{
 //		if (info.clip == Clip.Spell1)
@@ -22,16 +24,17 @@ public abstract class HitUnit : MonoBehaviour {
 //			ac.Play (Clip.Hit);
 //		}
 		//
-		if (fe.isHit)
+		if (ac.isFall == false)
 		{
-			ac.Play (Clip.Hit);
+			if (fe.attackedClip == Clip.Null || fe.attackedClip == Clip.Idle) {}
+			else { ac.Play (fe.attackedClip); }
 		}
-		else if (fe.isFall)
-		{
-			ac.Play (Clip.Fall);
-		}
+		else  { return; }
 
-//		ObjectPool.Instance.LoadObject ("EF/EF0001", hitPos.position);
+	
+		Transform ef = (GameObject.Instantiate (go) as GameObject).transform;
+		ef.transform.position = hitPos.position;//new Vector3 (hitPos.transform.position.x, 0.01f, hitPos.transform.position.z);
+
 		ExtraEvent (info, fe);
 		//hit color
 		CancelInvoke ("ResetColor");
