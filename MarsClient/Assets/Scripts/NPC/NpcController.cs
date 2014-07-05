@@ -33,7 +33,7 @@ public class NpcController : MonoBehaviour {
 	void OnClick ()
 	{
 		new DialogContent()
-			.SetMessage("game.fight.messgae")
+			.SetMessage("game.fight.messgae", "ICC")
 				.SetYesBtn ("game.dialog.yes")
 				.SetNoBtn ("game.dialog.no")
 				.SetDelegateBtn (EnterFight)
