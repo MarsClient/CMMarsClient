@@ -67,7 +67,7 @@ public class AiMove : MonoBehaviour {
 			if (Vector3.Distance (transform.position, startPos) < moveDistance)
 			{
 				CollisionFlags cf = SetMove (transform.forward, speed);
-				if (cf == CollisionFlags.None)
+				if (m_Hit  == null)
 				{
 					return;
 				}
@@ -85,6 +85,13 @@ public class AiMove : MonoBehaviour {
 			transform.forward = dir;
 		}
 		return characterController.Move (dir * spd * Time.deltaTime);
+	}
+
+
+	private ControllerColliderHit m_Hit;
+	void OnControllerColliderHit(ControllerColliderHit hit)
+	{
+		this.m_Hit = hit;
 	}
 
 	void CallbackMoveEvent (AiMove aiMove)
@@ -106,6 +113,7 @@ public class AiMove : MonoBehaviour {
 		{
 			return;
 		}
+		m_Hit = null;
 		isForward = fe.antDisatnce > 0;
 		_currentMoveState = MoveState.SpecialMoving;
 		startPos = transform.position;
