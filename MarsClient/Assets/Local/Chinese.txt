@@ -42,6 +42,7 @@ game.role.same.name.error = 角色名已被使用
 game.role.ZS = 战士
 game.role.FS = 法师
 game.role.WS = 盗贼
+game.role.DZ = 盗贼
 game.role.male = 男
 game.role.female = 女
 game.role.enter.game = 进入游戏
