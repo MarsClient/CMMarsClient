@@ -54,14 +54,16 @@ public class AiPlayer : MonoBehaviour
 		if (Main.Instance!=null && Main.Instance.role != null)
 		{
 			//Player p = new Player();
-
-			Main.Instance.role.x = (float) transform.position.x;
-			Main.Instance.role.z = (float) transform.position.z;
-			Main.Instance.role.xRo = (float) transform.forward.x;
-			Main.Instance.role.zRo = (float) transform.forward.z;
-			Main.Instance.role.action = (int)c;
+			Role role = new Role();
+			role.roleId = Main.Instance.role.roleId;
+			role.accountId = Main.Instance.role.accountId;
+			role.x = (float) transform.position.x;
+			role.z = (float) transform.position.z;
+			role.xRo = (float) transform.forward.x;
+			role.zRo = (float) transform.forward.z;
+			role.action = (int)c;
 			//Debug.LogError (transform.forward);
-			NetSend.SendUpdatePlayer (Main.Instance.role);
+			NetSend.SendUpdatePlayer (role);
 		}
 	}
 	#endregion
