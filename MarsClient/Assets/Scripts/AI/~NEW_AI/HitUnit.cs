@@ -64,7 +64,7 @@ public abstract class HitUnit : MonoBehaviour {
 	{
 		if (label != null)
 		{
-			label.transform.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
+			FightMath.setRota (label.transform);//.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
 		}
 	}
 

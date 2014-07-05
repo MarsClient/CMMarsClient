@@ -22,7 +22,7 @@ public class NpcController : MonoBehaviour {
 		if (label != null)
 		{
 			//Debug.Log (_gameNpc.name);
-			label.transform.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
+			FightMath.setRota (label.transform);//.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
 		}
 		label.bitmapFont = AssetLoader.Instance.normalFont;
 		label.text = GameData.Instance.getLocalString (_gameNpc.name);

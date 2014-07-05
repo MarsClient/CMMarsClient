@@ -12,6 +12,11 @@ public enum NpcMonsterState
 
 public class FightMath
 {
+	public static void setRota (Transform mTransform)
+	{
+		mTransform.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
+	}
+
 	public static float GetMultiplyVector  (Transform att, Transform def)
 	{
 		Vector3 a = att.transform.position;//py
