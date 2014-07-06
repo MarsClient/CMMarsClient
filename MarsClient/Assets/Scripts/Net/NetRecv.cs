@@ -66,6 +66,10 @@ public class NetRecv : MonoBehaviour {
 			{
 				
 			}
+			if (bundle.team != null)
+			{
+				Main.Instance.team = bundle.team;
+			}
 			if (bundle.cmd == Command.EnterFight)
 			{
 				Main.Instance.fight = bundle.fight;

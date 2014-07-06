@@ -44,6 +44,9 @@ public class Bundle
 	[DefaultValue(null)]
 	public string info;
 
+	[DefaultValue(null)]
+	public Team team;
+
 	/*follow is old*/
 
 //	[DefaultValue (null)]

@@ -17,6 +17,7 @@ public class Main : MonoBehaviour
 	public Role role;
 	public Dictionary<ChatType, List<Message>> messages = new Dictionary<ChatType, List<Message>> ();
 	public List<Role> onlineRoles = new List<Role> ();
+	public Team team;
 
 	public Fight fight;
 
