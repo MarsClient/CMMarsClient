@@ -41,6 +41,9 @@ public class Bundle
 	[DefaultValue (null)]
 	public Fight fight;
 
+	[DefaultValue(null)]
+	public string info;
+
 	/*follow is old*/
 
 //	[DefaultValue (null)]

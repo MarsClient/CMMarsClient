@@ -24,11 +24,11 @@ public class NetTest : MonoBehaviour {
 			try 
 			{
 				role.roleId = long.Parse (p[1]);
-				if (p[0] == Command.CreatRole.ToString ()) NetSend.SendCreatTeam(role);
-				else if (p[0] == Command.JoinTeam.ToString ()) NetSend.SendJoinTeam(role);
-				else if (p[0] == Command.LeftTeam.ToString ()) NetSend.SendLeftTeam(role);
-				else if (p[0] == Command.SwapTeamLeader.ToString ()) NetSend.SendSwapTeamLeader(role);
-				else if (p[0] == Command.DismissTeam.ToString ()) NetSend.SendDismissTeam(role);
+				if (p[0] == Command.CreatTeam.ToString ().ToLower()) NetSend.SendCreatTeam(role);
+				else if (p[0] == Command.JoinTeam.ToString ().ToLower()) NetSend.SendJoinTeam(role);
+				else if (p[0] == Command.LeftTeam.ToString ().ToLower()) NetSend.SendLeftTeam(role);
+				else if (p[0] == Command.SwapTeamLeader.ToString ().ToLower()) NetSend.SendSwapTeamLeader(role);
+				else if (p[0] == Command.DismissTeam.ToString ().ToLower()) NetSend.SendDismissTeam(role);
 				return repose;
 			}
 			catch (System.Exception e) {}
