@@ -49,16 +49,43 @@ public class NetSend {
 		PhotonClient.Instance.SendServer (Command.UpdatePlayer, r);
 	}
 
+	#region Team
+	public static void SendCreatTeam (Role r)
+	{
+		PhotonClient.Instance.SendServer (Command.CreatTeam, r);
+	}
+
+	public static void SendJoinTeam (Role r)
+	{
+		PhotonClient.Instance.SendServer (Command.JoinTeam, r);
+	}
+
+	public static void SendLeftTeam (Role r)
+	{
+		PhotonClient.Instance.SendServer (Command.LeftTeam, r);
+	}
+
+	public static void SendSwapTeamLeader (Role r)
+	{
+		PhotonClient.Instance.SendServer (Command.SwapTeamLeader, r);
+	}
+
+	public static void DismissTeam (Role r)
+	{
+		PhotonClient.Instance.SendServer (Command.DismissTeam, r);
+	}
+	#endregion
+
+	public static void SendEnterFight (Fight fight)
+	{
+		PhotonClient.Instance.SendServer (Command.EnterFight, fight);
+	}
+
+
 	public static void SendAbortDiscount ()
 	{
 		PhotonClient.Instance.SendServer (Command.AbortDiscount);
 	}
-
-	public static void SendEnterFight (Fight fight)
-	{
-		PhotonClient.Instance.SendServer (Command.AbortDiscount, fight);
-	}
-
 	//Follow is Older
 	/*
 	 *

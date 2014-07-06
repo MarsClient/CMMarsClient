@@ -22,6 +22,12 @@ public enum Command : byte
 	UpdatePlayer,
 	DestroyPlayer,
 
+	CreatTeam,
+	JoinTeam,
+	LeftTeam,
+	SwapTeamLeader,
+	DismissTeam,
+
 	EnterFight,
 
 	//Last
