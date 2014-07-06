@@ -70,7 +70,7 @@ public class NetSend {
 		PhotonClient.Instance.SendServer (Command.SwapTeamLeader, r);
 	}
 
-	public static void DismissTeam (Role r)
+	public static void SendDismissTeam (Role r)
 	{
 		PhotonClient.Instance.SendServer (Command.DismissTeam, r);
 	}
