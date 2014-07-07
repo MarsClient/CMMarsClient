@@ -132,35 +132,37 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	}
 	public void OnOperationResponse (OperationResponse operationResponse)
 	{
-		Bundle bundle = new Bundle ();
-		string json = operationResponse[operationResponse.OperationCode].ToString();
-		json = CSharpEncrypt.Decrypt (json);
-		bundle = JsonConvert.DeserializeObject<Bundle>(json);
-		bundle.cmd = (Command) operationResponse.OperationCode;//cmd
-		Debug.Log (json);
-		DC.LogWarning(json);
-		if (netRecv == null) netRecv = GetComponent<NetRecv>();
-		netRecv.ProcessResult (bundle);
-		CalledProcessResult (bundle);
+		if (operationResponse.Parameters.ContainsKey (operationResponse.OperationCode))
+		{
+			string json = operationResponse.Parameters[operationResponse.OperationCode].ToString();
+			Bundle bundle = JsonDeserialize (json);
+			if (netRecv == null) netRecv = GetComponent<NetRecv>();
+			netRecv.ProcessResult (bundle);
+			CalledProcessResult (bundle);
+		}
 	}
 
 	public void OnEvent (EventData eventData)
 	{
-		if (eventData.Parameters.ContainsKey (eventData.Code) == false)
+		if (eventData.Parameters.ContainsKey (eventData.Code))
 		{
-			return;
+			string json = eventData.Parameters[eventData.Code].ToString ();
+			Bundle bundle = JsonDeserialize (json);
+			CalledProcessEvent (bundle);
 		}
-		Bundle bundle = new Bundle ();
-		string json = eventData.Parameters[eventData.Code].ToString ();
-		json = CSharpEncrypt.Decrypt (json);
-		bundle = JsonConvert.DeserializeObject<Bundle>(json);
-		bundle.eventCmd = (EventCommand) eventData.Code;
-		Debug.Log (json);
-		DC.LogWarning(json);
-		CalledProcessEvent (bundle);
 	}
 
-	public void CalledProcessResult (Bundle bundle)
+	private Bundle JsonDeserialize (string json)
+	{
+		Bundle bundle = new Bundle ();
+		json = CSharpEncrypt.Decrypt (json);
+		bundle = JsonConvert.DeserializeObject<Bundle>(json);
+		Debug.Log (json);
+		DC.LogWarning(json);
+		return bundle;
+	}
+
+	private void CalledProcessResult (Bundle bundle)
 	{
 		if (processResults != null && bundle != null)
 		{
@@ -168,7 +170,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		}
 	}
 
-	public void CalledProcessEvent (Bundle bundle)
+	private void CalledProcessEvent (Bundle bundle)
 	{
 		if (processResultSync != null && bundle != null)
 		{
