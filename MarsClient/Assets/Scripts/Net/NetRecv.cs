@@ -39,21 +39,7 @@ public class NetRecv : MonoBehaviour {
 				Main.Instance.onlineRoles = bundle.onlineRoles;
 				UISceneLoading.LoadingScnens (UISceneLoading.PUBLIC_ZONE, null, true);
 			}
-			if (bundle.cmd == Command.SendChat)
-			{
-				Message message = bundle.message;
-				if (message != null)
-				{
-					if (Main.Instance.messages.ContainsKey (message.chatType) == false)
-					{
-						Main.Instance.messages.Add (message.chatType, new List<Message>());
-					}
-					else
-					{
-						Main.Instance.messages[message.chatType].Add (message);
-					}
-				}
-			}
+
 			if (bundle.cmd == Command.InitAllPlayers)
 			{
 				Main.Instance.onlineRoles = bundle.onlineRoles;
@@ -110,6 +96,28 @@ public class NetRecv : MonoBehaviour {
 						})
 						.ShowWaiting ();
 
+			}
+		}
+	}
+
+	public void ProcessResultSync (Bundle bundle)
+	{
+		if (bundle.error == null)
+		{
+			if (bundle.cmd == Command.SendChat)
+			{
+				Message message = bundle.message;
+				if (message != null)
+				{
+					if (Main.Instance.messages.ContainsKey (message.chatType) == false)
+					{
+						Main.Instance.messages.Add (message.chatType, new List<Message>());
+					}
+					else
+					{
+						Main.Instance.messages[message.chatType].Add (message);
+					}
+				}
 			}
 		}
 	}

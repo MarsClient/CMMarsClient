@@ -111,16 +111,16 @@ public class ChatInput : MonoBehaviour
 	void OnEnable ()
 	{
 		if (isOne)
-			PhotonClient.processResults += ProcessResults;
+			PhotonClient.processResultSync += ProcessResultSync;
 	}
 	
 	void OnDisable ()
 	{
 		if(isOne)
-			PhotonClient.processResults -= ProcessResults;
+			PhotonClient.processResultSync -= ProcessResultSync;
 	}
 	
-	void ProcessResults (Bundle bundle)
+	void ProcessResultSync (Bundle bundle)
 	{
 		if (bundle.cmd == Command.SendChat)
 		{

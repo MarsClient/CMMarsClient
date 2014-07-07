@@ -58,15 +58,15 @@ public class PlayerUnit : HitUnit {
 
 	void OnEnable ()
 	{
-		PhotonClient.processResults += ProcessResults;
+		PhotonClient.processResultSync += ProcessResultSync;
 	}
 
 	void OnDisable ()
 	{
-		PhotonClient.processResults -= ProcessResults;
+		PhotonClient.processResults -= ProcessResultSync;
 	}
 
-	void ProcessResults (Bundle bundle)
+	void ProcessResultSync (Bundle bundle)
 	{
 		if (bundle.cmd == Command.UpdatePlayer)
 		{

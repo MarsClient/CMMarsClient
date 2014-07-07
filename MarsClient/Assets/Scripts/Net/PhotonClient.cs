@@ -148,6 +148,8 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		{
 			string json = eventData.Parameters[eventData.Code].ToString ();
 			Bundle bundle = JsonDeserialize (json);
+			if (netRecv == null) netRecv = GetComponent<NetRecv>();
+			netRecv.ProcessResultSync (bundle);
 			CalledProcessEvent (bundle);
 		}
 	}
