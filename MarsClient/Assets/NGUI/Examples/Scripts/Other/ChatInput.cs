@@ -69,7 +69,10 @@ public class ChatInput : MonoBehaviour
 
 			if (!string.IsNullOrEmpty(text))
 			{
-				Role r = Main.Instance.role;
+				Role r = new Role();//Main.Instance.role;
+				r.accountId = Main.Instance.role.accountId;
+				r.roleId = Main.Instance.role.roleId;
+				r.roleName = Main.Instance.role.roleName;
 				string content = "";
 				if (r != null)
 				{
