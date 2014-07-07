@@ -42,17 +42,17 @@ public class PublicZoneManager : MultiPlayer {
 
 	void OnEnable ()
 	{
-		PhotonClient.processResults += ProcessResults;
+		PhotonClient.processResultSync += ProcessResultSync;
 		//PhotonClient.processResultSync += ProcessResultSync;
 	}
 	
 	void OnDisable ()
 	{
-		PhotonClient.processResults -= ProcessResults;
+		PhotonClient.processResultSync -= ProcessResultSync;
 		//PhotonClient.processResultSync -= ProcessResultSync;
 	}
 	
-	void ProcessResults (Bundle bundle)
+	void ProcessResultSync (Bundle bundle)
 	{
 		if (bundle.cmd == Command.AddNewPlayer)
 		{
