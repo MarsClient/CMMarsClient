@@ -63,7 +63,7 @@ public class PlayerUnit : HitUnit {
 
 	void OnDisable ()
 	{
-		PhotonClient.processResults -= ProcessResultSync;
+		PhotonClient.processResultSync -= ProcessResultSync;
 	}
 
 	void ProcessResultSync (Bundle bundle)
