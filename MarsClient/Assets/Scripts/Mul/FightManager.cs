@@ -33,7 +33,7 @@ public class FightManager : MultiPlayer {
 		{
 			foreach (Role role in Main.Instance.fight.team.roles)
 			{
-				if (role.roleId != Main.Instance.role.roleId)
+				if (role.roleId != Main.Instance.role.roleId && role.region == Main.Instance.fight.id)
 				{
 					AddNewPro (role);
 				}

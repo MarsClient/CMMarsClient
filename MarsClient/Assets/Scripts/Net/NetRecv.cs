@@ -123,6 +123,7 @@ public class NetRecv : MonoBehaviour {
 			}
 			if (bundle.cmd == Command.EnterFight)
 			{
+				Main.Instance.fight = bundle.fight;
 				new DialogContent()
 					.SetMessage("game.fight.messgae", "ICC")
 						.SetYesBtn ("game.dialog.yes")
