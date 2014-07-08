@@ -46,7 +46,10 @@ public class NpcController : MonoBehaviour {
 	{
 		if (isBy)
 		{
-			UISceneLoading.LoadingScnens ("LV00001A", null, true);
+			Fight fight = new Fight ();
+			fight.id = 100001;
+			NetSend.SendEnterFight (fight);
+			//UISceneLoading.LoadingScnens ("LV00001A", null, true);
 		}
 		//Debug.Log (isBy);
 	}

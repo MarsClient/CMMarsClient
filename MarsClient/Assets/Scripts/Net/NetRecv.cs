@@ -59,6 +59,7 @@ public class NetRecv : MonoBehaviour {
 			if (bundle.cmd == Command.EnterFight)
 			{
 				Main.Instance.fight = bundle.fight;
+				UISceneLoading.LoadingScnens ("LV00001A", null, true);
 			}
 		}
 		else
