@@ -36,14 +36,14 @@ public class FightManager : MultiPlayer {
 	{
 		if (bundle.cmd == Command.PlayerDone)
 		{
-			/*foreach (Role role in Main.Instance.fight.team.roles)
+			foreach (Role role in Main.Instance.fight.team.roles)
 			{
 				if (role.roleId != Main.Instance.role.roleId)
 				{
 					AddNewPro (role);
 				}
-			}*/
-			AddNewPro (bundle.role);
+			}
+			//AddNewPro (bundle.role);
 			//UISceneLoading.instance.DelaySuccessLoading ();
 		}
 	}
