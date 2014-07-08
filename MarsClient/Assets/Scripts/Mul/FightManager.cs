@@ -12,7 +12,7 @@ public class FightManager : MultiPlayer {
 	public override void LoadingDoneRoles ()
 	{
 		NetSend.SendPlayersDone ();
-		//UISceneLoading.instance.DelaySuccessLoading ();
+		UISceneLoading.instance.DelaySuccessLoading ();
 	}
 
 	void OnEnable ()
@@ -36,7 +36,15 @@ public class FightManager : MultiPlayer {
 	{
 		if (bundle.cmd == Command.PlayerDone)
 		{
-			UISceneLoading.instance.DelaySuccessLoading ();
+			/*foreach (Role role in Main.Instance.fight.team.roles)
+			{
+				if (role.roleId != Main.Instance.role.roleId)
+				{
+					AddNewPro (role);
+				}
+			}*/
+			AddNewPro (bundle.role);
+			//UISceneLoading.instance.DelaySuccessLoading ();
 		}
 	}
 }
