@@ -29,11 +29,6 @@ public class FightManager : MultiPlayer {
 
 	void ProcessResults (Bundle bundle)
 	{
-
-	}
-
-	void ProcessResultSync (Bundle bundle)
-	{
 		if (bundle.cmd == Command.PlayerDone)
 		{
 			foreach (Role role in Main.Instance.fight.team.roles)
@@ -43,8 +38,14 @@ public class FightManager : MultiPlayer {
 					AddNewPro (role);
 				}
 			}
-			//AddNewPro (bundle.role);
-			//UISceneLoading.instance.DelaySuccessLoading ();
+		}
+	}
+
+	void ProcessResultSync (Bundle bundle)
+	{
+		if (bundle.cmd == Command.PlayerDone)
+		{
+			AddNewPro (bundle.role);//add new role
 		}
 	}
 }
