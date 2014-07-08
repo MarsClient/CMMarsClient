@@ -22,7 +22,7 @@ public class AntDefine
 {
 	public const string KEY_ATTACK = "Attack";
 	public const string KEY_SPELL = "Spell";
-	public const float ANIMATION_OFFSET = 0.05f;
+	//public const float ANIMATION_OFFSET = 0.05f;
 }
 
 [System.Serializable]
@@ -41,6 +41,7 @@ public class AnimationInfo
 	public AnimationClip animationClip;//animation mode
 	public Clip clip;//animation type
 	public float speed = 1.0f;//if speed is zero, it will deafult one
+	public float ANIMATION_OFFSET = 0.05f;
 	public string onCompleteCallback;//not loop animation for callback when animation end
 	public List<FrameEvent> events;//which frame call something event (in fact send message)
 	//public bool isAoeAllFrames = false;
@@ -73,7 +74,7 @@ public class AnimationInfo
 //			}
 //		}
 	}
-	public void OnCompleteEvent () { if (animationClip.wrapMode == WrapMode.Default || animationClip.wrapMode == WrapMode.Once) { SetEvent (onCompleteCallback, animationClip.length - AntDefine.ANIMATION_OFFSET); } }
+	public void OnCompleteEvent () { if (animationClip.wrapMode == WrapMode.Default || animationClip.wrapMode == WrapMode.Once) { SetEvent (onCompleteCallback, animationClip.length - ANIMATION_OFFSET); } }
 	private void SetEvent (string onEvent, float time, int index = -1)
 	{
 		if (time != 0 && onEvent != "")
@@ -130,6 +131,10 @@ public class AiAnimation : MonoBehaviour {
 	void Start () 
 	{
 		m_Animation = GetComponentInChildren<Animation>();
+		if (m_Animation.GetComponent<AnimationMessageManager>() == null)
+		{
+			m_Animation.gameObject.AddComponent <AnimationMessageManager>();
+		}
 		m_Transform = transform;
 
 		trailsManager = GetComponentInChildren<TrailsManager>();

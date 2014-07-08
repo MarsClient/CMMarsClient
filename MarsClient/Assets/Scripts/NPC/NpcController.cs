@@ -38,12 +38,16 @@ public class NpcController : MonoBehaviour {
 				.SetNoBtn ("game.dialog.no")
 				.SetDelegateBtn (EnterFight)
 				.Show ();
-		//UISceneLoading.LoadingScnens ("LV00001A", null, true);
+		//
 		//Debug.Log (gameNpc.name);
 	}
 
 	void EnterFight (bool isBy)
 	{
-		Debug.Log (isBy);
+		if (isBy)
+		{
+			UISceneLoading.LoadingScnens ("LV00001A", null, true);
+		}
+		//Debug.Log (isBy);
 	}
 }
