@@ -123,9 +123,20 @@ public class NetRecv : MonoBehaviour {
 			}
 			if (bundle.cmd == Command.EnterFight)
 			{
-				Main.Instance.fight = bundle.fight;
-				Main.Instance.team = bundle.team;
-				UISceneLoading.LoadingScnens ("LV00001A", null, true);
+				new DialogContent()
+					.SetMessage("game.fight.messgae", "ICC")
+						.SetYesBtn ("game.dialog.yes")
+						.SetNoBtn ("game.dialog.no")
+						.SetDelegateBtn ((bool isBy)=>
+						{
+							if (isBy)
+							{
+								Fight fight = new Fight ();
+								fight.id = bundle.fight.id;
+								NetSend.SendEnterFight (fight);
+							}
+						})
+						.Show ();
 			}
 		}
 	}
