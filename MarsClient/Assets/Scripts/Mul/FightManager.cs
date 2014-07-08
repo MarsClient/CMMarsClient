@@ -11,8 +11,32 @@ public class FightManager : MultiPlayer {
 
 	public override void LoadingDoneRoles ()
 	{
-		UISceneLoading.instance.DelaySuccessLoading ();
+		NetSend.SendPlayersDone ();
+		//UISceneLoading.instance.DelaySuccessLoading ();
 	}
 
-	//public void
+	void OnEnable ()
+	{
+		PhotonClient.processResults += ProcessResults;
+		PhotonClient.processResultSync += ProcessResultSync;
+	}
+	
+	void OnDisable ()
+	{
+		PhotonClient.processResults -= ProcessResults;
+		PhotonClient.processResultSync -= ProcessResultSync;
+	}
+
+	void ProcessResults (Bundle bundle)
+	{
+
+	}
+
+	void ProcessResultSync (Bundle bundle)
+	{
+		if (bundle.cmd == Command.PlayerDone)
+		{
+			UISceneLoading.instance.DelaySuccessLoading ();
+		}
+	}
 }

@@ -106,12 +106,12 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		}
 	}
 
-	public void SendServer (Command operationCode)
+	public static void SendServer (Command operationCode)
 	{
 		SendServer (operationCode, null);
 	}
 
-	public void SendServer (Command operationCode, object obj)
+	public static void SendServer (Command operationCode, object obj)
 	{
 		Dictionary<byte, object> parameter = null;
 		if (obj != null)
@@ -122,7 +122,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 			Debug.Log (json);
 			DC.Log (json);
 		}
-		this.peer.OpCustom((byte)operationCode, parameter, true);
+		PhotonClient.Instance.peer.OpCustom((byte)operationCode, parameter, true);
 	}
 
 	public void DebugReturn (DebugLevel level, string message)

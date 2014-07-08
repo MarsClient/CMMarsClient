@@ -30,6 +30,8 @@ public enum Command : byte
 
 	EnterFight,
 
+	PlayerDone,
+
 	//Last
 	NetError,
 	AbortDiscount,
