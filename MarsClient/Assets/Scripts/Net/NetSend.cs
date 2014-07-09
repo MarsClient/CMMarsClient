@@ -77,7 +77,7 @@ public class NetSend {
 
 	public static void SendTeamUpdate (Role r)
 	{
-		PhotonClient.SendServer (Command.TeamUpdate);
+		PhotonClient.SendServer (Command.TeamUpdate, r);
 	}
 	#endregion
 
