@@ -62,8 +62,14 @@ public class AiPlayer : MonoBehaviour
 			role.xRo = (float) transform.forward.x;
 			role.zRo = (float) transform.forward.z;
 			role.action = (int)c;
-			//Debug.LogError (transform.forward);
-			NetSend.SendUpdatePlayer (role);
+			if (PublicZoneManager.instance)
+			{
+				NetSend.SendUpdatePlayer (role);
+			}
+			else if (FightManager.instance)
+			{
+				NetSend.SendTeamUpdate (role);
+			}
 		}
 	}
 	#endregion

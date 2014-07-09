@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class PublicZoneManager : MultiPlayer {
 
+	public static PublicZoneManager instance; void Awake () { instance = this; }
+
 	void Start () 
 	{
 		UILoadPanel.LoadingPanel ();

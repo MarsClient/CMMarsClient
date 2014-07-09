@@ -74,6 +74,11 @@ public class NetSend {
 	{
 		PhotonClient.SendServer (Command.DismissTeam, r);
 	}
+
+	public static void SendTeamUpdate (Role r)
+	{
+		PhotonClient.SendServer (Command.TeamUpdate);
+	}
 	#endregion
 
 	#region Fight

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class FightManager : MultiPlayer {
 
+	public static FightManager instance;  void Awake () { instance = this; }
 
 	void Start ()
 	{

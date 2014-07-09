@@ -27,6 +27,7 @@ public enum Command : byte
 	LeftTeam,
 	SwapTeamLeader,
 	DismissTeam,
+	TeamUpdate,
 
 	EnterFight,
 
