@@ -31,10 +31,7 @@ public class AiMove : MonoBehaviour {
 	{
 		characterController = GetComponent <CharacterController>();
 
-		if (isPlayer == false)
-		{
-			StartUpdate ();
-		}
+		StartUpdate ();
 	}
 
 	public void StartUpdate ()
