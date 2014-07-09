@@ -68,7 +68,7 @@ public class PlayerUnit : HitUnit {
 
 	void ProcessResultSync (Bundle bundle)
 	{
-		if (bundle.cmd == Command.UpdatePlayer)
+		if (bundle.cmd == Command.UpdatePlayer || bundle.cmd == Command.TeamUpdate)
 		{
 			if (role != null && role.roleId == bundle.role.roleId)
 			{
