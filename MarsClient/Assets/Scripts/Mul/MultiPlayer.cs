@@ -14,8 +14,8 @@ public abstract class MultiPlayer : MonoBehaviour {
 		pros[0] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.ZS).ToString ();
 		pros[1] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.FS).ToString ();
 		pros[2] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.DZ).ToString ();
-
-		AssetLoader.Instance.DownloadAssetbundle (pros, CallBack, true);
+		if (AssetLoader.Instance != null)
+			AssetLoader.Instance.DownloadAssetbundle (pros, CallBack, true);
 
 
 	}
