@@ -5,7 +5,7 @@ using DC = DebugConsole;
 
 public class NetTest : MonoBehaviour {
 
-	private const string repose = "<<<<<<<repose<<<<<<<";
+	private const string REPOSE = "<<<<<<<repose<<<<<<<";
 
 	void Start ()
 	{
@@ -27,7 +27,7 @@ public class NetTest : MonoBehaviour {
 				if (p[0] == Command.JoinTeam.ToString ().ToLower()) NetSend.SendJoinTeam(role);
 				else if (p[0] == Command.LeftTeam.ToString ().ToLower()) NetSend.SendLeftTeam(role);
 				else if (p[0] == Command.SwapTeamLeader.ToString ().ToLower()) NetSend.SendSwapTeamLeader(role);
-				return repose;
+				return REPOSE;
 			}
 			catch (System.Exception e) {}
 			finally {};
@@ -36,7 +36,7 @@ public class NetTest : MonoBehaviour {
 		{
 			if (p[0] == Command.CreatTeam.ToString ().ToLower()) NetSend.SendCreatTeam();
 			else if (p[0] == Command.DismissTeam.ToString ().ToLower()) NetSend.SendDismissTeam();
-			return repose;
+			return REPOSE;
 		}
 		return p[0] + " roleId usage";
 	}
