@@ -115,7 +115,7 @@ public class UIRoleList : MonoBehaviour, ITabListener {
 			if (p != PRO.NULL) PROS.Add (p, _role);
 		}
 		//		UISceneLoading.instance.DelaySuccessLoading ();
-		Debug.Log ("Done");
+//		Debug.Log ("Done");
 		Dialog.instance.TweenClose ();
 		if (role != null)
 		{

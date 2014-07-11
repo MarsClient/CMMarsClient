@@ -18,21 +18,25 @@ public class NetTest : MonoBehaviour {
 
 	private string AllTeamsEvent (params string[] p)
 	{
-		if (p.Length >= 2)
+		if (p.Length == 2)
 		{
 			Role role = new Role ();
 			try 
 			{
 				role.roleId = long.Parse (p[1]);
-				if (p[0] == Command.CreatTeam.ToString ().ToLower()) NetSend.SendCreatTeam(role);
-				else if (p[0] == Command.JoinTeam.ToString ().ToLower()) NetSend.SendJoinTeam(role);
+				if (p[0] == Command.JoinTeam.ToString ().ToLower()) NetSend.SendJoinTeam(role);
 				else if (p[0] == Command.LeftTeam.ToString ().ToLower()) NetSend.SendLeftTeam(role);
 				else if (p[0] == Command.SwapTeamLeader.ToString ().ToLower()) NetSend.SendSwapTeamLeader(role);
-				else if (p[0] == Command.DismissTeam.ToString ().ToLower()) NetSend.SendDismissTeam(role);
 				return repose;
 			}
 			catch (System.Exception e) {}
 			finally {};
+		}
+		else if (p.Length == 1)
+		{
+			if (p[0] == Command.CreatTeam.ToString ().ToLower()) NetSend.SendCreatTeam();
+			else if (p[0] == Command.DismissTeam.ToString ().ToLower()) NetSend.SendDismissTeam();
+			return repose;
 		}
 		return p[0] + " roleId usage";
 	}

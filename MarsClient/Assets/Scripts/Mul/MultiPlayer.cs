@@ -34,7 +34,7 @@ public abstract class MultiPlayer : MonoBehaviour {
 			if (p != PRO.NULL) PROS.Add (p, role);
 		}
 
-		Debug.Log ("Done" + Main.Instance.onlineRoles.Count);
+//		Debug.Log ("Done" + Main.Instance.onlineRoles.Count);
 		AddNewPro (Main.Instance.role);
 		//Debug.Log (UISceneLoading.currentLoadName);
 

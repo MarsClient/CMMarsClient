@@ -31,6 +31,6 @@ public class UILoadPanel : MonoBehaviour {
 	{
 		GameObject go = Resources.Load ("UI/PublicZone", typeof (GameObject)) as GameObject;
 		GameObject.Instantiate (go);
-		Debug.Log (go);
+//		Debug.Log (go);
 	}
 }

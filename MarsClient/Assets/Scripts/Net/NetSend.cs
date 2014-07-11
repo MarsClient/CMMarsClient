@@ -50,9 +50,9 @@ public class NetSend {
 	}
 
 	#region Team
-	public static void SendCreatTeam (Role r)
+	public static void SendCreatTeam ()
 	{
-		PhotonClient.SendServer (Command.CreatTeam, r);
+		PhotonClient.SendServer (Command.CreatTeam);
 	}
 
 	public static void SendJoinTeam (Role r)
@@ -70,9 +70,9 @@ public class NetSend {
 		PhotonClient.SendServer (Command.SwapTeamLeader, r);
 	}
 
-	public static void SendDismissTeam (Role r)
+	public static void SendDismissTeam ()
 	{
-		PhotonClient.SendServer (Command.DismissTeam, r);
+		PhotonClient.SendServer (Command.DismissTeam);
 	}
 
 	public static void SendTeamUpdate (Role r)

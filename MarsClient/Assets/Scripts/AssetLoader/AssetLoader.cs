@@ -121,7 +121,7 @@ public class AssetLoader : MonoBehaviour {
 				yield return www;
 				if (www.error == null)
 				{
-					Debug.Log (sc);
+//					Debug.Log (sc);
 					AssetBundle assetBundle = www.assetBundle;
 					GameObject go = (GameObject) assetBundle.mainAsset;
 	//				if (assetBundles.ContainsKey (sc) == false)
