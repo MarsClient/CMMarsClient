@@ -22,5 +22,7 @@ public class GameBase
 	public int gold;
 	[DefaultValue(0)]
 	public int gem;
+	[DefaultValue (0)]
+	public int level;
 
 }

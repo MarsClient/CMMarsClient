@@ -17,7 +17,7 @@ public class CreatAssetBundle : Editor {
 	string.Empty;  
 #endif  
 
-	[MenuItem("Custom Editor/Create AssetBunldes Common")]  
+	[MenuItem("Game Editor/Create AssetBunldes Common")]  
 	static void CreateAssetBunldesMain ()  
 	{  
 		BuildTarget bt = BuildTarget.StandaloneWindows;
@@ -56,7 +56,7 @@ public class CreatAssetBundle : Editor {
 		AssetDatabase.Refresh ();     
 	}  
 
-	[MenuItem("Custom Editor/Create Scenes")]
+	[MenuItem("Game Editor/Create Scenes")]
 	static void CreateScenesMain ()  
 	{
 		Caching.CleanCache();
@@ -100,5 +100,61 @@ public class CreatAssetBundle : Editor {
 			}
 		}
 			AssetDatabase.Refresh ();
+	}
+
+	[MenuItem("Game Editor/Create MonsterPos", false, 9)]
+	static void CreatMonsterPosJson ()
+	{
+		Object[] SelectedAsset = Selection.GetFiltered (typeof(Object), SelectionMode.DeepAssets);
+		try
+		{
+			string sourcePath = AssetDatabase.GetAssetPath (SelectedAsset[0]);
+			if (sourcePath.Contains (".unity"))
+			{
+				string targetPath = sourcePath.Replace (".unity", ".txt");
+				Fight fight = new Fight ();
+				fight.gameMonsters = new Dictionary<string, GameMonster[]> ();
+				for (int i = 100000;;i++)
+				{
+					string tra_Name = i.ToString ();
+					GameObject go = GameObject.Find (tra_Name);
+					if (go != null)
+					{
+
+						Transform json_Go = go.transform.FindChild ("MonsterPos");
+						fight.gameMonsters.Add (tra_Name, new GameMonster[json_Go.childCount]);
+						int idx = 0;
+						foreach (Transform tra in json_Go)
+						{
+							string[] arr = tra.name.Split ('_');
+							GameMonster gameMonster = new GameMonster ();
+							gameMonster.id = int.Parse(arr[0]);
+							gameMonster.type = arr[1];
+							gameMonster.level = int.Parse (arr[2]);
+							gameMonster.x = tra.position.x;
+							gameMonster.z = tra.position.z;
+							fight.gameMonsters[tra_Name][idx] = gameMonster;
+							idx++;
+
+						}
+					}
+					else break;
+				}
+
+
+				FileStream fs = new FileStream (targetPath, FileMode.Create, FileAccess.Write);
+				StreamWriter sw = new StreamWriter(fs);
+				sw.WriteLine (JsonConvert.SerializeObject (fight));
+				sw.Close ();
+				fs.Close ();
+				Debug.Log ("CREAT " + targetPath + " SUCCESSFUL");
+				AssetDatabase.Refresh ();
+			}
+		}
+		catch (System.Exception e)
+		{
+			Debug.LogError (e);
+		}
+
 	}
 }

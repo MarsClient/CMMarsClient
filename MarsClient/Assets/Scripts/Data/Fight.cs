@@ -27,4 +27,7 @@ public class Fight//FB
 	public int level;
 	[DefaultValue(null)]
 	public Team team;
+
+	[DefaultValue (null)]
+	public Dictionary<string, GameMonster[]> gameMonsters;
 }

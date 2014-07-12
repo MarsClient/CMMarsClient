@@ -49,4 +49,25 @@ public class FightManager : MultiPlayer {
 			AddNewPro (bundle.role);//add new role
 		}
 	}
+
+	public TextAsset textAsset;
+
+
+	#region follow is Test Code;
+	public GameObject prefab;
+
+	private Fight fight;
+	public void InitLocalData (string num)
+	{
+		if (fight == null)
+		{
+			fight = JsonConvert.DeserializeObject<Fight> (textAsset.text);
+		}
+		foreach (GameMonster mg in fight.gameMonsters[num])
+		{
+			GameObject go = GameObject.Instantiate (prefab) as GameObject;
+			go.transform.position = new Vector3 (mg.x, 0, mg.z);
+		}
+	}
+	#endregion
 }
