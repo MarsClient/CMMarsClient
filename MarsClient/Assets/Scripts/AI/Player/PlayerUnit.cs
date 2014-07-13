@@ -11,7 +11,7 @@ public class PlayerUnit : HitUnit {
 	void Awake ()
 	{
 		m_ac = GetComponent <AiAnimation>();
-		//
+		Add ();
 	}
 
 	void Add ()

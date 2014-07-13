@@ -207,6 +207,7 @@ public class AiAnimation : MonoBehaviour {
 		{
 			AnimationInfo info = GetInfoByClip ((Clip) c);
 			attackDelegate (info, info.getEvent (eventIndex));
+			Debug.Log ("c: " + c + "eventIndex: " + eventIndex);
 		}
 	}
 

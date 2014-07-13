@@ -10,9 +10,13 @@ public abstract class HitUnit : MonoBehaviour {
 
 	public UILabel label;
 
-	//public GameObject go;
+	public GameObject go;
 
-	public void Hitted (AnimationInfo info, FrameEvent fe)
+
+	private GameObject dmgParent;
+	private GameObject dmgPrefab;
+
+	public void Hitted (AnimationInfo info, FrameEvent fe, bool isDmg = false)
 	{
 //		if (info.clip == Clip.Spell1)
 //		{
@@ -31,9 +35,31 @@ public abstract class HitUnit : MonoBehaviour {
 		}
 		else  { return; }
 
-	
-		//Transform ef = (GameObject.Instantiate (go) as GameObject).transform;
-		//ef.transform.position = hitPos.position;//new Vector3 (hitPos.transform.position.x, 0.01f, hitPos.transform.position.z);
+
+		Transform ef = (GameObject.Instantiate (go) as GameObject).transform;
+		ef.transform.position = hitPos.position;//new Vector3 (hitPos.transform.position.x, 0.01f, hitPos.transform.position.z);
+		if (isDmg)
+		{
+
+			if (dmgParent == null)
+			{
+				dmgParent = GameObject.Find ("~GameDmg");
+				dmgPrefab = GameObject.Find ("~Label");
+
+			}
+			if (dmgParent != null)
+			{
+
+				Transform _go = NGUITools.AddChild (dmgParent, dmgPrefab).transform;
+	//			_go.rotation = Quaternion.Euler (new Vector3 (0, 180, 0));
+	//			_go.position = hitPos.position;
+				UIFollowTarget ft =_go.GetComponentInChildren<UIFollowTarget>();
+				ft.target = hitPos.transform;
+				ft.enabled = true;
+				_go.GetComponentInChildren <DmgController>().show ();
+			}
+		}
+
 
 		ExtraEvent (info, fe);
 		//hit color

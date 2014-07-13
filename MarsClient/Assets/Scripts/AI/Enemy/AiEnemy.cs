@@ -39,6 +39,7 @@ public class AiEnemy : MonoBehaviour
 			{
 				pu.Hitted (info, fe);
 			}
+//			Debug.LogError (i + "_____");
 		}
 	}
 
@@ -56,7 +57,10 @@ public class AiEnemy : MonoBehaviour
 	{
 		if (aiAnt.dontMove == false)
 		{
-			m_AIPath.StartPath (target.position, OnStartPath, OnPathCompleteToAttack);
+			if (target != null)
+			{
+				m_AIPath.StartPath (target.position, OnStartPath, OnPathCompleteToAttack);
+			}
 			isAiWalk = FightMath.isStateRandom ();
 			if (isAiWalk)
 			{

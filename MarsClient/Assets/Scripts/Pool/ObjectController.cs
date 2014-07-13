@@ -18,7 +18,7 @@ public class ObjectController : MonoBehaviour {
 
 	void DisableGo ()
 	{
-		gameObject.SetActive (false);
+		Destroy (gameObject);//gameObject.SetActive (false);
 	}
 
 	// Update is called once per frame
