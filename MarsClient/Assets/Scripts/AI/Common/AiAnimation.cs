@@ -41,7 +41,6 @@ public class AnimationInfo
 	public AnimationClip animationClip;//animation mode
 	public Clip clip;//animation type
 	public float speed = 1.0f;//if speed is zero, it will deafult one
-	public float ANIMATION_OFFSET = 0.05f;
 	public string onCompleteCallback;//not loop animation for callback when animation end
 	public List<FrameEvent> events;//which frame call something event (in fact send message)
 	//public bool isAoeAllFrames = false;
@@ -54,52 +53,6 @@ public class AnimationInfo
 	public void Init (Animation ant) 
 	{
 		SetSpeed (ant);
-		OnCompleteEvent ();
-		//AniamtionAllMesaage ();
-		for (int i = 0; i < events.Count; i++) { SetEvent (events[i].method, events[i].frame / animationClip.frameRate, i); }
-	}
-	public void AniamtionAllMesaage ()
-	{
-//		if (this.isAoeAllFrames == true)
-//		{
-//			int frames = (int) (animationClip.frameRate * animationClip.length);
-//			int startIndex = events.Count;
-//			if (startIndex > 0)
-//			{
-//				FrameEvent frameEvent = events[startIndex - 1];
-//				for (int i = startIndex - 1; i < frames; i++)
-//				{
-//					events.Add (frameEvent);
-//				}
-//			}
-//		}
-	}
-	public void OnCompleteEvent () { if (animationClip.wrapMode == WrapMode.Default || animationClip.wrapMode == WrapMode.Once) { SetEvent (onCompleteCallback, animationClip.length - ANIMATION_OFFSET); } }
-	private void SetEvent (string onEvent, float time, int index = -1)
-	{
-		if (time != 0 && onEvent != "")
-		{
-			AnimationEvent animationEvent = new AnimationEvent();
-			animationEvent.functionName = onEvent;
-
-			//Type c = this.GetType ();
-			//object o = (object)this
-			//UnityEngine.Object o = (UnityEngine.Object) this;
-			string paramter = "";
-			string _clip = ((int) clip).ToString ();
-			paramter = _clip;
-			if (index != -1)
-			{
-				string _index = index.ToString ();// (events.FindIndex (fe)).ToString ();
-				paramter += "," + _index;
-			}
-
-			animationEvent.stringParameter = paramter;//JsonConvert.SerializeObject (fe);//(int) clip;
-
-			animationEvent.messageOptions = SendMessageOptions.RequireReceiver;
-			animationEvent.time = time;
-			animationClip.AddEvent (animationEvent);
-		}
 	}
 	private void SetSpeed (Animation ant) { if (speed == 0) { speed = 1; } length = animationClip.length / speed; ant[animationClip.name].speed = speed; }
 	public FrameEvent getEvent (int index) { if (index >= 0 && index < events.Count) { return events[index]; } return null; }
@@ -126,7 +79,10 @@ public class AiAnimation : MonoBehaviour {
 	public List<AnimationInfo> normalAttack = new List<AnimationInfo> ();
 
 	private Clip clip = Clip.Idle;
+	private AnimationInfo m_AnimationInfo;
 
+	private float beginPlayTime = 0;//start paly time
+	private float prefabPlayTime = 0;//prefab play time
 
 	void Start () 
 	{
@@ -153,14 +109,13 @@ public class AiAnimation : MonoBehaviour {
 	{
 		if (clip != c)
 		{
-			AnimationInfo animationInfo = GetInfoByClip (c);
-			bool isExist = animationInfo != null;
+			m_AnimationInfo = GetInfoByClip (c);
+			bool isExist = m_AnimationInfo != null;
 			if (isExist == true)
 			{
-				//Debug.Log (m_Animation.IsPlaying (animationInfo.animationClip.name) +  "___" + clip);
-				//if (m_Animation.IsPlaying (animationInfo.animationClip.name)) { return; }
 				clip = c;
-				m_Animation.CrossFade (animationInfo.animationClip.name);
+				m_Animation.CrossFade (m_AnimationInfo.animationClip.name);
+				beginPlayTime = Time.time;
 			}
 		}
 	}
@@ -193,6 +148,29 @@ public class AiAnimation : MonoBehaviour {
 	void LateUpdate ()
 	{
 		trailsManager.RunAnimations (m_Animation, isAttack || isSpell);
+
+		if (m_AnimationInfo != null && m_AnimationInfo.animationClip.wrapMode != WrapMode.Loop)
+		{
+			float m_tt = (Time.time - beginPlayTime) * m_AnimationInfo.speed;
+
+			if (m_AnimationInfo.events.Count > 0)
+			{
+				for (int m_i = 0; m_i < m_AnimationInfo.events.Count; m_i++)
+				{
+					float frame = m_AnimationInfo.events[m_i].frame / m_AnimationInfo.animationClip.frameRate;
+					if (frame > prefabPlayTime && frame <= m_tt)
+					{
+						m_Animation.SendMessage (m_AnimationInfo.events[m_i].method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
+					}
+				}
+			}
+
+			if (m_tt >= m_AnimationInfo.animationClip.length)
+			{
+				m_Animation.SendMessage (m_AnimationInfo.onCompleteCallback, m_AnimationInfo.clip.ToString (), SendMessageOptions.RequireReceiver);
+			}
+			prefabPlayTime = m_tt;
+		}
 	}
 
 	/*Follow is Animation message receive*/
@@ -207,7 +185,7 @@ public class AiAnimation : MonoBehaviour {
 		{
 			AnimationInfo info = GetInfoByClip ((Clip) c);
 			attackDelegate (info, info.getEvent (eventIndex));
-			Debug.Log ("c: " + c + "eventIndex: " + eventIndex);
+//			Debug.Log ("c: " + c + "eventIndex: " + eventIndex);
 		}
 	}
 

@@ -141,7 +141,7 @@ public class AiPlayer : MonoBehaviour
 			if ((angle > 0 && distance < attDistance) || (angle <= 0 && distance < attDistance / 4))
 			{
 				FightMath.SetTargetForwardDirection (eu.transform, transform);
-				eu.Hitted (info, fe);
+				eu.Hitted (info, fe, true);
 			}
 		}
 	}
