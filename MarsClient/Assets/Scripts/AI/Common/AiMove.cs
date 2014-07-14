@@ -61,10 +61,12 @@ public class AiMove : MonoBehaviour {
 	{
 		if (_currentMoveState == MoveState.SpecialMoving)
 		{
-			if (Vector3.Distance (transform.position, startPos) < moveDistance)
+			float distance = Vector3.Distance (transform.position, startPos);
+			if (distance < moveDistance)
 			{
+				//Debug.LogError (distance + "___" + moveDistance);
 				CollisionFlags cf = SetMove (transform.forward, speed);
-				if (m_Hit  == null)
+				if (Time.time - m_startTime < m_LastTime)
 				{
 					return;
 				}
@@ -104,6 +106,10 @@ public class AiMove : MonoBehaviour {
 	private float speed = 1;
 	private Vector3 startPos;
 	private bool isForward = true;
+
+
+	private float m_LastTime = 0;
+	private float m_startTime = 0;
 	public void startMoveDir (AnimationInfo info, FrameEvent fe/*, bool isForward = true*/)
 	{
 		if (fe.antDisatnce == 0)
@@ -118,5 +124,8 @@ public class AiMove : MonoBehaviour {
 		this.moveDistance = Mathf.Abs (fe.antDisatnce);
 		this.speed = fe.antMoveSpd;
 		this.currentAnt = info;
+
+		this.m_LastTime = Mathf.Abs (moveDistance / speed);
+		m_startTime = Time.time;
 	}
 }
