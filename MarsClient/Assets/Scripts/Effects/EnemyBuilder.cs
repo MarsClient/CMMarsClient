@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class EnemyBuilder : MonoBehaviour {
@@ -6,7 +6,7 @@ public class EnemyBuilder : MonoBehaviour {
 	void OnTriggerEnter(Collider other) 
 	{
 		collider.enabled = false;
-		if (other.tag == TagConstants.PLAYER_TAG)
+		if (other.tag == TagLayerDefine.PLAYER_TAG)
 		{
 			foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
 			{
