@@ -59,7 +59,7 @@ public class AnimationInfo
 }
 
 [RequireComponent(typeof (TrailsManager))]
-[RequireComponent(typeof (AiMove))]
+//[RequireComponent(typeof (AiMove))]
 public class AiAnimation : MonoBehaviour {
 
 	/* Set Delegates attack spell or other function for call*/
@@ -165,7 +165,7 @@ public class AiAnimation : MonoBehaviour {
 				}
 			}
 
-			if (m_tt >= m_AnimationInfo.animationClip.length)
+			if (m_tt >= m_AnimationInfo.animationClip.length - 0.05f)
 			{
 				m_Animation.SendMessage (m_AnimationInfo.onCompleteCallback, m_AnimationInfo.clip.ToString (), SendMessageOptions.RequireReceiver);
 			}

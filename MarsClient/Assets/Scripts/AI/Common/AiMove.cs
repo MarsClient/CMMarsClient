@@ -83,6 +83,9 @@ public class AiMove : MonoBehaviour {
 		{
 			transform.forward = dir;
 		}
+		Vector3 pos = transform.position;
+		pos.y = 0;
+		transform.position = pos;
 		return characterController.Move (dir * spd * Time.deltaTime);
 	}
 
