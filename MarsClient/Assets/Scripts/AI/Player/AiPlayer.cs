@@ -4,6 +4,8 @@ using System.Collections;
 [RequireComponent (typeof (AiAnimation))]
 public class AiPlayer : MonoBehaviour 
 {
+	public AttType attType = AttType.inf;
+
 	public float attDistance = 2;
 
 	//private AiMove aiMove;
@@ -132,17 +134,24 @@ public class AiPlayer : MonoBehaviour
 	#region AiAnimation Event
 	void AttackDelegate (AnimationInfo info, FrameEvent fe)
 	{
-		for (int i = 0; i < EnemyUnit.enemysUnit.Count; i++)
+		if (attType == AttType.inf)
 		{
-			EnemyUnit eu = EnemyUnit.enemysUnit[i];
-			float angle = FightMath.GetMultiplyVector (transform, eu.transform);
-			float distance = FightMath.DistXZ (transform.position, eu.transform.position);
-			//Debug.Log (angle + "_____" + distance);
-			if ((angle > 0 && distance < attDistance) || (angle <= 0 && distance < attDistance / 4))
+			for (int i = 0; i < EnemyUnit.enemysUnit.Count; i++)
 			{
-				FightMath.SetTargetForwardDirection (eu.transform, transform);
-				eu.Hitted (info, fe, true);
+				EnemyUnit eu = EnemyUnit.enemysUnit[i];
+				float angle = FightMath.GetMultiplyVector (transform, eu.transform);
+				float distance = FightMath.DistXZ (transform.position, eu.transform.position);
+				//Debug.Log (angle + "_____" + distance);
+				if ((angle > 0 && distance < attDistance) || (angle <= 0 && distance < attDistance / 4))
+				{
+					FightMath.SetTargetForwardDirection (eu.transform, transform);
+					eu.Hitted (info, fe, true);
+				}
 			}
+		}
+		else if (attType == AttType.bow)
+		{
+			//Shoot
 		}
 	}
 	#endregion
