@@ -8,6 +8,7 @@ public class FightManager : MultiPlayer {
 	void Start ()
 	{
 		base.Start ();
+		gameObject.AddComponent <PoolManager>();
 	}
 
 	public override void LoadingDoneRoles ()

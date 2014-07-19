@@ -13,6 +13,7 @@ public class BulletsSample : MonoBehaviour {
 	public GameObject hitEffect;
 
 
+	private PoolController m_pc;
 	private bool m_AllowUpdate = false;
 	private Vector3 m_dir;
 	//private bool OverlapSphere = true;
@@ -76,6 +77,8 @@ public class BulletsSample : MonoBehaviour {
 
 	void HiddemEf ()
 	{
-		gameObject.SetActive (false);
+		if (m_pc == null) m_pc = GetComponent <PoolController>();
+		m_pc.Release ();
+		//gameObject.SetActive (false);
 	}
 }

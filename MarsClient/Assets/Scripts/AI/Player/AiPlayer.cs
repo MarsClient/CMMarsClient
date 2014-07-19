@@ -152,8 +152,9 @@ public class AiPlayer : MonoBehaviour
 		else if (attType == AttType.bow)
 		{
 			//Shoot
-			GameObject res_Go = Resources.Load ("Bullets_10001") as GameObject;
-			GameObject go = GameObject.Instantiate (res_Go, transform.position, transform.rotation) as GameObject;
+			//GameObject res_Go = PoolManager.Instance.LoadGameObject ("Bullets_10001");//Resources.Load ("Bullets_10001") as GameObject;
+			GameObject go = PoolManager.Instance.LoadGameObject ("Bullets_10001", transform);
+			//GameObject.Instantiate (res_Go, transform.position, transform.rotation) as GameObject;
 			BulletsSample bs = go.GetComponent <BulletsSample>();
 			if (bs != null)
 			{

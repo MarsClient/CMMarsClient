@@ -23,12 +23,16 @@ public class AiInput : MonoBehaviour {
 		float z = -Joystick.getPosition.y;
 #endif
 		UpdateMove (new Vector3 (x, 0, z));
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
 		//attack
-		if (Input.GetMouseButton (0) && UISceneLoading.currentLoadName != UISceneLoading.PUBLIC_ZONE)
+		if ((Input.GetMouseButton (0) || Input.GetKey (KeyCode.J)) && UISceneLoading.currentLoadName != UISceneLoading.PUBLIC_ZONE)
 		{
 			aiPlayer.NormalAttack ();
 		}
+#endif
 	}
+
 #if UNITY_ANDROID || UNITY_IPHONE
 	public void MobliePlatform ()
 	{
@@ -40,6 +44,7 @@ public class AiInput : MonoBehaviour {
 		aiMove.UpdateMove (dir);
 	}
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
 	void OnGUI ()
 	{
 		if (GUILayout.Button ("Spell1"))
@@ -51,4 +56,5 @@ public class AiInput : MonoBehaviour {
 			aiPlayer.ShootSpell2 ();
 		}
 	}
+#endif
 }
