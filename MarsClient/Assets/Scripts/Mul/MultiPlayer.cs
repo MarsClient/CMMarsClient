@@ -68,7 +68,7 @@ public abstract class MultiPlayer : MonoBehaviour {
 				Destroy (r.GetComponent<AiInput>());
 				return;
 			}
-			CameraController.instance.initialize (r.transform);
+			CameraController.instance.initialize (r.transform, CameraType.Follow);
 		}
 	}
 
