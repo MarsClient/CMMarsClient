@@ -22,9 +22,9 @@ public class CameraController : MonoBehaviour {
 	private Vector3 startPos;
 	private float lastTime;
 	private Vector3 lastPos;
-	private int shakeIndex;
-	private float lastShakeTime;
-	private float mShakeDuration;
+	private int shakeIndex;//every frame shake
+	private float lastShakeTime;//remember last shake time 
+	private float mShakeDuration;//shake Duration 
 
 	void Awake ()
 	{
