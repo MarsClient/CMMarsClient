@@ -18,6 +18,11 @@ public class PoolManager : MonoBehaviour {
 
 	public GameObject LoadGameObject (string path, Transform target)
 	{
+		return LoadGameObject (path, target, null);
+	}
+
+	public GameObject LoadGameObject (string path, Transform target, Transform parent)
+	{
 		GameObject m_go = null;
 		LinkedList<GameObject> goList = null;
 
@@ -43,6 +48,10 @@ public class PoolManager : MonoBehaviour {
 		{
 			m_go.transform.position = target.position;
 			m_go.transform.rotation = target.rotation;
+		}
+		if (parent != null)
+		{
+			m_go.transform.parent = parent;
 		}
 		m_go.SetActive (true);
 		return m_go;

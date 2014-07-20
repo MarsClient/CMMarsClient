@@ -10,7 +10,7 @@ public abstract class HitUnit : MonoBehaviour {
 
 	public UILabel label;
 
-	public GameObject go;
+	//public GameObject go;
 
 
 	private GameObject dmgParent;
@@ -36,7 +36,8 @@ public abstract class HitUnit : MonoBehaviour {
 		else  { return; }
 
 
-		Transform ef = (GameObject.Instantiate (go) as GameObject).transform;
+		//Transform ef = (GameObject.Instantiate (go) as GameObject).transform;
+		Transform ef = PoolManager.Instance.LoadGameObject ("EF0001", null).transform;
 		ef.transform.position = hitPos.position;//new Vector3 (hitPos.transform.position.x, 0.01f, hitPos.transform.position.z);
 		if (isDmg)
 		{
