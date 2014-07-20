@@ -30,6 +30,7 @@ public class FrameEvent
 {
 	public int frame;
 	public string method;
+	public float shakeTime;
 	public float antDisatnce; //>0 forward. <0 back. =0 dont move, when animationing.
 	public float antMoveSpd; // about ant distance, mean that att or spell move spell
 	public Clip attackedClip = Clip.Idle;// attacked state
@@ -198,5 +199,14 @@ public class AiAnimation : MonoBehaviour {
 	public void AnimationFx (int c, int eventIndex)
 	{
 		//TODO:
+	}
+
+	public void AnimationShake (int c, int eventIndex)
+	{
+		AnimationInfo info = GetInfoByClip ((Clip) c);
+		CameraController.instance.StartShake (info.getEvent (eventIndex).shakeTime, ()=>
+		                                      {
+			return CameraType.Follow;
+		});
 	}
 }

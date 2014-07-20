@@ -34,18 +34,12 @@ public class AnimationMessageManager : MonoBehaviour, IAnimationListener {
 
 	public void AttackMessage (string info)
 	{
-//		string[] infos = info.Split (',');
-//		int c = int.Parse (infos[0]);
-//		int eventIndex = int.Parse (infos[1]);
 		int[] events = SetAnimationIdex (info);
 		aiAnimation.AttackMessage (events[0], events[1]);
 	}
 
 	public void AnimationMove (string info)
 	{
-//		string[] infos = info.Split (',');
-//		int c = int.Parse (infos[0]);
-//		int eventIndex = int.Parse (infos[1]);
 		int[] events = SetAnimationIdex (info);
 		aiAnimation.AnimationMove (events[0], events[1]);
 	}
@@ -54,6 +48,12 @@ public class AnimationMessageManager : MonoBehaviour, IAnimationListener {
 	{
 		int[] events = SetAnimationIdex (info);
 		aiAnimation.AnimationFx (events[0], events[1]);
+	}
+
+	public void AnimationShake (string info)
+	{
+		int[] events = SetAnimationIdex (info);
+		aiAnimation.AnimationShake (events[0], events[1]);
 	}
 	#endregion
 }
