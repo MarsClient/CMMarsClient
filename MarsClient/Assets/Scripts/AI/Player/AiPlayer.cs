@@ -129,6 +129,12 @@ public class AiPlayer : MonoBehaviour
 		aiAnt.Play (Clip.Spell2);
 		PlayerStateNet (Clip.Spell2);
 	}
+
+	public void ShootSpell3 ()
+	{
+		aiAnt.Play (Clip.Spell3);
+		PlayerStateNet (Clip.Spell3);
+	}
 	#endregion
 
 	#region AiAnimation Event

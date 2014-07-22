@@ -16,6 +16,7 @@ public enum Clip : int
 	Die,
 	Spell1,
 	Spell2,
+	Spell3,
 }
 
 public class AntDefine

@@ -55,6 +55,10 @@ public class AiInput : MonoBehaviour {
 		{
 			aiPlayer.ShootSpell2 ();
 		}
+		if (GUILayout.Button ("Spell3"))
+		{
+			aiPlayer.ShootSpell3 ();
+		}
 	}
 #endif
 }

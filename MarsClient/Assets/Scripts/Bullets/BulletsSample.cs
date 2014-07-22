@@ -68,7 +68,10 @@ public class BulletsSample : MonoBehaviour {
 			}
 			m_AllowUpdate = false;
 			mainEffect.SetActive (false);
-			hitEffect.SetActive (true);
+			if (hitEffect!= null)
+			{
+				hitEffect.SetActive (true);
+			}
 
 			CancelInvoke ("HiddemEf");
 			Invoke ("HiddemEf", 1);

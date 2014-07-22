@@ -7,6 +7,8 @@ public interface IAnimationListener
 	void AttackMessage (string info);
 	void AnimationMove (string info);
 	void AnimationFx (string info);
+	void AnimationShake (string info);
+	void AnimationSpellAttack; (string info);
 }
 
 public class AnimationMessageManager : MonoBehaviour, IAnimationListener {
