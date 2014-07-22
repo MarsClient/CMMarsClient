@@ -20,6 +20,8 @@ public enum Clip : int
 
 public class AntDefine
 {
+	public const string KEY_RUN = "Run";
+	public const string KEY_IDLE = "Idle";
 	public const string KEY_ATTACK = "Attack";
 	public const string KEY_SPELL = "Spell";
 	//public const float ANIMATION_OFFSET = 0.05f;
@@ -126,6 +128,8 @@ public class AiAnimation : MonoBehaviour {
 	}
 
 	/*current state*/
+	public bool isIdle { get { return isContainState (clip, AntDefine.KEY_IDLE); } }
+	public bool isRun { get { return isContainState (clip, AntDefine.KEY_RUN); } }
 	public bool isAttack { get { return isContainState (clip, AntDefine.KEY_ATTACK); } }
 	public bool isSpell { get { return isContainState (clip, AntDefine.KEY_SPELL); } }
 	public bool isFall { get { return clip == Clip.Fall; } }

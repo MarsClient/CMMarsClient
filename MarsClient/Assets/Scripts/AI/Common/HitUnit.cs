@@ -31,6 +31,7 @@ public abstract class HitUnit : MonoBehaviour {
 		if (ac.isFall == false)
 		{
 			if (fe.attackedClip == Clip.Null || fe.attackedClip == Clip.Idle) {}
+			else if (m_ac.isRun == true) { ac.Play (Clip.Idle); }
 			else { ac.Play (fe.attackedClip); }
 		}
 		else  { return; }

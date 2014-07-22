@@ -26,7 +26,7 @@ public class EnemyUnit : HitUnit {
 //		Debug.Log (fe.antMoveSpd);
 //		Debug.Log (fe.method);
 
-		m_enemy.aiPath.Stop ();
-		m_ac.aiMove.startMoveDir (info, fe);
+//		m_enemy.aiPath.Stop ();
+//		m_ac.aiMove.startMoveDir (info, fe);
 	}
 }
