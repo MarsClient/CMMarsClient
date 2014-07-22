@@ -19,6 +19,7 @@ public class AiEnemy : MonoBehaviour
 	void OnDisable ()
 	{
 		aiAnt.attackDelegate -= AttackDelegate;
+		aiAnt.spellAttackDelegate -= SpellAttackDelegate;
 	}
 	
 	public void Remove ()
@@ -43,10 +44,16 @@ public class AiEnemy : MonoBehaviour
 		}
 	}
 
+	void SpellAttackDelegate (AnimationInfo info, FrameEvent fe)
+	{
+
+	}
+
 	void Start () 
 	{
 		aiAnt = GetComponent <AiAnimation>();
 		aiAnt.attackDelegate += AttackDelegate;
+		aiAnt.spellAttackDelegate += SpellAttackDelegate;
 		
 		m_AIPath = GetComponent <AIPath>();
 		enemys.Add (this);

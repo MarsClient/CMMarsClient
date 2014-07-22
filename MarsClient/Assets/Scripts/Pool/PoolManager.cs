@@ -16,6 +16,11 @@ public class PoolManager : MonoBehaviour {
 
 	private Dictionary<string, LinkedList<GameObject>> pools = new Dictionary<string, LinkedList<GameObject>>();
 
+	public GameObject LoadGameObject (string path)
+	{
+		return LoadGameObject (path, null, null);
+	}
+
 	public GameObject LoadGameObject (string path, Transform target)
 	{
 		return LoadGameObject (path, target, null);

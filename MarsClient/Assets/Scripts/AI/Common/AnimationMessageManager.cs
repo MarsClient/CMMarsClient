@@ -8,7 +8,7 @@ public interface IAnimationListener
 	void AnimationMove (string info);
 	void AnimationFx (string info);
 	void AnimationShake (string info);
-	void AnimationSpellAttack; (string info);
+	void AnimationSpellAttack (string info);
 }
 
 public class AnimationMessageManager : MonoBehaviour, IAnimationListener {
@@ -57,5 +57,12 @@ public class AnimationMessageManager : MonoBehaviour, IAnimationListener {
 		int[] events = SetAnimationIdex (info);
 		aiAnimation.AnimationShake (events[0], events[1]);
 	}
+
+	public void AnimationSpellAttack (string info)
+	{
+		int[] events = SetAnimationIdex (info);
+		aiAnimation.AnimationSpellAttack (events[0], events[1]);
+	}
+
 	#endregion
 }

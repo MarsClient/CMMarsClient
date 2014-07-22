@@ -8,9 +8,11 @@ public class BulletsSample : MonoBehaviour {
 
 
 	public float moveSpeed = 10;
-
+	public float radius = 0.5f;
 	public GameObject mainEffect;
 	public GameObject hitEffect;
+	public bool isNeedDisapear = true;
+	public float hiddenTime = 3;
 
 
 	private PoolController m_pc;
@@ -19,9 +21,15 @@ public class BulletsSample : MonoBehaviour {
 	//private bool OverlapSphere = true;
 	public void InitBullets (AddDamage addDamage)
 	{
-		InitBullets (addDamage, Vector3.forward);
+		InitBullets (addDamage, true, Vector3.forward);
 	}
-	public void InitBullets (AddDamage addDamage, Vector3 dir) 
+
+	public void InitBullets (AddDamage addDamage, bool allowUpdate)
+	{
+		InitBullets (addDamage, allowUpdate, Vector3.zero);
+	}
+
+	public void InitBullets (AddDamage addDamage, bool allowUpdate, Vector3 dir) 
 	{
 		gameObject.SetActive (true);
 		mainEffect.SetActive (true);
@@ -34,10 +42,16 @@ public class BulletsSample : MonoBehaviour {
 			this.m_AddDamage = addDamage;
 		}
 		m_dir = dir;
-		m_AllowUpdate = true;
+		m_AllowUpdate = allowUpdate;
 
 		CancelInvoke ("HiddemEf");
-		Invoke ("HiddemEf", 3);
+		Invoke ("HiddemEf", hiddenTime);
+	}
+
+
+	public void InitPosition (Vector3 p)
+	{
+		transform.position = p;
 	}
 
 	void Update () 
@@ -45,7 +59,7 @@ public class BulletsSample : MonoBehaviour {
 		if (m_AllowUpdate)
 		{
 			transform.Translate (m_dir * moveSpeed * Time.deltaTime);
-			ExplosionDamage (mainEffect.transform.position, 0.5f);
+			ExplosionDamage (mainEffect.transform.position, radius);
 		}
 
 	}
@@ -67,14 +81,17 @@ public class BulletsSample : MonoBehaviour {
 				}
 			}
 			m_AllowUpdate = false;
-			mainEffect.SetActive (false);
-			if (hitEffect!= null)
+			if (isNeedDisapear == true)
 			{
-				hitEffect.SetActive (true);
-			}
+				mainEffect.SetActive (false);
+				if (hitEffect!= null)
+				{
+					hitEffect.SetActive (true);
+				}
 
-			CancelInvoke ("HiddemEf");
-			Invoke ("HiddemEf", 1);
+				CancelInvoke ("HiddemEf");
+				Invoke ("HiddemEf", 1);
+			}
 		}
 	}
 

@@ -16,12 +16,14 @@ public class AiPlayer : MonoBehaviour
 		aiAnt  = GetComponent<AiAnimation>();
 		aiAnt.aiMove.moveEvent += MoveEvent;
 		aiAnt.attackDelegate += AttackDelegate;
+		aiAnt.spellAttackDelegate += SpellAttackDelegate;
 	}
 	void OnDisable ()
 	{
 		if (aiAnt == null || aiAnt.aiMove == null) return;
 		aiAnt.aiMove.moveEvent -= MoveEvent;
 		aiAnt.attackDelegate -= AttackDelegate;
+		aiAnt.spellAttackDelegate -= SpellAttackDelegate;
 	}
 
 	#region Move
@@ -172,6 +174,37 @@ public class AiPlayer : MonoBehaviour
 
 		}
 	}
+
+
+	void SpellAttackDelegate (AnimationInfo info, FrameEvent fe)
+	{
+		if (info.clip == Clip.Spell1)
+		{
+			StartCoroutine (ShootMulBullet (7, 0.1f, 2, info, fe));
+
+
+
+		}
+	}
+
+	IEnumerator ShootMulBullet (int count, float interval, float randge, AnimationInfo info, FrameEvent fe)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			yield return new WaitForSeconds (interval);
+			GameObject go = PoolManager.Instance.LoadGameObject ("Bullets_10002");
+			BulletsSample bs = go.GetComponent <BulletsSample>();
+			if (bs != null)
+			{
+				bs.InitBullets ((HitUnit hu)=> 
+				                {
+					hu.Hitted (info, fe, true);
+				}, true);
+				bs.InitPosition (FightMath.TargetRandge (transform, randge));
+			}
+		}
+	}
+
 	#endregion
 
 	#region Hit Enemy

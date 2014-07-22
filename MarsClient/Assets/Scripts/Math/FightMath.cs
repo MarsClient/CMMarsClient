@@ -73,4 +73,13 @@ public class FightMath
 	}
 
 	public static bool isStateRandom () { return Random.Range (0, 2) == 1; }
+
+	public static Vector3 TargetRandge (Transform target, float range)
+	{
+		Vector3 pos = target.position;
+		float x = URandom.Range (target.position.x - range, target.position.x + range);
+		float y = target.position.y;
+		float z = URandom.Range (target.position.z - range, target.position.z + range);
+		return new Vector3 (x, y, z);
+	}
 }

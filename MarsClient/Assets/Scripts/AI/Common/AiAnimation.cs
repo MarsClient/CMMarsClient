@@ -66,9 +66,13 @@ public class AnimationInfo
 //[RequireComponent(typeof (AiMove))]
 public class AiAnimation : MonoBehaviour {
 
-	/* Set Delegates attack spell or other function for call*/
+	/* Set Delegates attack or other function for call*/
 	public delegate void AttackDelegate (AnimationInfo info, FrameEvent fe);
 	public AttackDelegate attackDelegate;
+
+	/* Set Delegates spell or other function for call*/
+	public delegate void SpellAttackDelegate (AnimationInfo info, FrameEvent fe);
+	public SpellAttackDelegate spellAttackDelegate;
 
 	public AnimationInfo[] allAntInfos;//Write in Inspector
 	private Dictionary<Clip, AnimationInfo> m_infos = new Dictionary<Clip, AnimationInfo> ();//all  animation infos;
@@ -213,5 +217,14 @@ public class AiAnimation : MonoBehaviour {
 		                                      {
 			return CameraType.Follow;
 		});
+	}
+
+	public void AnimationSpellAttack (int c, int eventIndex)
+	{
+		if (spellAttackDelegate != null)
+		{
+			AnimationInfo info = GetInfoByClip ((Clip) c);
+			spellAttackDelegate (info, info.getEvent (eventIndex));
+		}
 	}
 }
