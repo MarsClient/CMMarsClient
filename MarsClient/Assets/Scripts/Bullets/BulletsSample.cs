@@ -18,6 +18,7 @@ public class BulletsSample : MonoBehaviour {
 	private PoolController m_pc;
 	private bool m_AllowUpdate = false;
 	private Vector3 m_dir;
+	private string m_Layer = TagLayerDefine.DEFAULT_TAG;
 	//private bool OverlapSphere = true;
 	public void InitBullets (AddDamage addDamage)
 	{
@@ -54,6 +55,16 @@ public class BulletsSample : MonoBehaviour {
 		transform.position = p;
 	}
 
+	public void InitLayer (string layer)
+	{
+		this.m_Layer = layer;
+	}
+
+	private void InitLastDmg (bool isLast)
+	{
+
+	}
+
 	void Update () 
 	{
 		if (m_AllowUpdate)
@@ -66,7 +77,7 @@ public class BulletsSample : MonoBehaviour {
 
 	void ExplosionDamage(Vector3 center, float radius) 
 	{
-		Collider[] hitColliders = Physics.OverlapSphere(center, radius);
+		Collider[] hitColliders = Physics.OverlapSphere(center, radius, 1<<LayerMask.NameToLayer (m_Layer));
 		if (hitColliders != null && hitColliders.Length > 0)
 		{
 			for (int i = 0; i < hitColliders.Length; i++)

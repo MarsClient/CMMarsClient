@@ -170,6 +170,7 @@ public class AiPlayer : MonoBehaviour
 				{
 					hu.Hitted (info, fe, true);
 				});
+				bs.InitLayer (TagLayerDefine.ENEMY_TAG);
 			}
 
 		}
@@ -201,6 +202,7 @@ public class AiPlayer : MonoBehaviour
 					hu.Hitted (info, fe, true);
 				}, true);
 				bs.InitPosition (FightMath.TargetRandge (transform, randge));
+				bs.InitLayer (TagLayerDefine.ENEMY_TAG);
 			}
 		}
 	}
