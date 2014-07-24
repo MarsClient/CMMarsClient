@@ -24,8 +24,11 @@ public class ButtonServerSelect : MonoBehaviour {
 				.SetMessage("server.link.success")
 					.SetNoBtn ("game.dialog.no")
 					.ShowWaiting ();
-			serverList.currentServer.accountId = Main.Instance.account.uniqueId;
-			NetSend.SendServerSelect (serverList.currentServer);
+			Server server = new Server ();
+			server.accountId = Main.Instance.account.uniqueId;
+			server.serverId = serverList.currentServer.serverId;
+			//serverList.currentServer.accountId = Main.Instance.account.uniqueId;
+			NetSend.SendServerSelect (server);
 		}
 		if (bundle.cmd == Command.ServerSelect)
 		{

@@ -182,9 +182,20 @@ public class AiPlayer : MonoBehaviour
 		if (info.clip == Clip.Spell1)
 		{
 			StartCoroutine (ShootMulBullet (7, 0.1f, 2, info, fe));
-
-
-
+		}
+		else if (info.clip == Clip.Spell2)
+		{
+			GameObject go = PoolManager.Instance.LoadGameObject ("Bullets_10003", transform);
+			//GameObject.Instantiate (res_Go, transform.position, transform.rotation) as GameObject;
+			BulletsSample bs = go.GetComponent <BulletsSample>();
+			if (bs != null)
+			{
+				bs.InitBullets ((HitUnit hu)=> 
+				                {
+					hu.Hitted (info, fe, true);
+				});
+				bs.InitLayer (TagLayerDefine.ENEMY_TAG);
+			}
 		}
 	}
 
