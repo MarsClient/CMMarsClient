@@ -10,8 +10,8 @@ public class DmgManager : MonoBehaviour {
 		if (GUI.Button (new Rect (0, 0, 100, 100), "dmg"))
 		{
 			Transform go = NGUITools.AddChild (gameObject, dmgPrefab).transform;
-			go.localPosition = Vector3.zero;
-			go.GetComponent <DmgController>().show ();
+//			go.localPosition = Vector3.zero;
+			//go.GetComponent <DmgController>().show ();
 		}
 	}
 }

@@ -42,24 +42,25 @@ public abstract class HitUnit : MonoBehaviour {
 		ef.transform.position = hitPos.position;//new Vector3 (hitPos.transform.position.x, 0.01f, hitPos.transform.position.z);
 		if (isDmg)
 		{
-
-			if (dmgParent == null)
-			{
-				dmgParent = GameObject.Find ("~GameDmg");
-				dmgPrefab = GameObject.Find ("~Label");
-
-			}
-			if (dmgParent != null)
-			{
-
-				Transform _go = NGUITools.AddChild (dmgParent, dmgPrefab).transform;
-	//			_go.rotation = Quaternion.Euler (new Vector3 (0, 180, 0));
-	//			_go.position = hitPos.position;
-				UIFollowTarget ft =_go.GetComponentInChildren<UIFollowTarget>();
-				ft.target = hitPos.transform;
-				ft.enabled = true;
-				_go.GetComponentInChildren <DmgController>().show ();
-			}
+			Transform _go = PoolManager.Instance.LoadGameObject ("DmgEffect").transform;
+			_go.position = hitPos.position;
+//			if (dmgParent == null)
+//			{
+//				dmgParent = GameObject.Find ("~GameDmg");
+//				dmgPrefab = GameObject.Find ("~Label");
+//
+//			}
+//			if (dmgParent != null)
+//			{
+//
+//				Transform _go = NGUITools.AddChild (dmgParent, dmgPrefab).transform;
+//	//			_go.rotation = Quaternion.Euler (new Vector3 (0, 180, 0));
+//	//			_go.position = hitPos.position;
+//				UIFollowTarget ft =_go.GetComponentInChildren<UIFollowTarget>();
+//				ft.target = hitPos.transform;
+//				ft.enabled = true;
+//				_go.GetComponentInChildren <DmgController>().show ();
+//			}
 		}
 
 
