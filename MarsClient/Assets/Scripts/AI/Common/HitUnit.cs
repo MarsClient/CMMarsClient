@@ -16,7 +16,7 @@ public abstract class HitUnit : MonoBehaviour {
 	private GameObject dmgParent;
 	private GameObject dmgPrefab;
 
-	public void Hitted (AnimationInfo info, FrameEvent fe, bool isDmg = false)
+	public void Hitted (AnimationInfo info, FrameEvent fe, int dmg, bool isDouble, bool isDmg = false)
 	{
 //		if (info.clip == Clip.Spell1)
 //		{
@@ -27,11 +27,12 @@ public abstract class HitUnit : MonoBehaviour {
 //		{
 //			ac.Play (Clip.Hit);
 //		}
+		//Debug.Log (Main.Instance.role.attNormalDmg + "___" +  Main.Instance.role.isDouble);
+
 		//
 		if (ac.isFall == false)
 		{
-			if (fe.attackedClip == Clip.Null || fe.attackedClip == Clip.Idle) {}
-			else if (m_ac.isRun == true) { ac.Play (Clip.Idle); }
+			if (fe.attackedClip == Clip.Null || fe.attackedClip == Clip.Idle) { if (m_ac.isRun == true) { ac.Play (Clip.Idle); } }
 			else { ac.Play (fe.attackedClip); }
 		}
 		else  { return; }
@@ -44,6 +45,7 @@ public abstract class HitUnit : MonoBehaviour {
 		{
 			Transform _go = PoolManager.Instance.LoadGameObject ("DmgEffect").transform;
 			_go.position = hitPos.position;
+			_go.GetComponentInChildren<DmgEffect> ().SetText (dmg, isDouble ? DmageEffect.DOUBLE : DmageEffect.NORMAL);
 //			if (dmgParent == null)
 //			{
 //				dmgParent = GameObject.Find ("~GameDmg");

@@ -43,8 +43,50 @@ public class Role
 	[DefaultValue(0)]
 	public int wit;
 
+	[DefaultValue (0f)]
+	public float critical;
 
 
 	[DefaultValue (0F)]
 	public float speed;
+
+
+	#region follow is Attack value
+	public bool isDouble;
+	private bool _isDouble
+	{
+		get
+		{
+			isDouble = Random.Range (0, 1.0f) <= critical;
+			return isDouble;
+		}
+	}
+
+	public int attNormalDmg
+	{
+		get
+		{
+			int dmg = 0;
+			if (profession == PRO.ZS.ToString ())
+			{
+				dmg = strength * 2;
+			}
+			else if (profession == PRO.DZ.ToString ())
+			{
+				dmg = agility * 2;
+			}
+			else if (profession == PRO.FS.ToString ())
+			{
+				dmg = wit * 2;
+			}
+			dmg = Random.Range (dmg - 10, dmg + 10);
+			if (_isDouble)
+			{
+				dmg = dmg * 2;
+			}
+			return dmg;
+		}
+	}
+
+	#endregion
 }

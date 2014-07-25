@@ -102,7 +102,7 @@ public class DmgEffect : MonoBehaviour {
 	void OnEnable () 
 	{
 		//SetText (Random.Range (0, 100), DmageEffect.NORMAL);
-		SetText (Random.Range (1000, 10000), (Random.Range (0, 2) == 1) ? DmageEffect.NORMAL : DmageEffect.DOUBLE);
+		//SetText (Random.Range (1000, 10000), (Random.Range (0, 2) == 1) ? DmageEffect.NORMAL : DmageEffect.DOUBLE);
 	}
 	
 	void Update () 
@@ -125,7 +125,7 @@ public class DmgEffect : MonoBehaviour {
 		}
 		else if (m_dmageEffect == DmageEffect.DOUBLE)
 		{
-			Vector3 scale = Vector3.Lerp (startScale, Vector3.one, (Time.time - lastTweenTime) * 10);
+			Vector3 scale = Vector3.Lerp (startScale, Vector3.one, (Time.time - lastTweenTime) * 5);
 			transform.localScale = scale;
 //			Debug.Log (scale);
 			if (scale.x <= 1.0f)
@@ -135,12 +135,12 @@ public class DmgEffect : MonoBehaviour {
 		}
 		if (m_label.alpha <= 0)
 		{
-			DestroyObj ();
+			ReleaseObj ();
 		}
 	}
 
 	private PoolController m_pc;
-	void DestroyObj ()
+	void ReleaseObj ()
 	{
 		if (m_pc == null) m_pc = NGUITools.FindInParents<PoolController>(gameObject);
 		m_pc.Release ();

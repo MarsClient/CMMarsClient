@@ -38,7 +38,7 @@ public class AiEnemy : MonoBehaviour
 			//Debug.Log (angle + "_____" + distance);
 			if ((angle > 0 && distance < attDistance))
 			{
-				pu.Hitted (info, fe);
+				pu.Hitted (info, fe, 0, false);
 			}
 //			Debug.LogError (i + "_____");
 		}
