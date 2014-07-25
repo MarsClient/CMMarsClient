@@ -9,17 +9,28 @@ public enum DmageEffect
 	DOUBLE,
 }
 
+public enum DmageOpposite
+{
+	ENEMY,
+	PLAYER,
+}
+
+
 public class DmgEffect : MonoBehaviour {
 
 	private const float PI = 3.1415926535898f;
 
-	private float lastTime = 0;
+	public Color normalColor = Color.white;
+	public Color doubleColor = Color.yellow;
+	public Color hitPlayerColor = Color.yellow;
+
 	public float maxHeigh = 50;
 	public float rateX = 0.05f;
 	public float hiddenAngle = 120;
 	public float spd = 10;
 
-	private UILabel m_label;
+	public UILabel m_label;
+	private float lastTime = 0;
 	private float dir; //1 or -1;
 	private float dirValue
 	{
@@ -31,8 +42,36 @@ public class DmgEffect : MonoBehaviour {
 	private float lastTweenTime = 0;
 	private DmageEffect m_dmageEffect = DmageEffect.NORMAL;
 	private Vector3 startScale;
+	private DmageOpposite m_dmageOpposite;
+	private Color color
+	{
+		get
+		{
+			if (m_dmageOpposite == DmageOpposite.PLAYER)
+			{
+				return hitPlayerColor;
+			}
+			else
+			{
+				if (m_dmageEffect == DmageEffect.NORMAL)
+				{
+					return normalColor;
+				}
+				else if (m_dmageEffect == DmageEffect.DOUBLE)
+				{
+					return doubleColor;
+				}
+			}
+			return Color.white;
+		}
+	}
 
 	public void SetText (int dmg, DmageEffect dmageEffect = DmageEffect.NORMAL)
+	{
+		SetText (dmg, dmageEffect, DmageOpposite.ENEMY);
+	}
+
+	public void SetText (int dmg, DmageEffect dmageEffect, DmageOpposite dmageOpposite)
 	{
 		if (m_label == null)
 		{
@@ -41,8 +80,10 @@ public class DmgEffect : MonoBehaviour {
 		m_label.text = dmg.ToString ();
 		m_label.alpha = 1.0f;
 		m_dmageEffect = dmageEffect;
+		m_dmageOpposite = dmageOpposite;
 		lastTweenTime = Time.time;
 		transform.localPosition = Vector3.zero;
+		m_label.color = color;
 		if (m_dmageEffect == DmageEffect.NORMAL)
 		{
 			startScale = Vector3.one;

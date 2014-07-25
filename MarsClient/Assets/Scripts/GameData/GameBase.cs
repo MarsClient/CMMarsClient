@@ -24,5 +24,9 @@ public class GameBase
 	public int gem;
 	[DefaultValue (0)]
 	public int level;
+	[DefaultValue (0)]
+	public float hp;
+	[DefaultValue (0)]
+	public float hpMax;
 
 }
