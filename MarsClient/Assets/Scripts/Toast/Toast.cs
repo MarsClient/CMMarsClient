@@ -112,16 +112,16 @@ public class Toast : MonoBehaviour {
 	int i = 0;
 	void OnGUI ()
 	{
-		if (GUILayout.Button ("hahahahhahahah"))
-		{
-			string s = "hahahahhahahahhahahahhahahahhahahahhahahah" + i++.ToString ();
-			ShowText (s);
-			//Debug.Log (s);
-		}
-		if (GUILayout.Button ("reset"))
-		{
-			i = 0;
-		}//
+//		if (GUILayout.Button ("hahahahhahahah"))
+//		{
+//			string s = "hahahahhahahahhahahahhahahahhahahahhahahah" + i++.ToString ();
+//			ShowText (s);
+//			//Debug.Log (s);
+//		}
+//		if (GUILayout.Button ("reset"))
+//		{
+//			i = 0;
+//		}//
 //		if (GUILayout.Button ("hahahahhahahah"))
 //		{
 //			new DialogContent ()
@@ -132,14 +132,14 @@ public class Toast : MonoBehaviour {
 //					.Show ();
 //		}
 //
-//		if (GUILayout.Button ("hahahahhahahah"))
-//		{
-//			new DialogContent ()
+		if (GUILayout.Button ("hahahahhahahah"))
+		{
+			new DialogContent ()
 //				.SetMessage ("test")
 //					.SetNoBtn ("Have a Wait....")
 //					.SetDelegateBtn (DialogBtnEvent)
-//					.ShowWaiting ();
-//		}
+					.ShowWaiting ();
+		}
 	}
 //
 //	void DialogBtnEvent (bool yes)

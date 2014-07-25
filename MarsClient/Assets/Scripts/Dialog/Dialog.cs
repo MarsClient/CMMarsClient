@@ -18,6 +18,9 @@ public class DialogContent
 	public string message;
 	public string yesStr;
 	public string noStr;
+
+	public bool isNormal = false;
+	public bool isWait = false;
 	
 	
 	/**all method*/
@@ -27,8 +30,8 @@ public class DialogContent
 	public DialogContent SetNoBtn (string noStr, params string[] objs) { this.noStr = string.Format (Localization.Get (noStr), objs); return this; }
 	public DialogContent SetDelegateBtn (DialogHandle dialogHandle) { this.dialogHandle = dialogHandle; return this; }
 	
-	public void Show () { Dialog.instance.Show (this); }
-	public void ShowWaiting () { Dialog.instance.ShowWaiting (this); }
+	public void Show () { isNormal = true; Dialog.instance.PushDialogContent (this); }
+	public void ShowWaiting () { isWait = true; Dialog.instance.PushDialogContent (this); }
 }
 #endregion
 
@@ -40,17 +43,43 @@ public class Dialog : MonoBehaviour {
 
 	public DialogItem dialogItem;
 
-	public void Show (DialogContent dc)//normal
+	private Queue<DialogContent> dialogContents = new Queue<DialogContent> ();//queue
+	private bool isQueue { get { return dialogContents.Count > 0; } }
+	private bool inUsing { get { return dialogItem.gameObject.activeSelf; } }
+
+	/*public void Show (DialogContent dc)
 	{
 		ShowActiveState ();
 		dialogItem.Refresh (dc, DiaglogType.normal);
-		//dialogItem.Refresh (dialogItem);
 	}
 
-	public void ShowWaiting (DialogContent dc)//normal
+	public void ShowWaiting (DialogContent dc)
 	{
 		ShowActiveState ();
 		dialogItem.Refresh (dc, DiaglogType.waiting);
+	}*/
+
+	public void PushDialogContent (DialogContent dc)
+	{
+		//dialogContents.Enqueue (dc);
+		//if (inUsing == false)
+		{
+
+			Show (dc/*dialogContents.Dequeue ()*/);
+		}
+	}
+
+	public void Show (DialogContent dc)
+	{
+		ShowActiveState ();
+		if (dc.isNormal)
+		{
+			dialogItem.Refresh (dc, DiaglogType.normal);
+		}
+		else if (dc.isWait)
+		{
+			dialogItem.Refresh (dc, DiaglogType.waiting);
+		}
 	}
 
 	private void ShowActiveState ()
@@ -62,13 +91,15 @@ public class Dialog : MonoBehaviour {
 	public void Close ()
 	{
 		dialogItem.gameObject.SetActive (false);
+//		if (dialogContents.Count > 0)
+//		{
+//			Show (dialogContents.Dequeue ());
+//		}
 	}
 
 	public void TweenClose ()
 	{
 		Close ();
-//		TweenAlpha ta = TweenAlpha.Begin (dialogItem.gameObject, 0.25f, 0);
-//		ta.AddOnFinished (CloseDialog);
 	}
 
 	void CloseDialog ()
