@@ -118,6 +118,7 @@ public class AiAnimation : MonoBehaviour {
 
 	public void Play (Clip c)
 	{
+		if (isDie) { return; }
 		if (clip != c)
 		{
 			m_AnimationInfo = GetInfoByClip (c);
@@ -142,7 +143,8 @@ public class AiAnimation : MonoBehaviour {
 	public bool isSpell { get { return isContainState (clip, AntDefine.KEY_SPELL); } }
 	public bool isFall { get { return clip == Clip.Fall; } }
 	public bool isHitted { get { return clip == Clip.Hit; } }
-	public bool dontMove { get { return isAttack || isSpell || isFall || isHitted; } }
+	public bool isDie { get { return clip == Clip.Die; } }
+	public bool dontMove { get { return isAttack || isSpell || isFall || isHitted || isDie; } }
 
 	/*about info*/
 	bool isContainState (Clip clip, string key)
@@ -203,7 +205,7 @@ public class AiAnimation : MonoBehaviour {
 	}
 
 	public void AnimationMove (int c, int eventIndex)
-	{
+	{Debug.Log (c + "___" + eventIndex);
 		AnimationInfo info = GetInfoByClip ((Clip) c);
 		aiMove.startMoveDir (info, info.getEvent (eventIndex));
 	}

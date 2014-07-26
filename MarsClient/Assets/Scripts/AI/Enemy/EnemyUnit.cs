@@ -50,12 +50,13 @@ public class EnemyUnit : HitUnit {
 		{
 			Remove ();
 			m_ac.Play (Clip.Die);
+			bloodBar.gameObject.SetActive (false);
 		}
 	}
 
 	public override void UnitDeath ()
 	{
-		m_ac.enabled = false;
-		m_ac.collider.enabled = false;
+		AlphaTween ();
+		m_enemy.Stop ();
 	}
 }

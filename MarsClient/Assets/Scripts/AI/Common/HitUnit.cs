@@ -92,6 +92,32 @@ public abstract class HitUnit : MonoBehaviour {
 		}
 	}
 
+	public void AlphaTween ()
+	{
+		float delay = 0.5f;
+		foreach (SkinnedMeshRenderer smr in GetComponentsInChildren<SkinnedMeshRenderer>())
+		{
+			foreach (Material m in smr.materials)
+			{
+				string shaderName = "Transparent/Diffuse";
+				if (m.shader.name != shaderName)
+				{
+					m.shader = Shader.Find (shaderName);
+					Color  sc = m.color;
+					sc.a = 1;
+					m.color = sc;
+
+					Color ec = m.color;
+					ec.a = 0;
+					TweenColor.Begin (smr.gameObject, delay, ec);
+				}
+			}
+		}
+		Invoke ("HiddenMe", delay);
+	}
+
+	void HiddenMe () { gameObject.SetActive (false); }
+
 	public virtual void ExtraEvent (AnimationInfo info, FrameEvent fe, int dmg) {  }
 	public virtual void DataRefresh (object t) { }
 	public virtual void UnitDeath () {  }

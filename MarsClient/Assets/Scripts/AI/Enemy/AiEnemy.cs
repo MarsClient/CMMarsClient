@@ -114,4 +114,14 @@ public class AiEnemy : MonoBehaviour
 		}
 		aiAnt.Play (Clip.Idle);
 	}
+
+	public void Stop ()
+	{
+		collider.enabled = false;
+		aiAnt.enabled = false;
+		aiPath.Stop ();
+		aiPath.navAgent.enabled = false;
+		aiPath.StopAllCoroutines ();
+		CancelInvoke ("UpdateEnemyAI");
+	}
 }
