@@ -133,6 +133,7 @@ public class CreatAssetBundle : Editor {
 							gameMonster.level = int.Parse (arr[2]);
 							gameMonster.x = tra.position.x;
 							gameMonster.z = tra.position.z;
+							gameMonster.hp = 1000;
 							gameMonster.hpMax = 1000;
 							fight.gameMonsters[tra_Name][idx] = gameMonster;
 							idx++;

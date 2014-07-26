@@ -74,6 +74,9 @@ public class AiAnimation : MonoBehaviour {
 	public delegate void SpellAttackDelegate (AnimationInfo info, FrameEvent fe);
 	public SpellAttackDelegate spellAttackDelegate;
 
+	public delegate void UnitDeath ();
+	public UnitDeath unitDeath;
+
 	public AnimationInfo[] allAntInfos;//Write in Inspector
 	private Dictionary<Clip, AnimationInfo> m_infos = new Dictionary<Clip, AnimationInfo> ();//all  animation infos;
 	private Animation m_Animation;//
@@ -225,6 +228,14 @@ public class AiAnimation : MonoBehaviour {
 		{
 			AnimationInfo info = GetInfoByClip ((Clip) c);
 			spellAttackDelegate (info, info.getEvent (eventIndex));
+		}
+	}
+
+	public void AnimationDeath ()
+	{
+		if (unitDeath != null)
+		{
+			unitDeath ();
 		}
 	}
 }

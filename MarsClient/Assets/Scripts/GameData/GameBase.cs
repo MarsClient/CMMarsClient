@@ -29,4 +29,13 @@ public class GameBase
 	[DefaultValue (0)]
 	public float hpMax;
 
+
+	public float hpRatio
+	{
+		get
+		{
+			return (float)hp / (float)hpMax;
+		}
+	}
+
 }

@@ -68,6 +68,11 @@ public class FightManager : MultiPlayer {
 		{
 			GameObject go = GameObject.Instantiate (prefab) as GameObject;
 			go.transform.position = new Vector3 (mg.x, 0, mg.z);
+			EnemyUnit eu = go.GetComponent<EnemyUnit>();
+			if (eu != null)
+			{
+				eu.Init (mg);
+			}
 		}
 	}
 	#endregion

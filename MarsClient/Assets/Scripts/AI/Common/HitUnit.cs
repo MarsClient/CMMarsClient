@@ -13,15 +13,17 @@ public abstract class HitUnit : MonoBehaviour {
 	public UISlider slider;//for show blood;
 	//public GameObject go;
 
-	protected void Init ()
+	public virtual void Init (GameBase gb)
 	{
 		if (bloodBar != null)
 		{
 			GameObject resGo = Resources.Load ("BloodBarBar") as GameObject;
 			GameObject go = NGUITools.AddChild (bloodBar.gameObject, resGo);
 			slider = go.GetComponentInChildren<UISlider>();
-
 		}
+		slider.value = 1.0f;
+		UILabel lvLabel = slider.GetComponentInChildren<UILabel>();
+		lvLabel.text = gb.level.ToString ();
 	}
 
 	private GameObject dmgParent;
@@ -47,7 +49,7 @@ public abstract class HitUnit : MonoBehaviour {
 		}
 
 
-		ExtraEvent (info, fe);
+		ExtraEvent (info, fe, dmg);
 		//hit color
 		CancelInvoke ("ResetColor");
 		SetColor (1.0f);
@@ -84,6 +86,6 @@ public abstract class HitUnit : MonoBehaviour {
 		}
 	}
 
-	public virtual void ExtraEvent (AnimationInfo info, FrameEvent fe) {  }
+	public virtual void ExtraEvent (AnimationInfo info, FrameEvent fe, int dmg) {  }
 	public virtual void DataRefresh (object t) { }
 }

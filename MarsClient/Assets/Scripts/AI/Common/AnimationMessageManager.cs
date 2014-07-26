@@ -9,6 +9,7 @@ public interface IAnimationListener
 	void AnimationFx (string info);
 	void AnimationShake (string info);
 	void AnimationSpellAttack (string info);
+	void DeathDoneMessage (string info);
 }
 
 public class AnimationMessageManager : MonoBehaviour, IAnimationListener {
@@ -64,5 +65,9 @@ public class AnimationMessageManager : MonoBehaviour, IAnimationListener {
 		aiAnimation.AnimationSpellAttack (events[0], events[1]);
 	}
 
+	public void DeathDoneMessage (string info)
+	{
+		aiAnimation.AnimationDeath ();
+	}
 	#endregion
 }
