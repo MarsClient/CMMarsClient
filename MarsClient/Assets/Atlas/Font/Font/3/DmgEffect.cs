@@ -40,6 +40,7 @@ public class DmgEffect : MonoBehaviour {
 		}
 	}
 	private float lastTweenTime = 0;
+	public float lastAlphaTime = 0;
 	private DmageEffect m_dmageEffect = DmageEffect.NORMAL;
 	private Vector3 startScale;
 	private DmageOpposite m_dmageOpposite;
@@ -84,18 +85,20 @@ public class DmgEffect : MonoBehaviour {
 		lastTweenTime = Time.time;
 		transform.localPosition = Vector3.zero;
 		m_label.color = color;
+		lastTime = 0;
+		startScale = Vector3.one;
+		transform.localScale = startScale;
+		
+		dir = (Random.Range (0, 2) == 1) ? 1 : -1;
 		if (m_dmageEffect == DmageEffect.NORMAL)
 		{
-			startScale = Vector3.one;
-			transform.localScale = startScale;
-			lastTime = 0;
-			dir = (Random.Range (0, 2) == 1) ? 1 : -1;
+
 		}
 		else if (m_dmageEffect == DmageEffect.DOUBLE)
 		{
-			startScale = Vector3.one * 3;
+			startScale = Vector3.one;
 			transform.localScale = startScale;
-			lastTime = Time.time;
+			lastAlphaTime = Time.time;
 		}
 	}
 
@@ -109,33 +112,41 @@ public class DmgEffect : MonoBehaviour {
 	{
 		if (m_dmageEffect == DmageEffect.NORMAL)
 		{
-			lastTime += Time.deltaTime * spd;
-			float x = lastTime * dir;
-			float angle = lastTime * rateX;
-			float y = Mathf.Sin (angle) * maxHeigh;
-			transform.localPosition = new Vector3 (x, y, 0);
-			float final = angle * dirValue;
-			float maxAngle = 2 * PI * hiddenAngle / 360;
+			sinMove ();
 
-			float time = maxAngle / (spd * rateX);
-			if (m_label != null)
-			{
-				m_label.alpha = 1 - (Time.time - lastTweenTime) / time;
-			}
 		}
 		else if (m_dmageEffect == DmageEffect.DOUBLE)
 		{
-			Vector3 scale = Vector3.Lerp (startScale, Vector3.one, (Time.time - lastTweenTime) * 5);
-			transform.localScale = scale;
-//			Debug.Log (scale);
-			if (scale.x <= 1.0f)
+			sinMove ();
+
+			Vector3 b_Scale = Vector3.Lerp (startScale, Vector3.one * 2, (Time.time - lastTweenTime) * 5);
+			transform.localScale = b_Scale;
+			if (b_Scale.x >= 2.0f)
 			{
-				m_label.alpha = Mathf.Lerp (1, 0, (Time.time - lastTime));
+				Vector3 s_Scale = Vector3.Lerp (startScale, Vector3.one, (Time.time - lastAlphaTime) * 2);
+				transform.localScale = s_Scale;
 			}
 		}
 		if (m_label.alpha <= 0)
 		{
 			ReleaseObj ();
+		}
+	}
+
+	void sinMove ()
+	{
+		lastTime += Time.deltaTime * spd;
+		float x = lastTime * dir;
+		float angle = lastTime * rateX;
+		float y = Mathf.Sin (angle) * maxHeigh;
+		transform.localPosition = new Vector3 (x, y, 0);
+		float final = angle * dirValue;
+		float maxAngle = 2 * PI * hiddenAngle / 360;
+		
+		float time = maxAngle / (spd * rateX);
+		if (m_label != null)
+		{
+			m_label.alpha = 1 - (Time.time - lastTweenTime) / time;
 		}
 	}
 

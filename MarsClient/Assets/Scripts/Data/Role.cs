@@ -52,6 +52,7 @@ public class Role
 
 
 	#region follow is Attack value
+	[DefaultValue (false)]
 	public bool isDouble;
 	private bool _isDouble
 	{
