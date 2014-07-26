@@ -7,29 +7,28 @@ public abstract class HitUnit : MonoBehaviour {
 	public AiAnimation ac { get{ return m_ac; } }
 	
 	public Transform hitPos;
+	public Transform bloodBar;
 
-	public UILabel label;
-
+	public UILabel label;//for show unit name
+	public UISlider slider;//for show blood;
 	//public GameObject go;
 
+	protected void Init ()
+	{
+		if (bloodBar != null)
+		{
+			GameObject resGo = Resources.Load ("BloodBarBar") as GameObject;
+			GameObject go = NGUITools.AddChild (bloodBar.gameObject, resGo);
+			slider = go.GetComponentInChildren<UISlider>();
+
+		}
+	}
 
 	private GameObject dmgParent;
 	private GameObject dmgPrefab;
 
 	public void Hitted (AnimationInfo info, FrameEvent fe, int dmg, bool isDouble, bool isDmg = false)
 	{
-//		if (info.clip == Clip.Spell1)
-//		{
-//			if (ac.isFall == false) { ac.Play (Clip.Fall); }
-//			else return;
-//		}
-//		else if (ac.isFall == false)
-//		{
-//			ac.Play (Clip.Hit);
-//		}
-		//Debug.Log (Main.Instance.role.attNormalDmg + "___" +  Main.Instance.role.isDouble);
-
-		//
 		if (ac.isFall == false)
 		{
 			if (fe.attackedClip == Clip.Null || fe.attackedClip == Clip.Idle) { if (m_ac.isRun == true) { ac.Play (Clip.Idle); } }
@@ -38,31 +37,13 @@ public abstract class HitUnit : MonoBehaviour {
 		else  { return; }
 
 
-		//Transform ef = (GameObject.Instantiate (go) as GameObject).transform;
 		Transform ef = PoolManager.Instance.LoadGameObject ("EF0001", null).transform;
-		ef.transform.position = hitPos.position;//new Vector3 (hitPos.transform.position.x, 0.01f, hitPos.transform.position.z);
+		ef.transform.position = hitPos.position;
 		if (isDmg)
 		{
 			Transform _go = PoolManager.Instance.LoadGameObject ("DmgEffect").transform;
 			_go.position = hitPos.position;
 			_go.GetComponentInChildren<DmgEffect> ().SetText (dmg, isDouble ? DmageEffect.DOUBLE : DmageEffect.NORMAL);
-//			if (dmgParent == null)
-//			{
-//				dmgParent = GameObject.Find ("~GameDmg");
-//				dmgPrefab = GameObject.Find ("~Label");
-//
-//			}
-//			if (dmgParent != null)
-//			{
-//
-//				Transform _go = NGUITools.AddChild (dmgParent, dmgPrefab).transform;
-//	//			_go.rotation = Quaternion.Euler (new Vector3 (0, 180, 0));
-//	//			_go.position = hitPos.position;
-//				UIFollowTarget ft =_go.GetComponentInChildren<UIFollowTarget>();
-//				ft.target = hitPos.transform;
-//				ft.enabled = true;
-//				_go.GetComponentInChildren <DmgController>().show ();
-//			}
 		}
 
 
@@ -96,6 +77,10 @@ public abstract class HitUnit : MonoBehaviour {
 		if (label != null)
 		{
 			FightMath.setRota (label.transform);//.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
+		}
+		if (bloodBar != null)
+		{
+			bloodBar.rotation = Quaternion.Euler (Vector3.zero);
 		}
 	}
 

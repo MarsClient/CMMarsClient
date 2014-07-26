@@ -12,11 +12,18 @@ public class EnemyUnit : HitUnit {
 		m_ac = GetComponent <AiAnimation>();
 		m_enemy = GetComponent <AiEnemy> ();
 		enemysUnit.Add (this);
+
+		Init ();
 	}
 	
 	void Remove ()
 	{
 		enemysUnit.Remove (this);
+	}
+
+	public void Update ()
+	{
+		updateUIShow ();
 	}
 
 	public override void ExtraEvent (AnimationInfo info, FrameEvent fe)
