@@ -75,7 +75,11 @@ public class Toast : MonoBehaviour {
 			if (allItems[j] != null && allItems[j].activeSelf == true)
 			{
 				Vector3 pos = allItems[j].transform.localPosition;
-				allItems[j].transform.localPosition = new Vector3 (pos.x, Mathf.Min (pos.y + distance, distance * (maxCount - 1)));
+				pos.y = Mathf.FloorToInt(pos.y / distance) * distance;
+				//Debug.LogError (Mathf.FloorToInt(pos.y / distance));
+				pos = new Vector3 (pos.x, Mathf.Min (pos.y + distance, distance * (maxCount - 1)));
+				//TweenPosition.Begin (allItems[j], 0.5f, pos);
+				allItems[j].transform.localPosition = pos;
 			}
 		}
 
@@ -103,25 +107,26 @@ public class Toast : MonoBehaviour {
 				label.alpha = 0;
 				TweenAlpha.Begin (allItems[i], tweenDuration / 2, 1.0f);
 				label.text = text;
+				//Debug.LogError (text);
 				break;
 			}
 		}
 		return go;
 	}
 
-	int i = 0;
+	/*int i = 0;
 	void OnGUI ()
 	{
-//		if (GUILayout.Button ("hahahahhahahah"))
-//		{
-//			string s = "hahahahhahahahhahahahhahahahhahahahhahahah" + i++.ToString ();
-//			ShowText (s);
-//			//Debug.Log (s);
-//		}
-//		if (GUILayout.Button ("reset"))
-//		{
-//			i = 0;
-//		}//
+		if (GUILayout.Button ("hahahahhahahah"))
+		{
+			string s = "hahahahhahahahhahahahhahahahhahahahhahahah" + i++.ToString ();
+			ShowText (s);
+			//Debug.Log (s);
+		}
+		if (GUILayout.Button ("reset"))
+		{
+			i = 0;
+		}//
 //		if (GUILayout.Button ("hahahahhahahah"))
 //		{
 //			new DialogContent ()
@@ -140,7 +145,7 @@ public class Toast : MonoBehaviour {
 //					.SetDelegateBtn (DialogBtnEvent)
 					.ShowWaiting ();
 		}
-	}
+	}*/
 //
 //	void DialogBtnEvent (bool yes)
 //	{
