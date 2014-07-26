@@ -13,7 +13,13 @@ public abstract class HitUnit : MonoBehaviour {
 	public UISlider slider;//for show blood;
 	//public GameObject go;
 
-	public virtual void Init (GameBase gb)
+	public void Awake ()
+	{
+		m_ac = GetComponent <AiAnimation>();
+		m_ac.unitDeath = UnitDeath;
+	}
+
+	public virtual void InitUI (GameBase gb)
 	{
 		if (bloodBar != null)
 		{
@@ -88,4 +94,5 @@ public abstract class HitUnit : MonoBehaviour {
 
 	public virtual void ExtraEvent (AnimationInfo info, FrameEvent fe, int dmg) {  }
 	public virtual void DataRefresh (object t) { }
+	public virtual void UnitDeath () {  }
 }

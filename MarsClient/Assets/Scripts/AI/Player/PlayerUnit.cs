@@ -10,7 +10,8 @@ public class PlayerUnit : HitUnit {
 	
 	void Awake ()
 	{
-		m_ac = GetComponent <AiAnimation>();
+		base.Awake ();
+		//m_ac = GetComponent <AiAnimation>();
 		Add ();
 	}
 
@@ -54,6 +55,11 @@ public class PlayerUnit : HitUnit {
 //			Debug.LogError (c);
 			m_ac.Play (c);
 		}
+	}
+
+	public override void UnitDeath ()
+	{
+
 	}
 
 	void OnEnable ()

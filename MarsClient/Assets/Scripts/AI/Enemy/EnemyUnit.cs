@@ -9,9 +9,10 @@ public class EnemyUnit : HitUnit {
 
 	public GameMonster gameMonster;
 
-	void Awake ()
+	protected void Awake ()
 	{
-		m_ac = GetComponent <AiAnimation>();
+		base.Awake ();
+		//m_ac = GetComponent <AiAnimation>();
 		m_enemy = GetComponent <AiEnemy> ();
 		enemysUnit.Add (this);
 	}
@@ -26,10 +27,10 @@ public class EnemyUnit : HitUnit {
 		updateUIShow ();
 	}
 
-	public override void Init (GameBase gb)
+	public override void InitUI (GameBase gb)
 	{
 		this.gameMonster = (GameMonster) gb;
-		base.Init (gb);
+		base.InitUI (gb);
 	}
 
 	public override void ExtraEvent (AnimationInfo info, FrameEvent fe, int dmg)
@@ -39,15 +40,22 @@ public class EnemyUnit : HitUnit {
 //		Debug.Log (fe.antMoveSpd);
 //		Debug.Log (fe.method);
 		gameMonster.hp -= dmg;
-		gameMonster.hp = Mathf.Max (gameMonster.hp);
+		gameMonster.hp = Mathf.Max (gameMonster.hp, 0);
 		slider.value = gameMonster.hpRatio;
 
 		m_enemy.aiPath.Stop ();
 		m_ac.aiMove.startMoveDir (info, fe);
 
-		if (dmg <= 0)
+		if (gameMonster.hp <= 0)
 		{
-
+			Remove ();
+			m_ac.Play (Clip.Die);
 		}
+	}
+
+	public override void UnitDeath ()
+	{
+		m_ac.enabled = false;
+		m_ac.collider.enabled = false;
 	}
 }

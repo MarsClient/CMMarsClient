@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class FightManager : MultiPlayer {
 
 	public static FightManager instance;  void Awake () { instance = this; }
+
+	private Dictionary<string, GameObject> monsters = new Dictionary<string, GameObject> ();
 
 	void Start ()
 	{
@@ -13,8 +16,21 @@ public class FightManager : MultiPlayer {
 
 	public override void LoadingDoneRoles ()
 	{
-		NetSend.SendPlayersDone ();
-		UISceneLoading.instance.DelaySuccessLoading ();
+		string[] test = new string[] {Constants.ENEMYS + "EE0001"};
+		AssetLoader.Instance.DownloadAssetbundle (test, MonsterCallBack);
+	}
+
+	void MonsterCallBack (List<object> gos)
+	{
+		foreach (object o in gos)
+		{
+			//Debug.LogError (o.ToString());
+			GameObject go = (GameObject) o;
+			monsters.Add (go.name, go);
+
+			NetSend.SendPlayersDone ();
+			UISceneLoading.instance.DelaySuccessLoading ();
+		}
 	}
 
 	void OnEnable ()
@@ -55,8 +71,6 @@ public class FightManager : MultiPlayer {
 
 
 	#region follow is Test Code;
-	public GameObject prefab;
-
 	private Fight fight;
 	public void InitLocalData (string num)
 	{
@@ -66,12 +80,13 @@ public class FightManager : MultiPlayer {
 		}
 		foreach (GameMonster mg in fight.gameMonsters[num])
 		{
+			GameObject prefab = monsters[mg.type];
 			GameObject go = GameObject.Instantiate (prefab) as GameObject;
 			go.transform.position = new Vector3 (mg.x, 0, mg.z);
 			EnemyUnit eu = go.GetComponent<EnemyUnit>();
 			if (eu != null)
 			{
-				eu.Init (mg);
+				eu.InitUI (mg);
 			}
 		}
 	}
