@@ -205,12 +205,11 @@ public class AiAnimation : MonoBehaviour {
 		{
 			AnimationInfo info = GetInfoByClip ((Clip) c);
 			attackDelegate (info, info.getEvent (eventIndex));
-//			Debug.Log ("c: " + c + "eventIndex: " + eventIndex);
 		}
 	}
 
 	public void AnimationMove (int c, int eventIndex)
-	{Debug.Log (c + "___" + eventIndex);
+	{
 		AnimationInfo info = GetInfoByClip ((Clip) c);
 		aiMove.startMoveDir (info, info.getEvent (eventIndex));
 	}
