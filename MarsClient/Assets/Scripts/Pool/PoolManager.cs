@@ -45,7 +45,12 @@ public class PoolManager : MonoBehaviour {
 		}
 		else
 		{
-			m_go = GameObject.Instantiate(Resources.Load (path) as GameObject) as GameObject;
+			GameObject res_go = Resources.Load (path) as GameObject;
+			if (res_go == null)
+			{
+				return null;
+			}
+			m_go = GameObject.Instantiate(res_go) as GameObject;
 			PoolController pc = m_go.AddComponent<PoolController> ();
 			pc.Init (path);
 		}

@@ -7,6 +7,7 @@ public class AiPlayer : MonoBehaviour
 
 	/*Effect Position*/
 	public Transform groudTranform;
+	public Transform assaultTranform;
 
 
 	public AttType attType = AttType.inf;
@@ -237,9 +238,18 @@ public class AiPlayer : MonoBehaviour
 		if (ge != null)
 		{
 			GameObject go = PoolManager.Instance.LoadGameObject (ge.assetbundle);
+			if (go == null)
+			{
+				return;
+			}
 			if (ge.fxType == FxType.Groud)
 			{
 				go.transform.position = groudTranform.position;
+			}
+			else if (ge.fxType == FxType.Parent)
+			{
+				go.transform.parent = assaultTranform;
+				go.transform.localPosition = Vector3.zero;
 			}
 		}
 

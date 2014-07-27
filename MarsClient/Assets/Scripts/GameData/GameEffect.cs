@@ -6,6 +6,7 @@ public enum FxType
 {
 	NULL,
 	Groud = 0,
+	Parent,
 }
 
 public class GameEffect
