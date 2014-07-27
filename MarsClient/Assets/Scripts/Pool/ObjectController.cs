@@ -24,6 +24,9 @@ public class ObjectController : MonoBehaviour {
 		{
 			m_Pc = GetComponent<PoolController> ();
 		}
-		m_Pc.Release ();
+		if (m_Pc != null)
+		{
+			m_Pc.Release ();
+		}
 	}
 }

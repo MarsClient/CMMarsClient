@@ -23,6 +23,8 @@ public class GameData	{
 	private Dictionary<long, GameNPC> gameNPCs = new Dictionary<long, GameNPC>();//key is id
 	private Dictionary<string, GameNPC> gameNPCsModel = new Dictionary<string, GameNPC>();
 
+	private Dictionary <int, Dictionary <int, GameEffect>> gameEffects = new Dictionary<int, Dictionary<int, GameEffect>>();
+
 
 	private Dictionary <string, string> gameStrings = new Dictionary<string, string> ();
 
@@ -141,7 +143,8 @@ public class GameData	{
 		LoadGameItme (db);
 		LoadGameSpell (db);
 		LoadGameNpc (db);
-		LoadgameStrings (db);
+		LoadGameStrings (db);
+		LoadGameEffects (db);
 		isLoadingSuccess = true;
 		UISceneLoading.instance.DelaySuccessLoading ();
 		db.Close ();
@@ -294,7 +297,7 @@ public class GameData	{
 		}
 	}
 
-	void LoadgameStrings (SQLiteDB db)
+	void LoadGameStrings (SQLiteDB db)
 	{
 		gameStrings.Clear ();
 		//gameNPCsModel.Clear ();
@@ -305,6 +308,31 @@ public class GameData	{
 			string value = qr.GetString ("value");
 			gameStrings.Add (key, value);
 
+		}
+	}
+
+	void LoadGameEffects (SQLiteDB db)
+	{
+		gameEffects.Clear ();
+		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM GameEffect");
+		while (qr.Step ())
+		{
+			GameEffect gameEffect = new GameEffect ();
+			gameEffect.id = qr.GetInteger ("id");
+			try
+			{
+				gameEffect.assetbundle = qr.GetString ("assetbundle");
+			}
+			catch (System.Exception e)
+			{
+				continue;
+			}
+			gameEffect.action = qr.GetInteger ("action");
+			if (gameEffects.ContainsKey (gameEffect.id) == false)
+			{
+				gameEffects[gameEffect.id] = new Dictionary<int, GameEffect> ();
+			}
+			gameEffects[gameEffect.id].Add (gameEffect.action, gameEffect);
 		}
 	}
 
@@ -333,125 +361,18 @@ public class GameData	{
 		return str;
 	}
 
-	/*void LoadTroops (SQLiteDB db)
+	public string getGameEffectByAction (int pro, int action)
 	{
-		enemys.Clear ();
-		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM Troops"); 
-		while (qr.Step ())
+		string assetBundle = null;
+		if (gameEffects [pro] != null)
 		{
-			Troop troop = new Troop ();
-			troop.id = qr.GetString ("id");
-			troop.level = qr.GetInteger ("level");
-			troop.type = qr.GetString ("type");
-			troop.assetbundle = qr.GetString ("assetbundle");
-			troop.icon = qr.GetString ("icon");
-			troop.desc = qr.GetString ("desc");
-			troop.name = qr.GetString ("name");
-			troop.dmg = (float) qr.GetDouble ("dmg");
-			troop.def = (float) qr.GetDouble ("def");
-			troop.hpMax = (float) qr.GetDouble ("hpMax");
-			troop.hp = troop.hpMax;
-			//DC.LogError (JsonConvert.SerializeObject(troop));
-			enemys.Add (troop.id, troop);
-		}
-	}
-
-	void LoadPlayers (SQLiteDB db)
-	{
-		players.Clear ();
-		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM Players"); 
-		while (qr.Step ())
-		{
-			Troop troop = new Troop ();
-			troop.id = qr.GetString ("id");
-			troop.level = qr.GetInteger ("level");
-			troop.type = qr.GetString ("type");
-			troop.assetbundle = qr.GetString ("assetbundle");
-			troop.icon = qr.GetString ("icon");
-			troop.desc = qr.GetString ("desc");
-			troop.name = qr.GetString ("name");
-			troop.dmg = (float) qr.GetDouble ("dmg");
-			troop.def = (float) qr.GetDouble ("def");
-			troop.hpMax = (float) qr.GetDouble ("hpMax");
-			troop.hp = troop.hpMax;
-			//DC.Log (JsonConvert.SerializeObject(troop));
-			players.Add (troop.id, troop);
-		}
-	}
-
-	void LoadSpells (SQLiteDB db)
-	{
-		spells.Clear ();
-		SQLiteQuery qr = new SQLiteQuery(db, "SELECT * FROM Spells"); 
-		while (qr.Step ())
-		{
-			Spell spell = new Spell ();
-			spell.id = qr.GetString ("id");
-			spell.level = qr.GetInteger ("level");
-			spell.type = qr.GetString ("type");
-			spell.assetbundle = qr.GetString ("assetbundle");
-			spell.icon = qr.GetString ("icon");
-			spell.desc = qr.GetString ("desc");
-			spell.name = qr.GetString ("name");
-			spell._dmg = (float) qr.GetDouble ("dmg");
-			spell.pro = qr.GetString ("pro");
-			spell.act = qr.GetString ("act");
-			spell.cd = (float) qr.GetDouble ("cd");
-			//DC.Log (JsonConvert.SerializeObject(spell));
-			spells.Add (spell.id, spell);
-		}
-	}
-
-	public Troop getPlayerById (string id)
-	{
-		if (players.Count > 0)
-		{
-			Troop troop = null;
-			bool isFind = players.TryGetValue (id, out troop);
-			if (isFind)
+			GameEffect gameEffect = null;
+			gameEffects [pro].TryGetValue (action, out gameEffect);
+			if (gameEffect != null)
 			{
-				return troop;
+				assetBundle = gameEffect.assetbundle;
 			}
 		}
-		return null;
+		return assetBundle;
 	}
-
-	public List<Troop> getTroops ()
-	{
-		List<Troop> troops = new List<Troop> ();
-		foreach (KeyValuePair<string, Troop> kvp in enemys)
-		{
-			troops.Add (kvp.Value);
-		}
-		return troops;
-	}
-
-	public List<Spell> getProSpells (string pro)
-	{
-		List<Spell> proSpells = new List<Spell>();
-		foreach (KeyValuePair<string, Spell> kvp in spells)
-		{
-			if (kvp.Value.pro == pro)
-			{
-				proSpells.Add (kvp.Value);
-			}
-		}
-		return proSpells;
-	}
-
-	public Spell getSpByIdPro (string pro, string act)
-	{
-		List<Spell> spell = new List<Spell>();
-		spell = getProSpells (pro);
-		foreach (Spell sp in spell)
-		{
-			if (sp.act == act)
-			{
-				return sp;
-			}
-		}
-		Spell s = new Spell();
-		s._dmg = 1;
-		return s;
-	}*/
 }

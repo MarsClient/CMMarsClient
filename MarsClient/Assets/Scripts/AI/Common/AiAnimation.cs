@@ -5,18 +5,18 @@ using System.Collections.Generic;
 
 public enum Clip : int
 {
-	Null,
+	Null = 0,
 	Idle,
 	Run,
-	Attack1,
+	Attack1 = 3,
 	Attack2,
 	Attack3,
 	Hit,
 	Fall,
 	Die,
-	Spell1,
-	Spell2,
-	Spell3,
+	Spell1 = 9,
+	Spell2 = 10,
+	Spell3 = 11,
 }
 
 public class AntDefine
@@ -74,6 +74,7 @@ public class AiAnimation : MonoBehaviour {
 	public delegate void SpellAttackDelegate (AnimationInfo info, FrameEvent fe);
 	public SpellAttackDelegate spellAttackDelegate;
 
+	/* Unit Death*/
 	public delegate void UnitDeath ();
 	public UnitDeath unitDeath;
 

@@ -5,6 +5,7 @@ using System.Collections;
 public class AiPlayer : MonoBehaviour 
 {
 	public AttType attType = AttType.inf;
+	public PRO pro = PRO.ZS;
 
 	public float attDistance = 2;
 
@@ -161,7 +162,7 @@ public class AiPlayer : MonoBehaviour
 		{
 			//Shoot
 			//GameObject res_Go = PoolManager.Instance.LoadGameObject ("Bullets_10001");//Resources.Load ("Bullets_10001") as GameObject;
-			GameObject go = PoolManager.Instance.LoadGameObject ("Bullets_10001", transform);
+			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip), transform);
 			//GameObject.Instantiate (res_Go, transform.position, transform.rotation) as GameObject;
 			BulletsSample bs = go.GetComponent <BulletsSample>();
 			if (bs != null)
@@ -186,7 +187,7 @@ public class AiPlayer : MonoBehaviour
 		}
 		else if (info.clip == Clip.Spell2)
 		{
-			GameObject go = PoolManager.Instance.LoadGameObject ("Bullets_10003", transform);
+			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip), transform);
 			//GameObject.Instantiate (res_Go, transform.position, transform.rotation) as GameObject;
 			BulletsSample bs = go.GetComponent <BulletsSample>();
 			if (bs != null)
@@ -205,7 +206,7 @@ public class AiPlayer : MonoBehaviour
 		for (int i = 0; i < count; i++)
 		{
 			yield return new WaitForSeconds (interval);
-			GameObject go = PoolManager.Instance.LoadGameObject ("Bullets_10002");
+			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip));
 			BulletsSample bs = go.GetComponent <BulletsSample>();
 			if (bs != null)
 			{

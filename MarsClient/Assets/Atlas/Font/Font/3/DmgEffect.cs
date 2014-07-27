@@ -40,7 +40,7 @@ public class DmgEffect : MonoBehaviour {
 		}
 	}
 	private float lastTweenTime = 0;
-	public float lastAlphaTime = 0;
+	private float lastAlphaTime = 0;
 	private DmageEffect m_dmageEffect = DmageEffect.NORMAL;
 	private Vector3 startScale;
 	private DmageOpposite m_dmageOpposite;
