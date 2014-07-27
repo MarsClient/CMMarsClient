@@ -37,12 +37,17 @@ public abstract class HitUnit : MonoBehaviour {
 
 	public void Hitted (AnimationInfo info, FrameEvent fe, int dmg, bool isDouble, bool isDmg = false)
 	{
-		if (ac.isFall == false)
+//		if (ac.isFall == false)
+//		{
+//			if (fe.attackedClip == Clip.Null || fe.attackedClip == Clip.Idle) { if (m_ac.isRun == true) { ac.Play (Clip.Idle); } }
+//			else { ac.Play (fe.attackedClip); }
+//		}
+//		else  { return; }
+		if (ac.dontMove == false)
 		{
 			if (fe.attackedClip == Clip.Null || fe.attackedClip == Clip.Idle) { if (m_ac.isRun == true) { ac.Play (Clip.Idle); } }
 			else { ac.Play (fe.attackedClip); }
 		}
-		else  { return; }
 
 
 		Transform ef = PoolManager.Instance.LoadGameObject ("EF0001", null).transform;

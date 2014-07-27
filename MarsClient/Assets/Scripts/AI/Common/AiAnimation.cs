@@ -33,6 +33,8 @@ public class FrameEvent
 {
 	public int frame;
 	public string method;
+	public bool isLoopCallback;//>=frame, will update all in the animation Clip
+	public float updateRate;
 	public float shakeTime;
 	public float antDisatnce; //>0 forward. <0 back. =0 dont move, when animationing.
 	public float antMoveSpd; // about ant distance, mean that att or spell move spell
@@ -99,6 +101,7 @@ public class AiAnimation : MonoBehaviour {
 
 	private float beginPlayTime = 0;//start paly time
 	private float prefabPlayTime = 0;//prefab play time
+	private float lastUpdateAnimationMessageTime = 0;
 
 	void Start () 
 	{
@@ -164,7 +167,8 @@ public class AiAnimation : MonoBehaviour {
 		return animationInfo;
 	}
 
-	/*This is weapon light effect*/
+	/*@effect: This is weapon light effect*/
+	/*@frameEffect: all frameEvents in one animationClip that will be called*/
 	void LateUpdate ()
 	{
 		trailsManager.RunAnimations (m_Animation, isAttack || isSpell);
@@ -177,10 +181,19 @@ public class AiAnimation : MonoBehaviour {
 			{
 				for (int m_i = 0; m_i < m_AnimationInfo.events.Count; m_i++)
 				{
-					float frame = m_AnimationInfo.events[m_i].frame / m_AnimationInfo.animationClip.frameRate;
-					if (frame > prefabPlayTime && frame <= m_tt)
+					FrameEvent frameEvent = m_AnimationInfo.events[m_i];
+					float frame = frameEvent.frame / m_AnimationInfo.animationClip.frameRate;
+					if (frame > prefabPlayTime && frame <= m_tt && frameEvent.isLoopCallback == false)
 					{
-						m_Animation.SendMessage (m_AnimationInfo.events[m_i].method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
+						m_Animation.SendMessage (frameEvent.method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
+					}
+					else if (frame <= m_tt && frameEvent.isLoopCallback == true)
+					{
+						if (Time.time - lastUpdateAnimationMessageTime > frameEvent.updateRate)
+						{
+							lastUpdateAnimationMessageTime = Time.time;
+							m_Animation.SendMessage (frameEvent.method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
+						}
 					}
 				}
 			}
