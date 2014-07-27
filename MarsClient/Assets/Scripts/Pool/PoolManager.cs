@@ -70,6 +70,7 @@ public class PoolManager : MonoBehaviour {
 		{
 			goList = new LinkedList<GameObject>();
 		}
+		if (go.transform.parent != null) { go.transform.parent = null; }
 		goList.AddLast (go);
 		go.SetActive (false);
 		pools[path] = goList;

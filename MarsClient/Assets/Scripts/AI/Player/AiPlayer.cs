@@ -233,7 +233,15 @@ public class AiPlayer : MonoBehaviour
 	#region Fx
 	void FxDelegate (AnimationInfo info, FrameEvent fe)
 	{
-		GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle);
+		GameEffect ge = GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip);
+		if (ge != null)
+		{
+			GameObject go = PoolManager.Instance.LoadGameObject (ge.assetbundle);
+			if (ge.fxType == FxType.Groud)
+			{
+				go.transform.position = groudTranform.position;
+			}
+		}
 
 	}
 	#endregion
