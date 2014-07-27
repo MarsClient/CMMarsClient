@@ -78,6 +78,10 @@ public class AiAnimation : MonoBehaviour {
 	public delegate void UnitDeath ();
 	public UnitDeath unitDeath;
 
+	/* Fx */
+	public delegate void FxDelegate (AnimationInfo info, FrameEvent fe);
+	public FxDelegate fxDelegate;
+
 	public AnimationInfo[] allAntInfos;//Write in Inspector
 	private Dictionary<Clip, AnimationInfo> m_infos = new Dictionary<Clip, AnimationInfo> ();//all  animation infos;
 	private Animation m_Animation;//
@@ -213,7 +217,12 @@ public class AiAnimation : MonoBehaviour {
 
 	public void AnimationFx (int c, int eventIndex)
 	{
-		//TODO:
+		if (fxDelegate != null)
+		{
+			AnimationInfo info = GetInfoByClip ((Clip) c);
+			fxDelegate (info, info.getEvent (eventIndex));
+		}
+
 	}
 
 	public void AnimationShake (int c, int eventIndex)

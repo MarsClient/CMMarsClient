@@ -327,6 +327,7 @@ public class GameData	{
 			{
 				continue;
 			}
+			gameEffect.fxType = (FxType) qr.GetInteger ("index");
 			gameEffect.action = qr.GetInteger ("action");
 			if (gameEffects.ContainsKey (gameEffect.id) == false)
 			{
@@ -361,18 +362,13 @@ public class GameData	{
 		return str;
 	}
 
-	public string getGameEffectByAction (int pro, int action)
+	public GameEffect getGameEffectByAction (int pro, int action)
 	{
-		string assetBundle = null;
+		GameEffect gameEffect = null;
 		if (gameEffects [pro] != null)
 		{
-			GameEffect gameEffect = null;
 			gameEffects [pro].TryGetValue (action, out gameEffect);
-			if (gameEffect != null)
-			{
-				assetBundle = gameEffect.assetbundle;
-			}
 		}
-		return assetBundle;
+		return gameEffect;
 	}
 }

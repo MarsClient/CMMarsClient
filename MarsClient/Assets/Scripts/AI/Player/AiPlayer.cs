@@ -4,6 +4,11 @@ using System.Collections;
 [RequireComponent (typeof (AiAnimation))]
 public class AiPlayer : MonoBehaviour 
 {
+
+	/*Effect Position*/
+	public Transform groudTranform;
+
+
 	public AttType attType = AttType.inf;
 	public PRO pro = PRO.ZS;
 
@@ -18,6 +23,7 @@ public class AiPlayer : MonoBehaviour
 		aiAnt.aiMove.moveEvent += MoveEvent;
 		aiAnt.attackDelegate += AttackDelegate;
 		aiAnt.spellAttackDelegate += SpellAttackDelegate;
+		aiAnt.fxDelegate += FxDelegate;
 	}
 	void OnDisable ()
 	{
@@ -25,6 +31,7 @@ public class AiPlayer : MonoBehaviour
 		aiAnt.aiMove.moveEvent -= MoveEvent;
 		aiAnt.attackDelegate -= AttackDelegate;
 		aiAnt.spellAttackDelegate -= SpellAttackDelegate;
+		aiAnt.fxDelegate -= FxDelegate;
 	}
 
 	#region Move
@@ -162,7 +169,7 @@ public class AiPlayer : MonoBehaviour
 		{
 			//Shoot
 			//GameObject res_Go = PoolManager.Instance.LoadGameObject ("Bullets_10001");//Resources.Load ("Bullets_10001") as GameObject;
-			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip), transform);
+			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle, transform);
 			//GameObject.Instantiate (res_Go, transform.position, transform.rotation) as GameObject;
 			BulletsSample bs = go.GetComponent <BulletsSample>();
 			if (bs != null)
@@ -187,7 +194,7 @@ public class AiPlayer : MonoBehaviour
 		}
 		else if (info.clip == Clip.Spell2)
 		{
-			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip), transform);
+			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle, transform);
 			//GameObject.Instantiate (res_Go, transform.position, transform.rotation) as GameObject;
 			BulletsSample bs = go.GetComponent <BulletsSample>();
 			if (bs != null)
@@ -203,10 +210,11 @@ public class AiPlayer : MonoBehaviour
 
 	IEnumerator ShootMulBullet (int count, float interval, float randge, AnimationInfo info, FrameEvent fe)
 	{
+		string asserbundle = GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle;
 		for (int i = 0; i < count; i++)
 		{
 			yield return new WaitForSeconds (interval);
-			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip));
+			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle);
 			BulletsSample bs = go.GetComponent <BulletsSample>();
 			if (bs != null)
 			{
@@ -220,6 +228,14 @@ public class AiPlayer : MonoBehaviour
 		}
 	}
 
+	#endregion
+
+	#region Fx
+	void FxDelegate (AnimationInfo info, FrameEvent fe)
+	{
+		GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle);
+
+	}
 	#endregion
 
 	#region Hit Enemy
