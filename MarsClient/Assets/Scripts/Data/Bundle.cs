@@ -9,9 +9,6 @@ public class Bundle
 	public Command cmd;
 
 	[DefaultValue (null)]
-	public EventCommand eventCmd;
-
-	[DefaultValue (null)]
 	public SQLiteVer sqliteVer;
 
 	[DefaultValue (null)]

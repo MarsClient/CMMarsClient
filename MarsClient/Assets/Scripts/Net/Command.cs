@@ -33,19 +33,9 @@ public enum Command : byte
 
 	PlayerDone,
 
+	MonsterStateUpdate,
+
 	//Last
 	NetError,
 	AbortDiscount,
-}
-
-public enum EventCommand: byte
-{
-	LobbyBroadcast = 1,
-	RoomBroadcastActorAction,
-	RoomBroadcastActorQuit,
-	RoomBroadcastActorSpeak,
-	JoinRoomNotify,
-	InitAllPlayer,
-	UpdatePlayer,
-	PlayerDisConnect,
 }

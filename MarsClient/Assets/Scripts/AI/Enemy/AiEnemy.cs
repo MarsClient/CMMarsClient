@@ -2,6 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
+public enum MSState : int
+{
+	state = 0,
+	run = 1,
+	attack = 2,
+	spell = 3,
+}
+
 [RequireComponent(typeof(AiAnimation))]
 [RequireComponent(typeof(AIPath))]
 public class AiEnemy : MonoBehaviour 
