@@ -28,6 +28,7 @@ public class ButtonServerSelect : MonoBehaviour {
 			server.accountId = Main.Instance.account.uniqueId;
 			server.serverId = serverList.currentServer.serverId;
 			//serverList.currentServer.accountId = Main.Instance.account.uniqueId;
+			Main.Instance.server = server;
 			NetSend.SendServerSelect (server);
 		}
 		if (bundle.cmd == Command.ServerSelect)

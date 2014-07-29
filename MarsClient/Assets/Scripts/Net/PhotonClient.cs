@@ -117,7 +117,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		if (obj != null)
 		{
 			parameter = new Dictionary<byte, object>();
-			string json = JsonConvert.SerializeObject(obj);
+			string json = JsonConvert.SerializeObject(obj) + "/" + operationCode.ToString ();
 			parameter.Add ((byte)operationCode, json);
 			Debug.Log (json);
 			DC.Log (json);
