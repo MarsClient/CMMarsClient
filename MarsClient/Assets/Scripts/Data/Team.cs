@@ -12,16 +12,11 @@ public class Team
 	[DefaultValue (null)]
 	public List<Role> roles;
 
-
-	public bool isLead
+	public bool isLeader
 	{
 		get
 		{
-			if (Main.Instance.role != null && Main.Instance.role.roleId == teamId)
-			{
-				return true;
-			}
-			return false;
+			return teamId == Main.Instance.role.roleId;
 		}
 	}
 }

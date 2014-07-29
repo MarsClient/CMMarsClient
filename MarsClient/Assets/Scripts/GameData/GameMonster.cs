@@ -8,4 +8,6 @@ public class GameMonster : GameBase
 	public float x;
 	[DefaultValue (0F)]
 	public float z;
+	[DefaultValue (false)]
+	public bool isBoss;
 }
