@@ -71,17 +71,20 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	private bool isVal = false;
 	// Update is called once per frame
 	void Update () {
-		this.peer.Service ();
-		if (this.ServerConnected != isVal)
+		if (peer != null)
 		{
-			isVal = this.ServerConnected;
-			if (isVal)
+			this.peer.Service ();
+			if (this.ServerConnected != isVal)
 			{
-				DC.Log ("Connected");
-			}
-			else
-			{
-				DC.LogError ("Disconnected");
+				isVal = this.ServerConnected;
+				if (isVal)
+				{
+					DC.Log ("Connected");
+				}
+				else
+				{
+					DC.LogError ("Disconnected");
+				}
 			}
 		}
 	}
@@ -104,6 +107,12 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 			this.ServerConnected = false;
 			break;
 		}
+	}
+
+	public void PeerDiscount ()
+	{
+		peer.Disconnect ();
+		peer = null;
 	}
 
 	public static void SendServer (Command operationCode)
