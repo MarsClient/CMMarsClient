@@ -133,9 +133,9 @@ public class CreatMode : ITabListener
 		{
 			//TODO:
 			Role r = new Role ();
-			r.accountId = Main.Instance.account.uniqueId;
+			//r.accountId = Main.Instance.account.uniqueId;
 			r.roleName = input.text;
-			r.level = 1;
+			//r.level = 1;
 			r.sex = sex;
 			r.profession = pro.ToString ();
 			NetSend.SendCreatRole(r);
@@ -219,7 +219,9 @@ public class RolePanel : MonoBehaviour
 
 	void EnterGameOnClick ()
 	{
-		NetSend.SendEnterGame (roleList.role);
+		Role f_role = new Role();
+		f_role.roleId = roleList.role.roleId;
+		NetSend.SendEnterGame (f_role);
 	}
 
 	void ProcessResults (Bundle bundle)
