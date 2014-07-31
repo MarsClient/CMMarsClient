@@ -43,7 +43,7 @@ public class AssetLoader : MonoBehaviour {
 #elif UNITY_IPHONE
 		"file://" + Application.dataPath + "/A_MarsRes/IOS/{0}/{1}";
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR
-	"file://" + Application.dataPath + "/A_MarsRes/Android/{0}/{1}";
+	"file://" + Application.dataPath + "/A_MarsRes/PC/{0}/{1}";
 #endif
 		if (Application.platform == RuntimePlatform.Android)
 		{

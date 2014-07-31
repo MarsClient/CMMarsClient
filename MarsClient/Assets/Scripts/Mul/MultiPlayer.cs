@@ -55,7 +55,7 @@ public abstract class MultiPlayer : MonoBehaviour {
 		if (go != null)
 		{
 			GameObject r = GameObject.Instantiate (go) as GameObject;
-			r.name = role.accountId.ToString ();
+			//r.name = role.accountId.ToString ();
 			PlayerUnit hit = r.GetComponent <PlayerUnit>();
 			hit.DataRefresh (role);
 
