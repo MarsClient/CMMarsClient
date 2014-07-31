@@ -45,7 +45,8 @@ public class ButtonServerSelect : MonoBehaviour {
 					.SetMessage(bundle.error.message)
 						.SetNoBtn ("game.dialog.no")
 						.ShowWaiting ();
-				PhotonClient.Instance.PeerDiscount ();
+				NetSend.SendDisconnectServer ();
+				//PhotonClient.Instance.PeerDiscount ();
 			}
 		}
 	}

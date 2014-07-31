@@ -77,7 +77,7 @@ public class NetRecv : MonoBehaviour {
 							UISceneLoading.LoadingScnens (UISceneLoading.SPLASH, (string loadName)=>
 							{
 								Debug.Log (loadName);
-								NetSend.SendAbortDiscount ();
+								NetSend.SendDisconnectServer ();
 								PhotonClient.Instance.LoadingLoginServer ();
 
 								PanelsManager.Close ();

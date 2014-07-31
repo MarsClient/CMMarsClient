@@ -93,9 +93,9 @@ public class NetSend {
 	}
 	#endregion
 
-	public static void SendAbortDiscount ()
+	public static void SendDisconnectServer ()
 	{
-		PhotonClient.SendServer (Command.AbortDiscount);
+		PhotonClient.Instance.PeerDiscount ();
 	}
 	//Follow is Older
 	/*

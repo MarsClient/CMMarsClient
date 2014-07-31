@@ -208,7 +208,8 @@ public class RolePanel : MonoBehaviour
 	{
 		PanelsManager.Close ();
 		PanelsManager.Show (PanelType.ServerList);
-		NetSend.SendAbortDiscount ();
+		//PhotonClient.Instance.PeerDiscount ();
+		NetSend.SendDisconnectServer ();
 	}
 
 	void CreatOnClick ()
