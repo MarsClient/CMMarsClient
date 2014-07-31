@@ -69,7 +69,7 @@ public class AiPlayer : MonoBehaviour
 			//Player p = new Player();
 			Role role = new Role();
 			role.roleId = Main.Instance.role.roleId;
-			role.accountId = Main.Instance.role.accountId;
+			//role.accountId = Main.Instance.role.accountId;
 			role.x = (float) transform.position.x;
 			role.z = (float) transform.position.z;
 			role.xRo = (float) transform.forward.x;
