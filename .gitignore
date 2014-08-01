@@ -11,3 +11,5 @@
 /*.userprefs
 /*.pidb
 /*.booproj
+/MarsClient/Assets/A_MarsRes
+/MarsClient/Assets/Scripts/Tween

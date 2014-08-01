@@ -10,7 +10,7 @@ public class NetTest : MonoBehaviour {
 	void Start ()
 	{
 		DC.RegisterCommand (Command.JoinTeam.ToString (), JoinTeam);
-		DC.RegisterCommand (Command.LeaveTeam.ToString (), JoinTeam);
+		DC.RegisterCommand (Command.LeaveTeam.ToString (), LeaveTeam);
 	}
 
 	private string JoinTeam (params string[] p)
