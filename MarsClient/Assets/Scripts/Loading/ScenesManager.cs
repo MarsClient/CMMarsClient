@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UISceneLoading : MonoBehaviour {
+public class ScenesManager : MonoBehaviour {
 
 
 	public const string SPLASH = "Splash";
@@ -10,7 +10,7 @@ public class UISceneLoading : MonoBehaviour {
 	public delegate void OnSenceLoadingDone (string str);
 
 	public static OnSenceLoadingDone currentOnSenceLoadingDone;
-	public static UISceneLoading instance;
+	public static ScenesManager instance;
 	public static string currentLoadName = "Splash";
 	public static bool isAssetBundle = false;
 

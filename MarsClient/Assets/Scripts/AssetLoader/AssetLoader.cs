@@ -1,4 +1,4 @@
-﻿using System; 
+using System; 
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -94,8 +94,8 @@ public class AssetLoader : MonoBehaviour {
 				Debug.LogError (www.error + "  and" + sc);
 			}
 		}
-		Debug.Log (UISceneLoading.instance);
-		if (UISceneLoading.instance != null)
+		Debug.Log (ScenesManager.instance);
+		if (ScenesManager.instance != null)
 		{
 			//Application.LoadLevelAdditive (sc);
 			Application.LoadLevel (sc);

@@ -26,7 +26,7 @@ public class AiInput : MonoBehaviour {
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
 		//attack
-		if ((Input.GetMouseButton (0) || Input.GetKey (KeyCode.J)) && UISceneLoading.currentLoadName != UISceneLoading.PUBLIC_ZONE)
+		if ((Input.GetMouseButton (0) || Input.GetKey (KeyCode.J)) && ScenesManager.currentLoadName != ScenesManager.PUBLIC_ZONE)
 		{
 			aiPlayer.NormalAttack ();
 		}

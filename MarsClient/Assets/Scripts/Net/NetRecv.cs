@@ -37,7 +37,7 @@ public class NetRecv : MonoBehaviour {
 			{
 				Main.Instance.role = bundle.role;
 				Main.Instance.onlineRoles = bundle.onlineRoles;
-				UISceneLoading.LoadingScnens (UISceneLoading.PUBLIC_ZONE, null, true);
+				ScenesManager.LoadingScnens (ScenesManager.PUBLIC_ZONE, null, true);
 			}
 
 			if (bundle.cmd == Command.InitAllPlayers)
@@ -60,7 +60,7 @@ public class NetRecv : MonoBehaviour {
 			{
 				Main.Instance.fight = bundle.fight;
 				Main.Instance.team = bundle.team;
-				UISceneLoading.LoadingScnens ("LV00001A", null, true);
+				ScenesManager.LoadingScnens ("LV00001A", null, true);
 			}
 		}
 		else
@@ -74,7 +74,7 @@ public class NetRecv : MonoBehaviour {
 						{
 							//if (UISceneLoading.currentLoadName != UISceneLoading.SPLASH)
 							//{
-							UISceneLoading.LoadingScnens (UISceneLoading.SPLASH, (string loadName)=>
+							ScenesManager.LoadingScnens (ScenesManager.SPLASH, (string loadName)=>
 							{
 								Debug.Log (loadName);
 								NetSend.SendDisconnectServer ();

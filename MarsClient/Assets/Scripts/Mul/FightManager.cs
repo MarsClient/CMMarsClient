@@ -29,7 +29,7 @@ public class FightManager : MultiPlayer {
 			monsters.Add (go.name, go);
 
 			NetSend.SendPlayersDone ();
-			UISceneLoading.instance.DelaySuccessLoading ();
+			ScenesManager.instance.DelaySuccessLoading ();
 		}
 	}
 

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -30,7 +30,7 @@ public class PublicZoneManager : MultiPlayer {
 				npcController.Refresh (npc);
 			}
 		}
-		UISceneLoading.instance.DelaySuccessLoading ();
+		ScenesManager.instance.DelaySuccessLoading ();
 	}
 
 	public override void LoadingDoneRoles ()
