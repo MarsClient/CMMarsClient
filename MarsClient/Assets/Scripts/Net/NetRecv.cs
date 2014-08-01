@@ -121,7 +121,7 @@ public class NetRecv : MonoBehaviour {
 					}
 				}
 			}
-			if (bundle.cmd == Command.EnterFight)
+			/*if (bundle.cmd == Command.EnterFight)
 			{
 				Main.Instance.fight = bundle.fight;
 				new DialogContent()
@@ -138,7 +138,7 @@ public class NetRecv : MonoBehaviour {
 							}
 						})
 						.Show ();
-			}
+			}*/
 		}
 	}
 

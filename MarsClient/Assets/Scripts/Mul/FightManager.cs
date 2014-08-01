@@ -47,24 +47,24 @@ public class FightManager : MultiPlayer {
 
 	void ProcessResults (Bundle bundle)
 	{
-		if (bundle.cmd == Command.PlayerDone)
-		{
-			foreach (Role role in Main.Instance.fight.team.roles)
-			{
-				if (role.roleId != Main.Instance.role.roleId && role.region == Main.Instance.fight.id)
-				{
-					AddNewPro (role);
-				}
-			}
-		}
+//		if (bundle.cmd == Command.PlayerDone)
+//		{
+//			foreach (Role role in Main.Instance.fight.team.roles)
+//			{
+//				if (role.roleId != Main.Instance.role.roleId && role.region == Main.Instance.fight.id)
+//				{
+//					AddNewPro (role);
+//				}
+//			}
+//		}
 	}
 
 	void ProcessResultSync (Bundle bundle)
 	{
-		if (bundle.cmd == Command.PlayerDone)
-		{
-			AddNewPro (bundle.role);//add new role
-		}
+//		if (bundle.cmd == Command.PlayerDone)
+//		{
+//			AddNewPro (bundle.role);//add new role
+//		}
 	}
 
 	public TextAsset textAsset;
