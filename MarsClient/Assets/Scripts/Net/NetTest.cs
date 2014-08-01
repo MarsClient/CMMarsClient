@@ -9,35 +9,32 @@ public class NetTest : MonoBehaviour {
 
 	void Start ()
 	{
-		DC.RegisterCommand (Command.CreatTeam.ToString (), AllTeamsEvent);
-		DC.RegisterCommand (Command.JoinTeam.ToString (), AllTeamsEvent);
-		DC.RegisterCommand (Command.LeftTeam.ToString (), AllTeamsEvent);
-		DC.RegisterCommand (Command.SwapTeamLeader.ToString (), AllTeamsEvent);
-		DC.RegisterCommand (Command.DismissTeam.ToString (), AllTeamsEvent);
+		DC.RegisterCommand (Command.JoinTeam.ToString (), JoinTeam);
+		DC.RegisterCommand (Command.LeaveTeam.ToString (), JoinTeam);
 	}
 
-	private string AllTeamsEvent (params string[] p)
+	private string JoinTeam (params string[] p)
 	{
-		if (p.Length == 2)
+		if (p.Length >= 3)
 		{
-			Role role = new Role ();
-			try 
-			{
-				role.roleId = long.Parse (p[1]);
-				if (p[0] == Command.JoinTeam.ToString ().ToLower()) NetSend.SendJoinTeam(role);
-				else if (p[0] == Command.LeftTeam.ToString ().ToLower()) NetSend.SendLeftTeam(role);
-				else if (p[0] == Command.SwapTeamLeader.ToString ().ToLower()) NetSend.SendSwapTeamLeader(role);
-				return REPOSE;
-			}
-			catch (System.Exception e) {}
-			finally {};
-		}
-		else if (p.Length == 1)
-		{
-			if (p[0] == Command.CreatTeam.ToString ().ToLower()) NetSend.SendCreatTeam();
-			else if (p[0] == Command.DismissTeam.ToString ().ToLower()) NetSend.SendDismissTeam();
+			Team team = new Team ();
+			team.teamName = p[1];
+			team.teamId = p[2];
+			NetSend.SendJoinTeam (team);
 			return REPOSE;
 		}
-		return p[0] + " roleId usage";
+		return p[0] + " teamName, teamId usage";
+	}
+
+	private string LeaveTeam (params string[] p)
+	{
+		if (p.Length >= 2)
+		{
+			Team team = new Team ();
+			team.teamId = p[1];
+			NetSend.SendLeaveTeam (team);//
+			return REPOSE;
+		}
+		return p[0] + " teamId usage";
 	}
 }

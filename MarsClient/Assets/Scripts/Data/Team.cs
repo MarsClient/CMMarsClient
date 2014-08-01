@@ -5,18 +5,12 @@ using System.ComponentModel;
 
 public class Team 
 {
-	[DefaultValue (0L)]
-	public long teamId;
+	[DefaultValue (null)]
+	public string teamId;
 	[DefaultValue (0L)]
 	public long fightId;
+	[DefaultValue(null)]
+	public string teamName;
 	[DefaultValue (null)]
 	public List<Role> roles;
-
-	public bool isLeader
-	{
-		get
-		{
-			return teamId == Main.Instance.role.roleId;
-		}
-	}
 }

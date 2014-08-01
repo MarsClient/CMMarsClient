@@ -24,7 +24,7 @@ public enum Command : byte
 
 	CreatTeam,
 	JoinTeam,
-	LeftTeam,
+	LeaveTeam,
 	SwapTeamLeader,
 	DismissTeam,
 	TeamUpdate,

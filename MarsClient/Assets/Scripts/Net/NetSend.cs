@@ -55,19 +55,19 @@ public class NetSend {
 		PhotonClient.SendServer (Command.CreatTeam);
 	}
 
-	public static void SendJoinTeam (Role r)
+	public static void SendJoinTeam (Team team)
 	{
-		PhotonClient.SendServer (Command.JoinTeam, r);
+		PhotonClient.SendServer (Command.JoinTeam, team);
 	}
 
-	public static void SendLeftTeam (Role r)
+	public static void SendLeaveTeam (Team team)
 	{
-		PhotonClient.SendServer (Command.LeftTeam, r);
+		PhotonClient.SendServer (Command.LeaveTeam, team);
 	}
 
-	public static void SendSwapTeamLeader (Role r)
+	public static void SendSwapTeamLeader (Team team)
 	{
-		PhotonClient.SendServer (Command.SwapTeamLeader, r);
+		PhotonClient.SendServer (Command.SwapTeamLeader, team);
 	}
 
 	public static void SendDismissTeam ()
