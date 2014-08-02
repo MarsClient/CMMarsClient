@@ -50,6 +50,7 @@ public class Main : MonoBehaviour
 	{
 		messages.Clear ();
 		roles.Clear ();
+		team = null;
 	}
 
 

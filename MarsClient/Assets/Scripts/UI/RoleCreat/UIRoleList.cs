@@ -109,8 +109,8 @@ public class UIRoleList : MonoBehaviour, ITabListener {
 			else if (go.name == pros[1].Split ('/')[1] ) p = PRO.FS;
 			else if (go.name == pros[2].Split ('/')[1] ) p = PRO.DZ;
 			GameObject _role = NGUITools.AddChild (modelBg, go);
-			AiInput input = _role.GetComponent<AiInput>();
-			input.enabled = false;
+		//	AiInput input = _role.GetComponent<AiInput>();
+		//	input.enabled = false;
 			_role.SetActive (false);
 			if (p != PRO.NULL) PROS.Add (p, _role);
 		}

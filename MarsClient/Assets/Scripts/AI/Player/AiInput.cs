@@ -1,7 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// All game only one
+/// </summary>
 public class AiInput : MonoBehaviour {
+
+	public static AiInput instance;
+
+	public void Awake()
+	{
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else
+		{
+			enabled = false;
+		}
+	}
+
+	public void OnDestroy ()
+	{
+		instance = null;
+	}
+
 
 	private AiPlayer aiPlayer;
 	private AiMove aiMove;
@@ -12,33 +35,25 @@ public class AiInput : MonoBehaviour {
 		aiMove = GetComponent<AiMove> ();
 	}
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
 	void Update ()
 	{
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
-		//move
 		float x = Input.GetKey (KeyCode.A) ? 1 : Input.GetKey (KeyCode.D) ? -1 : 0 ;
 		float z = Input.GetKey (KeyCode.S) ? 1 : Input.GetKey (KeyCode.W) ? -1 : 0 ;
-#elif UNITY_ANDROID || UNITY_IPHONE
-		float x = -Joystick.getPosition.x;
-		float z = -Joystick.getPosition.y;
-#endif
 		UpdateMove (new Vector3 (x, 0, z));
-
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
 		//attack
 		if ((Input.GetMouseButton (0) || Input.GetKey (KeyCode.J)) && ScenesManager.currentLoadName != ScenesManager.PUBLIC_ZONE)
 		{
-			aiPlayer.NormalAttack ();
+			NormalAttack ();
 		}
-#endif
 	}
+#endif
 
-#if UNITY_ANDROID || UNITY_IPHONE
-	public void MobliePlatform ()
+	public void NormalAttack ()
 	{
 		aiPlayer.NormalAttack ();
 	}
-#endif
+
 	public void UpdateMove (Vector3 dir)
 	{
 		aiMove.UpdateMove (dir);

@@ -5,19 +5,43 @@ public class UIButtonLong : MonoBehaviour {
 
 	public float updateFrameRate = 0.03333f;
 
+	public bool useUpdate
+	{
+		get
+		{
+			return (updateFrameRate == 0);
+		}
+	}
+
+	public bool isPress;
 
 	private const string MethodName = "UpdateInterval";
 	void OnPress (bool isPress)
 	{
+		this.isPress = isPress;
 		if (isPress == true)
 		{
 			BeginPressEvent ();
-			InvokeRepeating (MethodName, updateFrameRate, updateFrameRate);
+			if (useUpdate == false)
+			{
+				InvokeRepeating (MethodName, updateFrameRate, updateFrameRate);
+			}
 		}
 		else
 		{
 			CancelInvoke (MethodName);
 			EndPressEvent ();
+		}
+	}
+
+	void Update ()
+	{
+		if (this.useUpdate == true)
+		{
+			if (isPress == true)
+			{
+				UpdateInterval ();
+			}
 		}
 	}
 
