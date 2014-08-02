@@ -9,8 +9,23 @@ public class NetTest : MonoBehaviour {
 
 	void Start ()
 	{
+		DC.RegisterCommand (Command.Login.ToString (), Login);
 		DC.RegisterCommand (Command.JoinTeam.ToString (), JoinTeam);
 		DC.RegisterCommand (Command.LeaveTeam.ToString (), LeaveTeam);
+	}
+
+
+	private string Login (params string[] p)
+	{
+		if (p.Length >= 3)
+		{
+			Account a = new Account();
+			a.id = p[1];
+			a.pw = p[2];
+			NetSend.SendLogin (a);
+			return REPOSE;
+		}
+		return "Login id, pw usage";
 	}
 
 	private string JoinTeam (params string[] p)
