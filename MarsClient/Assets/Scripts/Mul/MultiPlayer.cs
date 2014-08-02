@@ -64,7 +64,7 @@ public abstract class MultiPlayer : MonoBehaviour {
 			if (role.roleId != Main.Instance.role.roleId)
 			{
 				hit.RefreshMulPlayerState (role);
-				Destroy (r.GetComponent<AiPlayer>());
+				//Destroy (r.GetComponent<AiPlayer>());
 				//Destroy (r.GetComponent<AiInput>());
 				return;
 			}

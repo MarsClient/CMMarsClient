@@ -27,9 +27,15 @@ public class FightManager : MultiPlayer {
 			//Debug.LogError (o.ToString());
 			GameObject go = (GameObject) o;
 			monsters.Add (go.name, go);
+		}
+		ScenesManager.instance.DelaySuccessLoading ();
 
-			NetSend.SendPlayersDone ();
-			ScenesManager.instance.DelaySuccessLoading ();
+		foreach (Role role in Main.Instance.onlineRoles)
+		{
+			if (role.roleId != Main.Instance.role.roleId)
+			{
+				AddNewPro (role);
+			}
 		}
 	}
 
@@ -47,24 +53,18 @@ public class FightManager : MultiPlayer {
 
 	void ProcessResults (Bundle bundle)
 	{
-//		if (bundle.cmd == Command.PlayerDone)
-//		{
-//			foreach (Role role in Main.Instance.fight.team.roles)
-//			{
-//				if (role.roleId != Main.Instance.role.roleId && role.region == Main.Instance.fight.id)
-//				{
-//					AddNewPro (role);
-//				}
-//			}
-//		}
+		/*if (bundle.cmd == Command.EnterFight)
+		{
+
+		}*/
 	}
 
 	void ProcessResultSync (Bundle bundle)
 	{
-//		if (bundle.cmd == Command.PlayerDone)
-//		{
-//			AddNewPro (bundle.role);//add new role
-//		}
+		if (bundle.cmd == Command.PlayerAdd)
+		{
+			AddNewPro (bundle.role);
+		}
 	}
 
 	public TextAsset textAsset;

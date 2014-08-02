@@ -48,6 +48,7 @@ public class NpcController : MonoBehaviour {
 		{
 			Fight fight = new Fight ();
 			fight.id = 100001;
+			fight.type = "LV00001A";
 			NetSend.SendEnterFight (fight);
 			//UISceneLoading.LoadingScnens ("LV00001A", null, true);
 		}
