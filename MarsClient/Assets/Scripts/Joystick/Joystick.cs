@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class JoyStick : MonoBehaviour {
+public class JoyStick : UIButtonLong {
 
 
 	private static JoyStick instance;
@@ -9,11 +9,6 @@ public class JoyStick : MonoBehaviour {
 	{
 		get
 		{
-			if (instance == null)
-			{
-				GameObject res_Go = Resources.Load ("Joystick", typeof (GameObject)) as GameObject;
-				GameObject go = GameObject.Instantiate (res_Go) as GameObject;
-			}
 			return instance.m_postion;
 		}
 	}
@@ -22,39 +17,45 @@ public class JoyStick : MonoBehaviour {
 	public float MaxOffset = 50;
 	public Transform joystickTra;
 	private Vector2 m_postion;
+	private UIRoot root;
 
+	private Transform referToTra;
 
 	void Awake ()
 	{
 		instance = this;
+
+		root = NGUITools.FindInParents<UIRoot> (gameObject);
+		GameObject go = new GameObject("referToTra");
+		referToTra = go.transform;
+		referToTra.parent = root.transform;
+		referToTra.localScale = Vector3.one;
+		referToTra.localPosition = Vector3.zero;
 	}
 
-	void OnPress (bool isPress)
+	protected override void BeginPressEvent ()
 	{
-		if (isPress)
-		{
-			transform.position = UICamera.lastHit.point;
-			InvokeRepeating ("UpdateJoystickOperator", 0, 0.03333f);
-		}
-		else
-		{
-			Clear ();
-			CancelInvoke ("UpdateJoystickOperator");
-		}
+		transform.position = UICamera.lastHit.point;
 	}
 
-	void UpdateJoystickOperator ()
+	protected override void UpdatePressEvent ()
 	{
-		joystickTra.position = UICamera.lastHit.point;
+		float MH = root.manualHeight;
+		float MW = Screen.width * MH / Screen.height;
+		Vector3 lt = UICamera.lastTouchPosition;
+		float ratio = MH / Screen.height;
+		Vector3 lp = new Vector3 (lt.x - Screen.width / 2, lt.y - Screen.height / 2, 0) * ratio; 
+		referToTra.transform.localPosition = lp;
+
+		joystickTra.position = referToTra.position;
 		if (Vector3.Distance (Vector3.zero, joystickTra.localPosition) >= MaxOffset)
 		{
 			joystickTra.localPosition = joystickTra.localPosition.normalized * MaxOffset;
 		}
 		m_postion = joystickTra.localPosition.normalized;
-
 	}
 
-	void Clear ()
+	protected override void EndPressEvent ()
 	{
 		m_postion = Vector3.zero;
 		joystickTra.localPosition = Vector3.zero;
