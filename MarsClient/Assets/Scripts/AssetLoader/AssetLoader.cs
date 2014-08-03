@@ -10,6 +10,8 @@ using System.Collections.Generic;
 
 public class AssetLoader : MonoBehaviour {
 
+	private object obj = new object();
+
 	private string scenePath = "";
 	private string assetBundlePath = "";
 
@@ -29,7 +31,6 @@ public class AssetLoader : MonoBehaviour {
 		scenePath = 
 #if UNITY_ANDROID
 		"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";;
-			//"file:///mnt/sdcard/MarsRes/SC/";;
 #elif UNITY_IPHONE
 	"file://" + Application.dataPath + "/A_MarsRes/IOS/SC/";;
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR
@@ -43,7 +44,6 @@ public class AssetLoader : MonoBehaviour {
 		assetBundlePath = 
 #if UNITY_ANDROID
 		"file://" + Application.dataPath + "/A_MarsRes/Android/{0}/{1}";;
-			//"file:///mnt/sdcard/MarsRes/{0}/{1}";
 #elif UNITY_IPHONE
 		"file://" + Application.dataPath + "/A_MarsRes/IOS/{0}/{1}";
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR
@@ -89,41 +89,42 @@ public class AssetLoader : MonoBehaviour {
 	private float m_Progress = 0;
 	IEnumerator DownloadAssetBundle (string[] scs, DownloadFinishCallBack callback, bool isDontDestory)
 	{
-		List<object> gos = new List<object> ();
-
-		foreach (string sc in scs)
+		lock (obj)
 		{
-			m_Progress++;
-			if (assetBundles.ContainsKey (sc) == false || assetBundles[sc] == null)
+			List<object> gos = new List<object> ();
+
+			foreach (string sc in scs)
 			{
-				string[] files = sc.Split('/');
-				string path = string.Format (assetBundlePath, files[0], files[1] + ".assetbundle");
-				//Debug.LogError (path);
-				WWW www = new WWW (path);
-				yield return www;
-				if (www.error == null)
+				m_Progress++;
+				if (assetBundles.ContainsKey (sc) == false || assetBundles[sc] == null)
 				{
-					AssetBundle assetBundle = www.assetBundle;
-					GameObject go = (GameObject) assetBundle.mainAsset;
-					gos.Add (go);
-					assetBundles[sc] = assetBundle;
-					www.Dispose ();
-					www = null;
-					if (isDontDestory)
+					string[] files = sc.Split('/');
+					string path = string.Format (assetBundlePath, files[0], files[1] + ".assetbundle");
+					WWW www = new WWW (path);
+					yield return www;
+					if (www.error == null)
 					{
-						assetBundle.Unload (false);
+						AssetBundle assetBundle = www.assetBundle;
+						GameObject go = (GameObject) assetBundle.mainAsset;
+						gos.Add (go);
+						assetBundles[sc] = assetBundle;
+						www.Dispose ();
+						www = null;
+						if (isDontDestory)
+						{
+							assetBundle.Unload (false);
+						}
 					}
 				}
+				else
+				{
+					gos.Add (assetBundles[sc].mainAsset);
+				}
+				float progress = m_Progress / (float)scs.Length * 0.8f;
+				UpdateCallBack (progress);
 			}
-			else
-			{
-				gos.Add (assetBundles[sc].mainAsset);
-			}
-			float progress = m_Progress / (float)scs.Length * 0.8f;
-			//Debug.Log (m_Progress + "____" + scs.Length + "***********" + m);
-			UpdateCallBack (progress);
+			Callback (callback, gos);
 		}
-		Callback (callback, gos);
 	}
 
 	void Callback (DownloadFinishCallBack callback, List <object> gos)
@@ -183,7 +184,6 @@ public class AssetLoader : MonoBehaviour {
 		{
 			GameObject go = (GameObject) o;
 			string key = go.name;
-//			Debug.Log (">>><<<" + key);
 			dontDestroyObjs.Add (key, go);
 		}
 		if (m_loadingDontDestroyFinishNotice != null)
@@ -213,9 +213,5 @@ public class AssetLoader : MonoBehaviour {
 			return m_pros;
 		}
 	}
-
-
-
 	#endregion
-
 }
