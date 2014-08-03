@@ -53,10 +53,10 @@ public class FightManager : MultiPlayer {
 
 	void ProcessResults (Bundle bundle)
 	{
-		/*if (bundle.cmd == Command.EnterFight)
+		if (bundle.cmd == Command.MonsterRefresh)
 		{
-
-		}*/
+			AddMonster (bundle.fight, bundle.region);
+		}
 	}
 
 	void ProcessResultSync (Bundle bundle)
@@ -65,16 +65,40 @@ public class FightManager : MultiPlayer {
 		{
 			AddNewPro (bundle.role);
 		}
+
+		if (bundle.cmd == Command.MonsterRefresh)
+		{
+			AddMonster (bundle.fight, bundle.region);
+		}
+	}
+
+	void AddMonster (Fight fight, FightRegion fightRegion)
+	{
+		foreach (GameMonster mg in fight.gameMonsters[fightRegion.index])
+		{
+			GameObject prefab = monsters[mg.type];
+			GameObject go = GameObject.Instantiate (prefab) as GameObject;
+			go.transform.position = new Vector3 (mg.x, 0, mg.z);
+			EnemyUnit eu = go.GetComponent<EnemyUnit>();
+			if (eu != null)
+			{
+				eu.InitUI (mg);
+			}
+		}
 	}
 
 	public TextAsset textAsset;
 
 
 	#region follow is Test Code;
-	private Fight fight;
+	//private Fight fight;
+
 	public void InitLocalData (string num)
 	{
-		if (fight == null)
+		FightRegion fightRegion = new FightRegion ();
+		fightRegion.index = num;
+		NetSend.SendMonsterRefresh (fightRegion);
+		/*if (fight == null)
 		{
 			fight = JsonConvert.DeserializeObject<Fight> (textAsset.text);
 		}
@@ -88,7 +112,7 @@ public class FightManager : MultiPlayer {
 			{
 				eu.InitUI (mg);
 			}
-		}
+		}*/
 	}
 	#endregion
 }

@@ -34,6 +34,7 @@ public enum Command : byte
 
 	PlayerDone,
 
+	MonsterRefresh,
 	MonsterStateUpdate,
 
 	//Last
