@@ -55,7 +55,7 @@ public class FightManager : MultiPlayer {
 	{
 		if (bundle.cmd == Command.MonsterRefresh)
 		{
-			AddMonster (bundle.fight, bundle.region);
+			AddMonster (bundle.gameMonsters, bundle.region);
 		}
 	}
 
@@ -68,13 +68,13 @@ public class FightManager : MultiPlayer {
 
 		if (bundle.cmd == Command.MonsterRefresh)
 		{
-			AddMonster (bundle.fight, bundle.region);
+			AddMonster (bundle.gameMonsters, bundle.region);
 		}
 	}
 
-	void AddMonster (Fight fight, FightRegion fightRegion)
+	void AddMonster (GameMonster[] gameMonsters, FightRegion fightRegion)
 	{
-		foreach (GameMonster mg in fight.gameMonsters[fightRegion.index])
+		foreach (GameMonster mg in gameMonsters)
 		{
 			GameObject prefab = monsters[mg.type];
 			GameObject go = GameObject.Instantiate (prefab) as GameObject;
@@ -97,6 +97,7 @@ public class FightManager : MultiPlayer {
 	{
 		FightRegion fightRegion = new FightRegion ();
 		fightRegion.index = num;
+		fightRegion.scId = Main.Instance.fight.type;
 		NetSend.SendMonsterRefresh (fightRegion);
 		/*if (fight == null)
 		{

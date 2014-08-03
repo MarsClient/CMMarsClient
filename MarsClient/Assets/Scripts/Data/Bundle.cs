@@ -47,6 +47,9 @@ public class Bundle
 	[DefaultValue (null)]
 	public FightRegion region;
 
+	[DefaultValue (null)]
+	public GameMonster[] gameMonsters;
+
 	/*follow is old*/
 
 //	[DefaultValue (null)]

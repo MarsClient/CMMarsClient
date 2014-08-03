@@ -52,17 +52,6 @@ public class AssetLoader : MonoBehaviour {
 
 	}
 
-//	public GameObject TryGameObjectByAssetBundles (string fileName)
-//	{
-//		GameObject go = null;
-//		assetBundles.TryGetValue (fileName, out go);
-//		if (go == null)
-//		{
-//			DownloadScenes (fileName);
-//		}
-//		return go;
-//	}
-
 	public void DownloadScenes (string fileName)
 	{
 		StartCoroutine (_DownloadScenes (fileName));
@@ -78,16 +67,12 @@ public class AssetLoader : MonoBehaviour {
 		string path = scenePath + sc + ".unity3d";
 		if (scAssetBundles.ContainsKey (sc) == false || scAssetBundles[sc] == null)
 		{
-//			Debug.LogError (path);
 			WWW www = new WWW(path);  
 			yield return www;  
 			if (www.error == null)
 			{
 				AssetBundle bundle = www.assetBundle;  
-				//Application.LoadLevel (sc);
 				scAssetBundles[sc] = bundle;
-				//bundle.Unload (false);
-				//scAssetBundles.Add (sc, bundle);
 			}
 			else
 			{
@@ -97,9 +82,7 @@ public class AssetLoader : MonoBehaviour {
 		Debug.Log (ScenesManager.instance);
 		if (ScenesManager.instance != null)
 		{
-			//Application.LoadLevelAdditive (sc);
 			Application.LoadLevel (sc);
-			//StartCoroutine (UISceneLoading.instance.LoadAssetBundleScenes ( Application.LoadLevelAdditiveAsync (sc)));  
 		}
 		else
 		{
@@ -121,18 +104,8 @@ public class AssetLoader : MonoBehaviour {
 				yield return www;
 				if (www.error == null)
 				{
-//					Debug.Log (sc);
 					AssetBundle assetBundle = www.assetBundle;
 					GameObject go = (GameObject) assetBundle.mainAsset;
-	//				if (assetBundles.ContainsKey (sc) == false)
-	//				{
-	//					assetBundles.Add (sc, go);
-	//				}
-	//				else
-	//				{
-	//					assetBundles[sc] = go;
-	//				}
-					//Debug.LogError (assetBundles.Count);
 					gos.Add (go);
 					assetBundles[sc] = assetBundle;
 					www.Dispose ();
@@ -141,7 +114,6 @@ public class AssetLoader : MonoBehaviour {
 					{
 						assetBundle.Unload (false);
 					}
-					//assetBundles.Add (sc, go);
 				}
 			}
 			else
@@ -170,13 +142,4 @@ public class AssetLoader : MonoBehaviour {
 		Resources.UnloadUnusedAssets();
 		GC.Collect ();
 	}
-
-//	void OnGUI ()
-//	{
-//		//Debug.LogError (parent.transform.childCount);
-//		if (GUILayout.Button ("hahahahhahahah"))
-//		{
-//			Download ("PublicZone.unity3d");
-//		}
-//	}
 }

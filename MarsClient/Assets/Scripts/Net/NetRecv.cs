@@ -64,7 +64,7 @@ public class NetRecv : MonoBehaviour {
 			{
 				Main.Instance.fight = bundle.fight;
 				Main.Instance.team = bundle.team;
-				ScenesManager.LoadingScnens ("LV00001A", null, true);
+				ScenesManager.LoadingScnens (bundle.fight.type, null, true);
 			}
 		}
 		else
