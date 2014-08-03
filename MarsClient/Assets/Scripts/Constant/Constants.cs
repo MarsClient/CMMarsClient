@@ -17,6 +17,10 @@ public enum AttType
 
 public class Constants
 {
+	//UI PATH
+	public const string UI = "UI/";
+
+
 	public const int START_ID = 100001;
 	public const string PRO = "RO/";
 	public const string  PRO_CREAT = "_Creat";

@@ -5,10 +5,6 @@ using System.Collections.Generic;
 
 public class AssetLoader : MonoBehaviour {
 
-	public UIFont normalFont;
-
-
-
 	private string scenePath = "";
 	private string assetBundlePath = "";
 
@@ -16,8 +12,8 @@ public class AssetLoader : MonoBehaviour {
 
 	void Awake () {if (Instance == null) { Instance = this; DontDestroyOnLoad (gameObject); } else if (Instance != this) Destroy (gameObject); }
 
-	public Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle> ();
-	public Dictionary<string, AssetBundle> scAssetBundles = new Dictionary<string, AssetBundle> ();
+	private Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle> ();
+	private Dictionary<string, AssetBundle> scAssetBundles = new Dictionary<string, AssetBundle> ();
 	public delegate void DownloadFinishCallBack (List <object> gos);
 
 	public void Start ()

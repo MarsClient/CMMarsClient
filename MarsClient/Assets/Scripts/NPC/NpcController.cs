@@ -24,7 +24,7 @@ public class NpcController : MonoBehaviour {
 			//Debug.Log (_gameNpc.name);
 			FightMath.setRota (label.transform);//.rotation = Quaternion.Euler (new Vector3 (60, 180, 0));
 		}
-		label.bitmapFont = AssetLoader.Instance.normalFont;
+		label.bitmapFont = GameUIAtlas.Instance.normalFont;
 		label.text = GameData.Instance.getLocalString (_gameNpc.name);
 
 		NpcManager.instance.AddNpcController (this);

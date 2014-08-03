@@ -65,7 +65,7 @@ public class AiEnemy : MonoBehaviour
 		
 		m_AIPath = GetComponent <AIPath>();
 		enemys.Add (this);
-		InvokeRepeating ("UpdateEnemyAI", 0, 3);
+		//InvokeRepeating ("UpdateEnemyAI", 0, 3);
 	}
 
 	void UpdateEnemyAI () 

@@ -35,7 +35,7 @@ public class PlayerUnit : HitUnit {
 		role = t as Role;
 		if (label != null && role != null)
 		{
-			label.bitmapFont = AssetLoader.Instance.normalFont;
+			label.bitmapFont = GameUIAtlas.Instance.normalFont;
 			if (role.roleId == Main.Instance.role.roleId)
 			{
 				label.color = Color.yellow;
