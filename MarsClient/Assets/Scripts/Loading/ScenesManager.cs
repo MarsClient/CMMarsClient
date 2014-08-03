@@ -43,18 +43,14 @@ public class ScenesManager : MonoBehaviour {
 		{
 			AssetLoader.Instance.DownloadScenes (loadName);
 		}
-
-		//
 	}
 
-
-	private AsyncOperation async;
 	IEnumerator  LoadingNewSc ()
 	{
 		if (currentLoadName != null && isAssetBundle == false)
 		{
 			isAssetBundle = false;
-			async = Application.LoadLevelAdditiveAsync (currentLoadName);
+			AsyncOperation async = Application.LoadLevelAdditiveAsync (currentLoadName);
 			//loadName = null;
 			yield return async;
 			if (GameData.Instance.isLoadingSuccess)
@@ -64,53 +60,15 @@ public class ScenesManager : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator LoadAssetBundleScenes (AsyncOperation async)
-	{
-		this.async  = async;
-		yield return async;
-		//DelaySuccessLoading ();
-
-	}
-
 	public void DelaySuccessLoading ()
 	{
-		//yield return new WaitForSeconds (0.5f);
 		if (currentOnSenceLoadingDone != null)
 		{
 			currentOnSenceLoadingDone (currentLoadName);
 		}
 		slider.value = 1;
-		//currentLoadName = null;
 		currentOnSenceLoadingDone = null;
 		TweenAlpha.Begin (gameObject, 2f, 0);
 		Destroy (gameObject, 2f);
-
 	}
-
-	void Update ()
-	{
-		if (async != null)
-		{
-			if (async.isDone == false)
-			{
-				slider.value = async.progress;
-			}
-			else
-			{
-				slider.value = 1.0f;
-			}
-		}
-	}
-
-//	void OnGUI ()
-//	{
-//		if (GUILayout.Button ("Spell1"))
-//		{
-//			LoadingScnens ("Splash");
-//		}
-//		if (GUILayout.Button ("Spell2"))
-//		{
-//
-//		}
-//	}
 }

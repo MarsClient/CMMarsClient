@@ -3,6 +3,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// Asset loader.
+/// Is Game's Resource Handler...
+/// </summary>
+
 public class AssetLoader : MonoBehaviour {
 
 	private string scenePath = "";
@@ -14,6 +19,8 @@ public class AssetLoader : MonoBehaviour {
 
 	private Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle> ();
 	private Dictionary<string, AssetBundle> scAssetBundles = new Dictionary<string, AssetBundle> ();
+
+	public delegate void DownloadUpdateCallBack (int progress);
 	public delegate void DownloadFinishCallBack (List <object> gos);
 
 	public void Start ()
