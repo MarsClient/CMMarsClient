@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 public class AssetLoader : MonoBehaviour {
 
-	private object obj = new object();
+	private static object obj = new object();
 
 	private string scenePath = "";
 	private string assetBundlePath = "";
