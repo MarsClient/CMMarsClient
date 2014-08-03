@@ -18,7 +18,9 @@ public class ScenesManager : MonoBehaviour {
 
 	//public static void Load
 
-	void Awake () { if (instance == null) { instance = this; DontDestroyOnLoad (gameObject); } else if (instance != this) Destroy (gameObject);}
+	void Awake () { instance = this; DontDestroyOnLoad (gameObject); AssetLoader.Instance.updateCallBack  = UpdateProgress; }
+
+	void OnDestroy () { instance = null; AssetLoader.Instance.updateCallBack  = null; }
 
 	void OnEnable () {  StartCoroutine (LoadingNewSc ()); slider.value = 0; }
 	//void OnDisable () { instance = null; }
@@ -71,4 +73,18 @@ public class ScenesManager : MonoBehaviour {
 		TweenAlpha.Begin (gameObject, 2f, 0);
 		Destroy (gameObject, 2f);
 	}
+
+	void UpdateProgress (float progress, string scName)
+	{
+		float m_p = slider.value + progress;
+		slider.value += Mathf.Min (1, m_p);
+
+		if (scName != null)
+		{
+			Application.LoadLevel (scName);
+		}
+
+		Debug.LogError (progress);
+	}
+
 }

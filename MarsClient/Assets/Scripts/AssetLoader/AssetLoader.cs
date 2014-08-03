@@ -20,8 +20,9 @@ public class AssetLoader : MonoBehaviour {
 	private Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle> ();
 	private Dictionary<string, AssetBundle> scAssetBundles = new Dictionary<string, AssetBundle> ();
 
-	public delegate void DownloadUpdateCallBack (int progress);
+	public delegate void DownloadUpdateCallBack (float progress, string scName );
 	public delegate void DownloadFinishCallBack (List <object> gos);
+	public DownloadUpdateCallBack updateCallBack;//progress.....Loading
 
 	public void Start ()
 	{
@@ -67,6 +68,7 @@ public class AssetLoader : MonoBehaviour {
 
 	IEnumerator _DownloadScenes (string sc)
 	{ 
+		m_Progress = 0;
 		string path = scenePath + sc + ".unity3d";
 		if (scAssetBundles.ContainsKey (sc) == false || scAssetBundles[sc] == null)
 		{
@@ -82,22 +84,16 @@ public class AssetLoader : MonoBehaviour {
 				Debug.LogError (www.error + "  and" + sc);
 			}
 		}
-		Debug.Log (ScenesManager.instance);
-		if (ScenesManager.instance != null)
-		{
-			Application.LoadLevel (sc);
-		}
-		else
-		{
-			Application.LoadLevelAdditiveAsync (sc);
-		}
+		UpdateCallBack (0.2f, sc);
 	}
-
+	private float m_Progress = 0;
 	IEnumerator DownloadAssetBundle (string[] scs, DownloadFinishCallBack callback, bool isDontDestory)
 	{
 		List<object> gos = new List<object> ();
+
 		foreach (string sc in scs)
 		{
+			m_Progress++;
 			if (assetBundles.ContainsKey (sc) == false || assetBundles[sc] == null)
 			{
 				string[] files = sc.Split('/');
@@ -123,6 +119,7 @@ public class AssetLoader : MonoBehaviour {
 			{
 				gos.Add (assetBundles[sc].mainAsset);
 			}
+			UpdateCallBack (0.1f);
 		}
 		Callback (callback, gos);
 	}
@@ -132,6 +129,14 @@ public class AssetLoader : MonoBehaviour {
 		if (callback != null)
 		{
 			callback (gos);
+		}
+	}
+
+	void UpdateCallBack (float progress, string sc = null)
+	{
+		if (updateCallBack != null)
+		{
+			updateCallBack (progress, sc);
 		}
 	}
 

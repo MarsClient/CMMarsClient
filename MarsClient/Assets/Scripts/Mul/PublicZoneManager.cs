@@ -18,7 +18,6 @@ public class PublicZoneManager : MultiPlayer {
 		npcManager.AddComponent <NpcManager>();
 		foreach (object o in gos)
 		{
-			//Debug.LogError (o.ToString());
 			GameObject go = (GameObject) o;
 			GameNPC npc = GameData.Instance.getNpcByModel (go.name);
 			if (npc != null)
@@ -45,13 +44,11 @@ public class PublicZoneManager : MultiPlayer {
 	void OnEnable ()
 	{
 		PhotonClient.processResultSync += ProcessResultSync;
-		//PhotonClient.processResultSync += ProcessResultSync;
 	}
 	
 	void OnDisable ()
 	{
 		PhotonClient.processResultSync -= ProcessResultSync;
-		//PhotonClient.processResultSync -= ProcessResultSync;
 	}
 	
 	void ProcessResultSync (Bundle bundle)
@@ -65,6 +62,5 @@ public class PublicZoneManager : MultiPlayer {
 	public void OnDestroy ()
 	{
 		PROS.Clear ();
-//		ObjectPool.Instance.Clear ();
 	}
 }

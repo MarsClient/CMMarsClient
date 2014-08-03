@@ -7,7 +7,7 @@ public abstract class MultiPlayer : MonoBehaviour {
 
 	protected Dictionary <PRO, GameObject> PROS = new Dictionary<PRO, GameObject>();
 
-	string[] pros = new string[3];
+	protected string[] pros = new string[3];
 
 	public void Start ()
 	{
@@ -34,9 +34,7 @@ public abstract class MultiPlayer : MonoBehaviour {
 			if (p != PRO.NULL) PROS.Add (p, role);
 		}
 
-//		Debug.Log ("Done" + Main.Instance.onlineRoles.Count);
 		AddNewPro (Main.Instance.role);
-		//Debug.Log (UISceneLoading.currentLoadName);
 
 		LoadingDoneRoles ();
 	}
@@ -49,13 +47,10 @@ public abstract class MultiPlayer : MonoBehaviour {
 			return;
 		GameObject go = null;
 		PRO pro = (PRO) Enum.Parse (typeof (PRO), role.profession);
-//		object o = ((object) role.profession);
-//		o.
 		PROS.TryGetValue (pro, out go);
 		if (go != null)
 		{
 			GameObject r = GameObject.Instantiate (go) as GameObject;
-			//r.name = role.accountId.ToString ();
 			PlayerUnit hit = r.GetComponent <PlayerUnit>();
 			hit.DataRefresh (role);
 
@@ -64,8 +59,6 @@ public abstract class MultiPlayer : MonoBehaviour {
 			if (role.roleId != Main.Instance.role.roleId)
 			{
 				hit.RefreshMulPlayerState (role);
-				//Destroy (r.GetComponent<AiPlayer>());
-				//Destroy (r.GetComponent<AiInput>());
 				return;
 			}
 			r.AddComponent<AiInput>();
