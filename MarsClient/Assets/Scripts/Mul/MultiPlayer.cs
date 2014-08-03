@@ -23,7 +23,7 @@ public abstract class MultiPlayer : MonoBehaviour {
 		GameObject go = null;
 		PRO pro = (PRO) Enum.Parse (typeof (PRO), role.profession);
 		string key = Constants.RO_STRING + ((int) pro).ToString();
-		Debug.Log (key);
+//		Debug.Log (key);
 		go = AssetLoader.Instance.TryGetDontDestroyObject (key);
 		if (go != null)
 		{

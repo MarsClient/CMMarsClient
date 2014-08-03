@@ -119,7 +119,9 @@ public class AssetLoader : MonoBehaviour {
 			{
 				gos.Add (assetBundles[sc].mainAsset);
 			}
-			UpdateCallBack (0.1f);
+			float progress = m_Progress / (float)scs.Length * 0.8f;
+			//Debug.Log (m_Progress + "____" + scs.Length + "***********" + m);
+			UpdateCallBack (progress);
 		}
 		Callback (callback, gos);
 	}

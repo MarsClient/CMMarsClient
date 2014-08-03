@@ -84,7 +84,7 @@ public class ScenesManager : MonoBehaviour {
 			Application.LoadLevel (scName);
 		}
 
-		Debug.LogError (progress);
+//		Debug.LogError (progress + "___" + slider.value);
 	}
 
 }
