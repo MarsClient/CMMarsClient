@@ -128,8 +128,13 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 			parameter = new Dictionary<byte, object>();
 			string json = JsonConvert.SerializeObject(obj) + "/" + operationCode.ToString ();
 			parameter.Add ((byte)operationCode, json);
-			Debug.Log (json);
-			DC.Log (json);
+
+			/*operationCode contain update dont show denug*/
+			if (operationCode != Command.UpdatePlayer && operationCode != Command.TeamUpdate)
+			{
+				Debug.Log (json);
+				DC.Log (json);
+			}
 		}
 		PhotonClient.Instance.peer.OpCustom((byte)operationCode, parameter, true);
 	}
@@ -168,8 +173,13 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		Bundle bundle = new Bundle ();
 		json = CSharpEncrypt.Decrypt (json);
 		bundle = JsonConvert.DeserializeObject<Bundle>(json);
-		Debug.Log (json);
-		DC.LogWarning(json);
+
+		/*operationCode contain update dont show denug*/
+		if (bundle.cmd != Command.UpdatePlayer && bundle.cmd != Command.TeamUpdate)
+		{
+			Debug.Log (json);
+			DC.LogWarning(json);
+		}
 		return bundle;
 	}
 
