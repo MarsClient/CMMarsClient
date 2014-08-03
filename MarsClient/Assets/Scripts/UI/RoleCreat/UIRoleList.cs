@@ -90,41 +90,33 @@ public class UIRoleList : MonoBehaviour, ITabListener {
 			}
 			tabButton.refresh (objs);
 
-
-			pros[0] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.ZS).ToString ();
-			pros[1] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.FS).ToString ();
-			pros[2] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.DZ).ToString ();
-			if (PROS.Count <= 0)
-				AssetLoader.Instance.DownloadAssetbundle (pros, CallBack);
-		}
-	}
-
-	void CallBack (List<object> gos)
-	{
-		foreach (object o in gos)
-		{
-			GameObject go = (GameObject) o;
-			PRO p = PRO.NULL;
-			if (go.name == pros[0].Split ('/')[1] ) p = PRO.ZS;
-			else if (go.name == pros[1].Split ('/')[1] ) p = PRO.FS;
-			else if (go.name == pros[2].Split ('/')[1] ) p = PRO.DZ;
-			GameObject _role = NGUITools.AddChild (modelBg, go);
-		//	AiInput input = _role.GetComponent<AiInput>();
-		//	input.enabled = false;
-			_role.SetActive (false);
-			if (p != PRO.NULL) PROS.Add (p, _role);
-		}
-		//		UISceneLoading.instance.DelaySuccessLoading ();
-//		Debug.Log ("Done");
-		Dialog.instance.TweenClose ();
-		if (role != null)
-		{
-			PRO pro = (PRO) Enum.Parse (typeof (PRO), role.profession);
-			if (pro != PRO.NULL)
+			AssetLoader.Instance.LoadingGameObjectWithDontDestroy ((string[] m_Str)=>
 			{
+				Dialog.instance.TweenClose ();
 
-				PROS[pro].SetActive (true);
-			}
+				if (role != null)
+				{
+					foreach (string str in m_Str)
+					{
+						GameObject go = AssetLoader.Instance.TryGetDontDestroyObject (str);
+						GameObject _role = NGUITools.AddChild (modelBg, go);
+
+						PRO p = PRO.NULL;
+						if (str.Contains (((int)PRO.ZS).ToString())) p = PRO.ZS;
+						else if (str.Contains (((int)PRO.DZ).ToString())) p = PRO.DZ;
+						else if (str.Contains (((int)PRO.FS).ToString())) p = PRO.FS;
+
+						_role.SetActive (false);
+						PROS.Add (p, _role);
+					}
+
+					PRO pro = (PRO) Enum.Parse (typeof (PRO), role.profession);
+					if (pro != PRO.NULL)
+					{
+						PROS[pro].SetActive (true);
+					}
+				}
+			});
 		}
-	}
+	}	
 }

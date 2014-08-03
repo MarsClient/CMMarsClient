@@ -5,41 +5,16 @@ using System.Collections.Generic;
 
 public abstract class MultiPlayer : MonoBehaviour {
 
-	protected Dictionary <PRO, GameObject> PROS = new Dictionary<PRO, GameObject>();
-
-	protected string[] pros = new string[3];
-
 	public void Start ()
 	{
-		pros[0] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.ZS).ToString ();
-		pros[1] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.FS).ToString ();
-		pros[2] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.DZ).ToString ();
-		if (AssetLoader.Instance != null)
-			AssetLoader.Instance.DownloadAssetbundle (pros, CallBack, true);
-
-
+		CallBack ();
 	}
 
-	void CallBack (List<object> gos)
+	void CallBack ()
 	{
-		foreach (object o in gos)
-		{
-			GameObject go = (GameObject) o;
-			PRO p = PRO.NULL;
-			if (go.name == pros[0].Split ('/')[1] ) p = PRO.ZS;
-			else if (go.name == pros[1].Split ('/')[1] ) p = PRO.FS;
-			else if (go.name == pros[2].Split ('/')[1] ) p = PRO.DZ;
-			GameObject role = (GameObject) go;
-			role.SetActive (false);
-			if (p != PRO.NULL) PROS.Add (p, role);
-		}
-
 		AddNewPro (Main.Instance.role);
-
 		LoadingDoneRoles ();
 	}
-
-
 
 	protected void AddNewPro (Role role)
 	{
@@ -47,7 +22,9 @@ public abstract class MultiPlayer : MonoBehaviour {
 			return;
 		GameObject go = null;
 		PRO pro = (PRO) Enum.Parse (typeof (PRO), role.profession);
-		PROS.TryGetValue (pro, out go);
+		string key = Constants.RO_STRING + ((int) pro).ToString();
+		Debug.Log (key);
+		go = AssetLoader.Instance.TryGetDontDestroyObject (key);
 		if (go != null)
 		{
 			GameObject r = GameObject.Instantiate (go) as GameObject;

@@ -72,9 +72,9 @@ public class CreatMode : ITabListener
 			tabList2.tabListener = this;
 		tabList2.refresh ();
 
-		pros[0] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.ZS).ToString () + Constants.PRO_CREAT;
-		pros[1] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.FS).ToString () + Constants.PRO_CREAT;
-		pros[2] = Constants.PRO + Constants.PRO.Replace ("/", "") + ((int)PRO.DZ).ToString () + Constants.PRO_CREAT;
+		pros[0] = Constants.PRO + Constants.RO_STRING + ((int)PRO.ZS).ToString () + Constants.PRO_CREAT;
+		pros[1] = Constants.PRO + Constants.RO_STRING + ((int)PRO.FS).ToString () + Constants.PRO_CREAT;
+		pros[2] = Constants.PRO + Constants.RO_STRING + ((int)PRO.DZ).ToString () + Constants.PRO_CREAT;
 		
 		AssetLoader.Instance.DownloadAssetbundle (pros, CallBack);
 	}

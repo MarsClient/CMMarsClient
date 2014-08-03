@@ -23,6 +23,7 @@ public class Constants
 
 	public const int START_ID = 100001;
 	public const string PRO = "RO/";
+	public const string RO_STRING = "RO";
 	public const string  PRO_CREAT = "_Creat";
 
 

@@ -150,4 +150,70 @@ public class AssetLoader : MonoBehaviour {
 		Resources.UnloadUnusedAssets();
 		GC.Collect ();
 	}
+
+
+	private Dictionary<string, GameObject> dontDestroyObjs = new Dictionary<string, GameObject> ();
+	public delegate void LoadingDontDestroyFinishNotice (string[] pros);
+	private LoadingDontDestroyFinishNotice m_loadingDontDestroyFinishNotice;
+	private bool isInit = true;
+	public void LoadingGameObjectWithDontDestroy (LoadingDontDestroyFinishNotice loadingDontDestroyFinishNotice)
+	{
+		if (isInit == false) return;
+		isInit = false;
+
+		this.m_loadingDontDestroyFinishNotice = loadingDontDestroyFinishNotice;
+		List<string> keys = new List<string> ();
+		keys.Add (Constants.PRO + Constants.RO_STRING + ((int)PRO.ZS).ToString ());
+		keys.Add (Constants.PRO + Constants.RO_STRING + ((int)PRO.FS).ToString ());
+		keys.Add (Constants.PRO + Constants.RO_STRING + ((int)PRO.DZ).ToString ());
+
+		//TODO:
+
+		if (keys.Count > 0)
+		{
+			AssetLoader.Instance.DownloadAssetbundle (keys.ToArray(), LoadingDontDestroyFinish, true);
+		}
+	}
+
+	private void LoadingDontDestroyFinish (List<object> gos)
+	{
+		foreach (object o in gos)
+		{
+			GameObject go = (GameObject) o;
+			string key = go.name;
+//			Debug.Log (">>><<<" + key);
+			dontDestroyObjs.Add (key, go);
+		}
+		if (m_loadingDontDestroyFinishNotice != null)
+		{
+			m_loadingDontDestroyFinishNotice (pros);
+		}
+	}
+
+	public GameObject TryGetDontDestroyObject (string key)
+	{
+		GameObject m_Go = null;
+		dontDestroyObjs.TryGetValue (key, out m_Go);
+		return m_Go;
+	}
+
+	#region PROS
+	private Dictionary <PRO, GameObject> PROS = new Dictionary<PRO, GameObject>();
+	private string[] m_pros;
+	public string[] pros
+	{
+		get
+		{
+			m_pros = new string[3];
+			m_pros[0] = Constants.RO_STRING + ((int)PRO.ZS).ToString ();
+			m_pros[1] = Constants.RO_STRING + ((int)PRO.FS).ToString ();
+			m_pros[2] = Constants.RO_STRING + ((int)PRO.DZ).ToString ();
+			return m_pros;
+		}
+	}
+
+
+
+	#endregion
+
 }

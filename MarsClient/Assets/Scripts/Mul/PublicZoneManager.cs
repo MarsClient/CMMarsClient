@@ -61,6 +61,5 @@ public class PublicZoneManager : MultiPlayer {
 	
 	public void OnDestroy ()
 	{
-		PROS.Clear ();
 	}
 }
