@@ -158,7 +158,6 @@ public class AiPlayer : MonoBehaviour
 				EnemyUnit eu = EnemyUnit.enemysUnit[i];
 				float angle = FightMath.GetMultiplyVector (transform, eu.transform);
 				float distance = FightMath.DistXZ (transform.position, eu.transform.position);
-				//Debug.Log (angle + "_____" + distance);
 				if ((angle > 0 && distance < attDistance) || (angle <= 0 && distance < attDistance / 4))
 				{
 					FightMath.SetTargetForwardDirection (eu.transform, transform);
@@ -169,19 +168,22 @@ public class AiPlayer : MonoBehaviour
 		else if (attType == AttType.bow)
 		{
 			//Shoot
-			//GameObject res_Go = PoolManager.Instance.LoadGameObject ("Bullets_10001");//Resources.Load ("Bullets_10001") as GameObject;
-			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle, transform);
-			//GameObject.Instantiate (res_Go, transform.position, transform.rotation) as GameObject;
-			BulletsSample bs = go.GetComponent <BulletsSample>();
-			if (bs != null)
+			string path = GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle;
+			PoolManager.Instance.LoadGameObject (path, (GameObject go)=>
 			{
-				bs.InitBullets ((HitUnit hu)=> 
+				go.transform.position = transform.position;
+				go.transform.rotation = transform.rotation;
+				BulletsSample bs = go.GetComponent <BulletsSample>();
+				if (bs != null)
 				{
-//					Debug.Log (Main.Instance.role.attNormalDmg + "_" + Main.Instance.role.isDouble);
-					hu.Hitted (info, fe, Main.Instance.role.attNormalDmg, Main.Instance.role.isDouble, true);
-				});
-				bs.InitLayer (TagLayerDefine.ENEMY_TAG);
-			}
+					bs.InitBullets ((HitUnit hu)=> 
+					                {
+						hu.Hitted (info, fe, Main.Instance.role.attNormalDmg, Main.Instance.role.isDouble, true);
+					});
+					bs.InitLayer (TagLayerDefine.ENEMY_TAG);
+				}
+			}, Constants.EF);
+
 
 		}
 	}
@@ -195,17 +197,22 @@ public class AiPlayer : MonoBehaviour
 		}
 		else if (info.clip == Clip.Spell2)
 		{
-			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle, transform);
-			//GameObject.Instantiate (res_Go, transform.position, transform.rotation) as GameObject;
-			BulletsSample bs = go.GetComponent <BulletsSample>();
-			if (bs != null)
+			string path = GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle;
+			PoolManager.Instance.LoadGameObject (path, (GameObject go)=>
 			{
-				bs.InitBullets ((HitUnit hu)=> 
-				                {
-					hu.Hitted (info, fe, 10, false, true);
-				});
-				bs.InitLayer (TagLayerDefine.ENEMY_TAG);
-			}
+				go.transform.position = transform.position;
+				go.transform.rotation = transform.rotation;
+				BulletsSample bs = go.GetComponent <BulletsSample>();
+				if (bs != null)
+				{
+					bs.InitBullets ((HitUnit hu)=> 
+					                {
+						hu.Hitted (info, fe, 10, false, true);
+					});
+					bs.InitLayer (TagLayerDefine.ENEMY_TAG);
+				}
+			}, Constants.EF);
+
 		}
 	}
 
@@ -215,17 +222,20 @@ public class AiPlayer : MonoBehaviour
 		for (int i = 0; i < count; i++)
 		{
 			yield return new WaitForSeconds (interval);
-			GameObject go = PoolManager.Instance.LoadGameObject (GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle);
-			BulletsSample bs = go.GetComponent <BulletsSample>();
-			if (bs != null)
+			string key = GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip).assetbundle;
+			PoolManager.Instance.LoadGameObject (key, (GameObject go)=>
 			{
-				bs.InitBullets ((HitUnit hu)=> 
-				                {
-					hu.Hitted (info, fe, 10, false, true);
-				}, true);
-				bs.InitPosition (FightMath.TargetRandge (transform, randge));
-				bs.InitLayer (TagLayerDefine.ENEMY_TAG);
-			}
+				BulletsSample bs = go.GetComponent <BulletsSample>();
+				if (bs != null)
+				{
+					bs.InitBullets ((HitUnit hu)=> 
+					                {
+						hu.Hitted (info, fe, 10, false, true);
+					}, true);
+					bs.InitPosition (FightMath.TargetRandge (transform, randge));
+					bs.InitLayer (TagLayerDefine.ENEMY_TAG);
+				}
+			}, Constants.EF);
 		}
 	}
 
@@ -237,20 +247,28 @@ public class AiPlayer : MonoBehaviour
 		GameEffect ge = GameData.Instance.getGameEffectByAction ((int) pro, (int) info.clip);
 		if (ge != null)
 		{
-			GameObject go = PoolManager.Instance.LoadGameObject (ge.assetbundle);
-			if (go == null)
-			{
-				return;
-			}
+			Transform target = null;
+			Transform parent = null;
 			if (ge.fxType == FxType.Groud)
 			{
-				go.transform.position = groudTranform.position;
+				target = groudTranform;
 			}
 			else if (ge.fxType == FxType.Parent)
 			{
-				go.transform.parent = assaultTranform;
-				go.transform.localPosition = Vector3.zero;
+				target = assaultTranform;
+				parent = assaultTranform;
 			}
+			PoolManager.Instance.LoadGameObject (ge.assetbundle, (GameObject g_obj)=>
+			{
+				if (target != null)
+				{
+					g_obj.transform.position = target.position;
+				}
+				if (parent != null)
+				{
+					g_obj.transform.parent = parent;
+				}
+			}, Constants.EF);
 		}
 
 	}

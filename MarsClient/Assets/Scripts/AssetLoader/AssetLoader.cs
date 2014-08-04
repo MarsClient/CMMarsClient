@@ -87,7 +87,7 @@ public class AssetLoader : MonoBehaviour {
 		UpdateCallBack (0.2f, sc);
 	}
 
-	public GameObject IsContain (string path)
+	public GameObject TryGetObj (string path)
 	{
 		if (assetBundles.ContainsKey (path))
 		{

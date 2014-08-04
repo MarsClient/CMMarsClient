@@ -16,17 +16,17 @@ public class PoolManager : MonoBehaviour {
 
 	private Dictionary<string, LinkedList<GameObject>> pools = new Dictionary<string, LinkedList<GameObject>>();
 
-	public GameObject LoadGameObject (string path)
-	{
-		return LoadGameObject (path, null, null);
-	}
+	public delegate void LoadingGameObjectDone (GameObject target);
 
-	public GameObject LoadGameObject (string path, Transform target)
+	public void LoadGameObject (string path, LoadingGameObjectDone loadObjDelegate)
 	{
-		return LoadGameObject (path, target, null);
+		LoadGameObject (path, loadObjDelegate, true, null);
 	}
-
-	public GameObject LoadGameObject (string path, Transform target, Transform parent)
+	public void LoadGameObject (string path, LoadingGameObjectDone loadObjDelegate, string Constant)
+	{
+		LoadGameObject (path, loadObjDelegate, false, Constant);
+	}
+	private void LoadGameObject (string path, LoadingGameObjectDone loadObjDelegate, bool isResource, string Constant)
 	{
 		GameObject m_go = null;
 		LinkedList<GameObject> goList = null;
@@ -45,35 +45,43 @@ public class PoolManager : MonoBehaviour {
 		}
 		else
 		{
-			GameObject res_go = Resources.Load (path) as GameObject;
+			GameObject res_go;
 
-			/*AssetLoader*/
-			AssetLoader.Instance.DownloadAssetbundle (new string[]{"EF/" + path}
-			, (List<object> objs)=>
+			if (isResource == false)
 			{
-				res_go = (GameObject) objs[0];
-				Debug.Log (res_go.name);
-			});
-			/*AssetLoader*/
-
-			if (res_go == null)
-			{
-				return null;
+				AssetLoader.Instance.DownloadAssetbundle (new string[]{Constant + path}
+				, (List<object> objs)=>
+				{
+					res_go = (GameObject) objs[0];
+					m_go = ObjInstantiate (path, res_go);
+					LoadAssetBundle (m_go, loadObjDelegate);
+				});
+				return;
 			}
-			m_go = GameObject.Instantiate(res_go) as GameObject;
-			PoolController pc = m_go.AddComponent<PoolController> ();
-			pc.Init (path);
+			else
+			{
+				res_go = Resources.Load (path) as GameObject;
+				m_go = ObjInstantiate (path, res_go);
+			}
 		}
-		if (target != null)
-		{
-			m_go.transform.position = target.position;
-			m_go.transform.rotation = target.rotation;
-		}
-		if (parent != null)
-		{
-			m_go.transform.parent = parent;
-		}
+		LoadAssetBundle (m_go, loadObjDelegate);
+
+	}
+
+	private void LoadAssetBundle (GameObject m_go, LoadingGameObjectDone loadObjDelegate)
+	{
 		m_go.SetActive (true);
+		if (loadObjDelegate != null)
+		{
+			loadObjDelegate (m_go);
+		}
+	}
+
+	private GameObject ObjInstantiate (string path, GameObject res_go)
+	{
+		GameObject m_go = GameObject.Instantiate(res_go) as GameObject;
+		PoolController pc = m_go.AddComponent<PoolController> ();
+		pc.Init (path);
 		return m_go;
 	}
 
