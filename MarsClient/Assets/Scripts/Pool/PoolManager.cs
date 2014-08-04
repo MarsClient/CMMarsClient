@@ -46,6 +46,16 @@ public class PoolManager : MonoBehaviour {
 		else
 		{
 			GameObject res_go = Resources.Load (path) as GameObject;
+
+			/*AssetLoader*/
+			AssetLoader.Instance.DownloadAssetbundle (new string[]{"EF/" + path}
+			, (List<object> objs)=>
+			{
+				res_go = (GameObject) objs[0];
+				Debug.Log (res_go.name);
+			});
+			/*AssetLoader*/
+
 			if (res_go == null)
 			{
 				return null;

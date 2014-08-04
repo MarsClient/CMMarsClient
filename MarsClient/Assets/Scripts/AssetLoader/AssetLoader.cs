@@ -30,15 +30,15 @@ public class AssetLoader : MonoBehaviour {
 	{
 		scenePath = 
 #if UNITY_ANDROID
-		"file://" + Application.dataPath + "/A_MarsRes/Android/SC/";;
+		"file://" + Application.dataPath + "/A_MarsRes/Android/ + Constants.SC";
 #elif UNITY_IPHONE
-	"file://" + Application.dataPath + "/A_MarsRes/IOS/SC/";;
+		"file://" + Application.dataPath + "/A_MarsRes/IOS/" + Constants.SC;
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR
-	"file://" + Application.dataPath + "/A_MarsRes/PC/SC/";
+		"file://" + Application.dataPath + "/A_MarsRes/PC/" + Constants.SC;
 #endif
 		if (Application.platform == RuntimePlatform.Android)
 		{
-			scenePath = "file:///mnt/sdcard/MarsRes/SC/";;
+			scenePath = "file:///mnt/sdcard/MarsRes/" + Constants.SC;
 		}
 
 		assetBundlePath = 
