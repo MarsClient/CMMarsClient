@@ -19,7 +19,7 @@ public class AssetLoader : MonoBehaviour {
 
 	void Awake () {if (Instance == null) { Instance = this; DontDestroyOnLoad (gameObject); } else if (Instance != this) Destroy (gameObject); }
 
-	private Dictionary<string, AssetBundle> assetBundles = new Dictionary<string, AssetBundle> ();
+	private Dictionary<string, object> assetBundles = new Dictionary<string, object> ();
 	private Dictionary<string, AssetBundle> scAssetBundles = new Dictionary<string, AssetBundle> ();
 
 	public delegate void DownloadUpdateCallBack (float progress, string scName );
@@ -86,6 +86,17 @@ public class AssetLoader : MonoBehaviour {
 		}
 		UpdateCallBack (0.2f, sc);
 	}
+
+	public GameObject IsContain (string path)
+	{
+		if (assetBundles.ContainsKey (path))
+		{
+			GameObject g_obj = (GameObject) assetBundles [path];
+			return g_obj;
+		}
+		return null;
+	}
+
 	private float m_Progress = 0;
 	IEnumerator DownloadAssetBundle (string[] scs, DownloadFinishCallBack callback, bool isDontDestory)
 	{
@@ -105,9 +116,9 @@ public class AssetLoader : MonoBehaviour {
 					if (www.error == null)
 					{
 						AssetBundle assetBundle = www.assetBundle;
-						GameObject go = (GameObject) assetBundle.mainAsset;
+						object go = assetBundle.mainAsset;
 						gos.Add (go);
-						assetBundles[sc] = assetBundle;
+						assetBundles[sc] = go;
 						www.Dispose ();
 						www = null;
 						if (isDontDestory)
@@ -118,7 +129,7 @@ public class AssetLoader : MonoBehaviour {
 				}
 				else
 				{
-					gos.Add (assetBundles[sc].mainAsset);
+					gos.Add (assetBundles[sc]);
 				}
 
 				if (ScenesManager.instance != null)
