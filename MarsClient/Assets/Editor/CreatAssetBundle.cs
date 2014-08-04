@@ -33,7 +33,7 @@ public class CreatAssetBundle : Editor {
 			string sourcePath = AssetDatabase.GetAssetPath (obj);
 			string[] paths = sourcePath.Split ('/');
 			string file = paths[paths.Length - 2];
-			Debug.Log (file);
+//			Debug.Log (file);
 			//string file = obj.name.Substring (0,2);
 			string targetPath = Application.dataPath + "/A_MarsRes/" + PathURL + "/" + file;
 			DirectoryInfo dict = new DirectoryInfo(targetPath);
@@ -44,7 +44,7 @@ public class CreatAssetBundle : Editor {
 
 			}
 			targetPath += "/" + obj.name + ".assetbundle";  
-			Debug.Log (bt);
+//			Debug.Log (bt);
 			if (BuildPipeline.BuildAssetBundle (obj, null, targetPath, BuildAssetBundleOptions.CollectDependencies, bt)) {  
 				Debug.Log(obj.name +"Creat success");  
 			}   
