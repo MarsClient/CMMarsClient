@@ -58,7 +58,7 @@ public class AssetLoader : MonoBehaviour {
 
 	public void DownloadScenes (string fileName)
 	{
-		StartCoroutine (_DownloadScenes (fileName));
+		StartCoroutine (CoroutineDownloadScenes (fileName));
 	}
 
 	public void DownloadAssetbundle (string[] fileName, DownloadFinishCallBack callback, bool isDontDestory = false)
@@ -66,7 +66,7 @@ public class AssetLoader : MonoBehaviour {
 		StartCoroutine (DownloadAssetBundle (fileName, callback, isDontDestory));
 	}
 
-	IEnumerator _DownloadScenes (string sc)
+	IEnumerator CoroutineDownloadScenes (string sc)
 	{ 
 		m_Progress = 0;
 		string path = scenePath + sc + ".unity3d";
@@ -120,8 +120,12 @@ public class AssetLoader : MonoBehaviour {
 				{
 					gos.Add (assetBundles[sc].mainAsset);
 				}
-				float progress = m_Progress / (float)scs.Length * 0.8f;
-				UpdateCallBack (progress);
+
+				if (ScenesManager.instance != null)
+				{
+					float progress = m_Progress / (float)scs.Length * 0.8f;
+					UpdateCallBack (progress);
+				}
 			}
 			Callback (callback, gos);
 		}

@@ -17,17 +17,14 @@ public enum AttType
 
 public class Constants
 {
-	//UI PATH
-	public const string UI = "UI/";
-
-
 	public const int START_ID = 100001;
-	public const string PRO = "RO/";
 	public const string RO_STRING = "RO";
 	public const string  PRO_CREAT = "_Creat";
+	public const int MAX_COUNT = 180;
 
-
-
+	//UI PATH
+	public const string UI = "UI/";
+	public const string PRO = "RO/";
 	public const string NPC = "NPC/";
 	public const string ENEMYS = "Enemys/";
 
