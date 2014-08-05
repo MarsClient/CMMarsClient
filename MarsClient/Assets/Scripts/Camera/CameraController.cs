@@ -26,6 +26,9 @@ public class CameraController : MonoBehaviour {
 	private float lastShakeTime;//remember last shake time 
 	private float mShakeDuration;//shake Duration 
 
+	private float followSpd = 1;
+	private float spd = 1;
+
 	void Awake ()
 	{
 		instance = this;
@@ -59,15 +62,15 @@ public class CameraController : MonoBehaviour {
 			if (cameraType == CameraType.Move)
 			{
 				ShakeComplete ();
-				if (lastPos != target.position)
-				{
-					lastPos = target.position;
-					//if (Time.time - lastTime >= 1)
-					//{
-					lastTime = Time.time;
-					//}
-				}
-				transform.position = Vector3.Lerp (transform.position, targetPos, Time.time - lastTime);
+				CheckDistance ();
+				float currentPosX = transform.position.x;
+				float currentPosZ = transform.position.z;
+				float wantPosX = targetPos.x;
+				float wantPosZ = targetPos.z;
+				float xVal = Mathf.Lerp (currentPosX, wantPosX, followSpd * Time.deltaTime);
+				float zVal = Mathf.Lerp (currentPosZ, wantPosZ, followSpd * Time.deltaTime);
+				transform.position = new Vector3 (xVal, transform.position.y, zVal);
+
 			}
 			else if (cameraType == CameraType.Follow)
 			{
@@ -97,6 +100,7 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
+	#region SHAKE
 	public void StartShake (float shakeDuration, ShakeCompleteEvent m_shakeComplete)
 	{
 		//Debug.LogError (shakeDuration);
@@ -112,4 +116,32 @@ public class CameraController : MonoBehaviour {
 		shakeIndex = 0;
 		camera.fieldOfView = 23;
 	}
+	#endregion
+
+	#region MOVE
+	private void CheckDistance ()
+	{
+		Vector3 a = transform.position;
+		a.y = 0;
+
+		Vector3 b = target.position + startPos;
+		b.y = 0;
+		if (Vector3.Distance (a, b) >= 3)
+		{
+			followSpd += Time.deltaTime;
+		}
+		if (followSpd <= 1)
+		{
+			if (followSpd >= 1)
+			{
+				followSpd -= Time.deltaTime;
+			}
+		}
+	}
+
+	public void StartMove ()
+	{
+		cameraType = CameraType.Move;
+	}
+	#endregion
 }
