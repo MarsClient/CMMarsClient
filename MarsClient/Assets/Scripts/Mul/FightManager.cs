@@ -10,6 +10,7 @@ public class FightManager : MultiPlayer {
 
 	void Start ()
 	{
+		UILoadPanel.LoadingPanel ();
 		base.Start ();
 		gameObject.AddComponent <PoolManager>();
 	}

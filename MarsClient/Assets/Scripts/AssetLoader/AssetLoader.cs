@@ -30,7 +30,7 @@ public class AssetLoader : MonoBehaviour {
 	{
 		scenePath = 
 #if UNITY_ANDROID
-		"file://" + Application.dataPath + "/A_MarsRes/Android/ + Constants.SC";
+		"file://" + Application.dataPath + "/A_MarsRes/Android/" + Constants.SC;
 #elif UNITY_IPHONE
 		"file://" + Application.dataPath + "/A_MarsRes/IOS/" + Constants.SC;
 #elif UNITY_STANDALONE_WIN || UNITY_EDITOR

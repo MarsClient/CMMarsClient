@@ -53,8 +53,10 @@ public class GameData	{
 	{
 		SQLiteDB db = new SQLiteDB ();
 		string log = "";
-		string fileName = Application.persistentDataPath + name;
-//		Debug.LogError (fileName);
+		string fileName = Application.persistentDataPath + "/" + name;
+
+//		string p = "file://" + Application.streamingAssetsPath + "/MG.db";
+//		Debug.LogError (p);
 		// check if database already exists.
 		if(!File.Exists(fileName))
 		{
