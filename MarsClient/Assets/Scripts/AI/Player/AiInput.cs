@@ -59,7 +59,7 @@ public class AiInput : MonoBehaviour {
 		aiMove.UpdateMove (dir);
 	}
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
+//#if UNITY_EDITOR || UNITY_STANDALONE_WIN || UNITY_WEBPLAYER
 	void OnGUI ()
 	{
 		if (GUILayout.Button ("Spell1"))
@@ -75,5 +75,5 @@ public class AiInput : MonoBehaviour {
 			aiPlayer.ShootSpell3 ();
 		}
 	}
-#endif
+//#endif
 }

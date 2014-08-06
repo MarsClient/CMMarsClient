@@ -54,6 +54,7 @@ public class AnimationInfo
 	/*Some properties for get*/
 	//
 	[HideInInspector] public float length;//animationClip animation time.
+	public float frameRate { get { return animationClip.frameRate * speed; } }
 
 	/*int method*/
 	public void Init (Animation ant) 
@@ -133,9 +134,16 @@ public class AiAnimation : MonoBehaviour {
 			bool isExist = m_AnimationInfo != null;
 			if (isExist == true)
 			{
+
 				clip = c;
+				if (m_AnimationInfo.animationClip.wrapMode != WrapMode.Loop)
+				{
+					beginPlayTime = Time.time;
+					Stop ();
+
+				}
+				//Debug.Log (beginPlayTime + "_________" + c);
 				m_Animation.CrossFade (m_AnimationInfo.animationClip.name);
-				beginPlayTime = Time.time;
 			}
 		}
 	}
@@ -171,48 +179,48 @@ public class AiAnimation : MonoBehaviour {
 	/*@frameEffect: all frameEvents in one animationClip that will be called*/
 	void LateUpdate ()
 	{
-		trailsManager.RunAnimations (m_Animation, isAttack || isSpell);
+		//trailsManager.RunAnimations (m_Animation, isAttack || isSpell);
 
 		if (m_AnimationInfo != null && m_AnimationInfo.animationClip.wrapMode != WrapMode.Loop)
 		{
-			float m_tt = (Time.time - beginPlayTime) * m_AnimationInfo.speed;
-
+			float m_tt = Time.time - beginPlayTime;//go through time; length * spd
 			if (m_AnimationInfo.events.Count > 0)
 			{
 				for (int m_i = 0; m_i < m_AnimationInfo.events.Count; m_i++)
 				{
 					FrameEvent frameEvent = m_AnimationInfo.events[m_i];
-					float frame = frameEvent.frame / m_AnimationInfo.animationClip.frameRate;
+					float frame = frameEvent.frame / (m_AnimationInfo.frameRate );
 					if (frame > prefabPlayTime && frame <= m_tt && frameEvent.isLoopCallback == false)
 					{
-						m_Animation.SendMessage (frameEvent.method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
+						gameObject.SendMessage (frameEvent.method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
 					}
 					else if (frame <= m_tt && frameEvent.isLoopCallback == true)
 					{
 						if (Time.time - lastUpdateAnimationMessageTime > frameEvent.updateRate)
 						{
 							lastUpdateAnimationMessageTime = Time.time;
-							m_Animation.SendMessage (frameEvent.method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
+							gameObject.SendMessage (frameEvent.method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
 						}
 					}
 				}
 			}
 
-			if (m_tt >= m_AnimationInfo.animationClip.length - 0.05f)
+			float length = m_AnimationInfo.length;
+			if (m_tt >= length)
 			{
-				m_Animation.SendMessage (m_AnimationInfo.onCompleteCallback, m_AnimationInfo.clip.ToString (), SendMessageOptions.RequireReceiver);
+				gameObject.SendMessage (m_AnimationInfo.onCompleteCallback, m_AnimationInfo.clip.ToString (), SendMessageOptions.RequireReceiver);
 			}
 			prefabPlayTime = m_tt;
 		}
 	}
 
 	/*Follow is Animation message receive*/
-	public void IdleMessage ()
+	public void IdleMessageCall ()
 	{
 		Play (Clip.Idle);
 	}
 
-	public void AttackMessage (int c, int eventIndex)
+	public void AttackMessageCall (int c, int eventIndex)
 	{
 		if (attackDelegate != null)
 		{
@@ -221,13 +229,13 @@ public class AiAnimation : MonoBehaviour {
 		}
 	}
 
-	public void AnimationMove (int c, int eventIndex)
+	public void AnimationMoveCall (int c, int eventIndex)
 	{
 		AnimationInfo info = GetInfoByClip ((Clip) c);
 		aiMove.startMoveDir (info, info.getEvent (eventIndex));
 	}
 
-	public void AnimationFx (int c, int eventIndex)
+	public void AnimationFxCall (int c, int eventIndex)
 	{
 		if (fxDelegate != null)
 		{
@@ -237,7 +245,7 @@ public class AiAnimation : MonoBehaviour {
 
 	}
 
-	public void AnimationShake (int c, int eventIndex)
+	public void AnimationShakeCall (int c, int eventIndex)
 	{
 		AnimationInfo info = GetInfoByClip ((Clip) c);
 		CameraController.instance.StartShake (info.getEvent (eventIndex).shakeTime, ()=>
@@ -246,7 +254,7 @@ public class AiAnimation : MonoBehaviour {
 		});
 	}
 
-	public void AnimationSpellAttack (int c, int eventIndex)
+	public void AnimationSpellAttackCall (int c, int eventIndex)
 	{
 		if (spellAttackDelegate != null)
 		{
@@ -262,4 +270,56 @@ public class AiAnimation : MonoBehaviour {
 			unitDeath ();
 		}
 	}
+
+
+
+	#region
+	public int[] SetAnimationIdex (string info)
+	{
+		string[] infos = info.Split (',');
+		int c = int.Parse (infos[0]);
+		int eventIndex = int.Parse (infos[1]);
+		return new int[2] { c, eventIndex };
+	}
+	
+	public void IdleMessage (string info)
+	{
+		IdleMessageCall ();
+	}
+	
+	public void AttackMessage (string info)
+	{
+		int[] events = SetAnimationIdex (info);
+		AttackMessageCall (events[0], events[1]);
+	}
+	
+	public void AnimationMove (string info)
+	{
+		int[] events = SetAnimationIdex (info);
+		AnimationMoveCall (events[0], events[1]);
+	}
+	
+	public void AnimationFx (string info)
+	{
+		int[] events = SetAnimationIdex (info);
+		AnimationFxCall (events[0], events[1]);
+	}
+	
+	public void AnimationShake (string info)
+	{
+		int[] events = SetAnimationIdex (info);
+		AnimationShakeCall (events[0], events[1]);
+	}
+	
+	public void AnimationSpellAttack (string info)
+	{
+		int[] events = SetAnimationIdex (info);
+		AnimationSpellAttackCall (events[0], events[1]);
+	}
+	
+	public void DeathDoneMessage (string info)
+	{
+		AnimationDeath ();
+	}
+	#endregion
 }

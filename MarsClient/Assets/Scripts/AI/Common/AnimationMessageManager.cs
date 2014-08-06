@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public interface IAnimationListener
@@ -32,37 +32,37 @@ public class AnimationMessageManager : MonoBehaviour, IAnimationListener {
 	#region IAnimationListener implementation
 	public void IdleMessage (string info)
 	{
-		aiAnimation.IdleMessage ();
+		aiAnimation.IdleMessageCall ();
 	}
 
 	public void AttackMessage (string info)
 	{
 		int[] events = SetAnimationIdex (info);
-		aiAnimation.AttackMessage (events[0], events[1]);
+		aiAnimation.AttackMessageCall (events[0], events[1]);
 	}
 
 	public void AnimationMove (string info)
 	{
 		int[] events = SetAnimationIdex (info);
-		aiAnimation.AnimationMove (events[0], events[1]);
+		aiAnimation.AnimationMoveCall (events[0], events[1]);
 	}
 
 	public void AnimationFx (string info)
 	{
 		int[] events = SetAnimationIdex (info);
-		aiAnimation.AnimationFx (events[0], events[1]);
+		aiAnimation.AnimationFxCall (events[0], events[1]);
 	}
 
 	public void AnimationShake (string info)
 	{
 		int[] events = SetAnimationIdex (info);
-		aiAnimation.AnimationShake (events[0], events[1]);
+		aiAnimation.AnimationShakeCall (events[0], events[1]);
 	}
 
 	public void AnimationSpellAttack (string info)
 	{
 		int[] events = SetAnimationIdex (info);
-		aiAnimation.AnimationSpellAttack (events[0], events[1]);
+		aiAnimation.AnimationSpellAttackCall (events[0], events[1]);
 	}
 
 	public void DeathDoneMessage (string info)
