@@ -79,11 +79,8 @@ public class JoyStick : MonoBehaviour {
 			}
 			if (lastFingerId == touch.fingerId)
 			{
-				if (phase == TouchPhase.Moved)
-				{
-					UpdatePressEvent (touch);
-				}
-				else if (phase == TouchPhase.Ended)
+				UpdatePressEvent (touch);
+				if (phase == TouchPhase.Ended)
 				{
 					EndPressEvent ();
 				}
