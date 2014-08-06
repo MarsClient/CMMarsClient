@@ -49,11 +49,11 @@ public class JoyStickBr : UIButtonLong {
 
 	}
 
-	void OnGUI ()
-	{
-		if (GUILayout.Button ("xxxxxxxxxxxxxxxxxxxxxxx"))
-		{
-			StartTween ();
-		}
-	}
+//	void OnGUI ()
+//	{
+//		if (GUILayout.Button ("xxxxxxxxxxxxxxxxxxxxxxx"))
+//		{
+//			StartTween ();
+//		}
+//	}
 }
