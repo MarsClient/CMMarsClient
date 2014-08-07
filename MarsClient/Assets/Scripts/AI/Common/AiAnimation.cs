@@ -322,4 +322,54 @@ public class AiAnimation : MonoBehaviour {
 		AnimationDeath ();
 	}
 	#endregion
+
+	#region Normal Attack
+	private bool isNormalAttacking = false;
+	private int queueId = -1;
+	private int maxAttackCount { get { return normalAttack.Count; } }
+	private float startTime = 0;
+	private Clip curr_clip;
+	private bool isAllowNext = false;
+	public delegate void HandleNormalAttack (Clip clip);
+	public void NormalAttack (HandleNormalAttack handleNormalAttack = null)
+	{
+		if (isNormalAttacking == false)
+		{
+			queueId++;
+			//startTime = Time.time;
+			isNormalAttacking = true;
+			StartCoroutine (AttackQueue (handleNormalAttack));
+		}
+		if (curr_clip != Clip.Null && isAllowNext == true && Time.time - startTime > (GetInfoByClip (curr_clip).length + AntDefine.ANIMATION_OFFSET) / 2)
+		{
+			isAllowNext = false;
+			//startTime = Time.time;
+			queueId++;
+		}
+	}
+	
+	IEnumerator AttackQueue (HandleNormalAttack handleNormalAttack)
+	{
+		for (int i = 0; i <= Mathf.Min (queueId, maxAttackCount - 1); i++)
+		{
+			if (isFall || isHitted)
+			{
+				break;
+			}
+			curr_clip = normalAttack[i].clip;
+			startTime = Time.time;
+			isAllowNext = true;
+			Play (curr_clip);
+			if (handleNormalAttack != null)
+			{
+				handleNormalAttack (curr_clip);
+			}
+			yield return new WaitForSeconds (GetInfoByClip (curr_clip).length + AntDefine.ANIMATION_OFFSET);
+		}
+		isAllowNext = isAllowNext;
+		curr_clip = Clip.Null;
+		queueId = -1;
+		isNormalAttacking = false;
+	}
+	#endregion
 }

@@ -87,51 +87,14 @@ public class AiPlayer : MonoBehaviour
 	}
 	#endregion
 
-	#region About Attack
-	private bool isNormalAttacking = false;
-	private int queueId = -1;
-	private int maxAttackCount { get { return aiAnt.normalAttack.Count; } }
-	private float startTime = 0;
-	private Clip clip;
-	private bool isAllowNext = false;
+	/**/
 	public void NormalAttack ()
 	{
-		if (isNormalAttacking == false)
+		aiAnt.NormalAttack ((Clip clip)=>
 		{
-			queueId++;
-			//startTime = Time.time;
-			isNormalAttacking = true;
-			StartCoroutine (AttackQueue ());
-		}
-		if (clip != Clip.Null && isAllowNext == true && Time.time - startTime > (aiAnt.GetInfoByClip (clip).length + AntDefine.ANIMATION_OFFSET) / 2)
-		{
-			isAllowNext = false;
-			//startTime = Time.time;
-			queueId++;
-		}
-	}
-
-	IEnumerator AttackQueue ()
-	{
-		for (int i = 0; i <= Mathf.Min (queueId, maxAttackCount - 1); i++)
-		{
-			if (aiAnt.isFall || aiAnt.isHitted)
-			{
-				break;
-			}
-			clip = aiAnt.normalAttack[i].clip;
-			startTime = Time.time;
-			isAllowNext = true;
-			aiAnt.Play (clip);
 			PlayerStateNet (clip);
-			yield return new WaitForSeconds (aiAnt.GetInfoByClip (clip).length + AntDefine.ANIMATION_OFFSET);
-		}
-		isAllowNext = isAllowNext;
-		clip = Clip.Null;
-		queueId = -1;
-		isNormalAttacking = false;
+		});
 	}
-	#endregion
 
 	#region spell
 	public void ShootSpell1 ()
