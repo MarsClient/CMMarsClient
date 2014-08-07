@@ -93,18 +93,20 @@ public class AiPlayer : MonoBehaviour
 	private int maxAttackCount { get { return aiAnt.normalAttack.Count; } }
 	private float startTime = 0;
 	private Clip clip;
+	private bool isAllowNext = false;
 	public void NormalAttack ()
 	{
 		if (isNormalAttacking == false)
 		{
 			queueId++;
-			startTime = Time.time;
+			//startTime = Time.time;
 			isNormalAttacking = true;
 			StartCoroutine (AttackQueue ());
 		}
-		if (clip != Clip.Null && Time.time - startTime > aiAnt.GetInfoByClip (clip).length / 2)
+		if (clip != Clip.Null && isAllowNext == true && Time.time - startTime > (aiAnt.GetInfoByClip (clip).length + AntDefine.ANIMATION_OFFSET) / 2)
 		{
-			startTime = Time.time;
+			isAllowNext = false;
+			//startTime = Time.time;
 			queueId++;
 		}
 	}
@@ -118,10 +120,13 @@ public class AiPlayer : MonoBehaviour
 				break;
 			}
 			clip = aiAnt.normalAttack[i].clip;
+			startTime = Time.time;
+			isAllowNext = true;
 			aiAnt.Play (clip);
 			PlayerStateNet (clip);
-			yield return new WaitForSeconds (aiAnt.GetInfoByClip (clip).length);
+			yield return new WaitForSeconds (aiAnt.GetInfoByClip (clip).length + AntDefine.ANIMATION_OFFSET);
 		}
+		isAllowNext = isAllowNext;
 		clip = Clip.Null;
 		queueId = -1;
 		isNormalAttacking = false;

@@ -25,7 +25,7 @@ public class AntDefine
 	public const string KEY_IDLE = "Idle";
 	public const string KEY_ATTACK = "Attack";
 	public const string KEY_SPELL = "Spell";
-	//public const float ANIMATION_OFFSET = 0.05f;
+	public const float ANIMATION_OFFSET = 0.01f;
 }
 
 [System.Serializable]
