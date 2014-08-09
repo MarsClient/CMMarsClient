@@ -91,7 +91,7 @@ public abstract class HitUnit : MonoBehaviour {
 		}
 		if (bloodBar != null)
 		{
-			bloodBar.rotation = Quaternion.Euler (Vector3.zero);
+			bloodBar.rotation = Quaternion.Euler (new Vector3 (-60, 0, 0));;
 		}
 	}
 

@@ -28,6 +28,19 @@ public class AntDefine
 	public const float ANIMATION_OFFSET = 0.01f;
 }
 
+public class AntParameter
+{
+	public int clip;
+	public int eventIndex;
+
+	public AntParameter (int clip, int eventIndex)
+	{
+		this.clip = clip;
+		this.eventIndex = eventIndex;
+	}
+
+}
+
 [System.Serializable]
 public class FrameEvent
 {
@@ -192,14 +205,16 @@ public class AiAnimation : MonoBehaviour {
 					float frame = frameEvent.frame / (m_AnimationInfo.frameRate );
 					if (frame > prefabPlayTime && frame <= m_tt && frameEvent.isLoopCallback == false)
 					{
-						gameObject.SendMessage (frameEvent.method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
+						AntParameter ap = new AntParameter((int)m_AnimationInfo.clip, m_i);
+						gameObject.SendMessage (frameEvent.method, ap, SendMessageOptions.RequireReceiver);
 					}
 					else if (frame <= m_tt && frameEvent.isLoopCallback == true)
 					{
 						if (Time.time - lastUpdateAnimationMessageTime > frameEvent.updateRate)
 						{
 							lastUpdateAnimationMessageTime = Time.time;
-							gameObject.SendMessage (frameEvent.method, ((int)m_AnimationInfo.clip).ToString () + "," + m_i.ToString (), SendMessageOptions.RequireReceiver);
+							AntParameter ap = new AntParameter((int)m_AnimationInfo.clip, m_i);
+							gameObject.SendMessage (frameEvent.method, m_i, SendMessageOptions.RequireReceiver);
 						}
 					}
 				}
@@ -208,7 +223,7 @@ public class AiAnimation : MonoBehaviour {
 			float length = m_AnimationInfo.length;
 			if (m_tt >= length)
 			{
-				gameObject.SendMessage (m_AnimationInfo.onCompleteCallback, m_AnimationInfo.clip.ToString (), SendMessageOptions.RequireReceiver);
+				gameObject.SendMessage (m_AnimationInfo.onCompleteCallback, m_AnimationInfo.clip, SendMessageOptions.RequireReceiver);
 			}
 			prefabPlayTime = m_tt;
 		}
@@ -274,50 +289,42 @@ public class AiAnimation : MonoBehaviour {
 
 
 	#region
-	public int[] SetAnimationIdex (string info)
-	{
-		string[] infos = info.Split (',');
-		int c = int.Parse (infos[0]);
-		int eventIndex = int.Parse (infos[1]);
-		return new int[2] { c, eventIndex };
-	}
-	
-	public void IdleMessage (string info)
+	public void IdleMessage (Clip c)
 	{
 		IdleMessageCall ();
 	}
 	
-	public void AttackMessage (string info)
+	public void AttackMessage (AntParameter antParameter)
 	{
-		int[] events = SetAnimationIdex (info);
-		AttackMessageCall (events[0], events[1]);
+		
+		AttackMessageCall (antParameter.clip, antParameter.eventIndex);
 	}
 	
-	public void AnimationMove (string info)
+	public void AnimationMove (AntParameter antParameter)
 	{
-		int[] events = SetAnimationIdex (info);
-		AnimationMoveCall (events[0], events[1]);
+		
+		AnimationMoveCall (antParameter.clip, antParameter.eventIndex);
 	}
 	
-	public void AnimationFx (string info)
+	public void AnimationFx (AntParameter antParameter)
 	{
-		int[] events = SetAnimationIdex (info);
-		AnimationFxCall (events[0], events[1]);
+		
+		AnimationFxCall (antParameter.clip, antParameter.eventIndex);
 	}
 	
-	public void AnimationShake (string info)
+	public void AnimationShake (AntParameter antParameter)
 	{
-		int[] events = SetAnimationIdex (info);
-		AnimationShakeCall (events[0], events[1]);
+		
+		AnimationShakeCall (antParameter.clip, antParameter.eventIndex);
 	}
 	
-	public void AnimationSpellAttack (string info)
+	public void AnimationSpellAttack (AntParameter antParameter)
 	{
-		int[] events = SetAnimationIdex (info);
-		AnimationSpellAttackCall (events[0], events[1]);
+		
+		AnimationSpellAttackCall (antParameter.clip, antParameter.eventIndex);
 	}
 	
-	public void DeathDoneMessage (string info)
+	public void DeathDoneMessage (AntParameter antParameter)
 	{
 		AnimationDeath ();
 	}
