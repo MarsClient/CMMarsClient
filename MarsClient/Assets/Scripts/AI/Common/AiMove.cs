@@ -65,7 +65,7 @@ public class AiMove : MonoBehaviour {
 			if (distance < moveDistance)
 			{
 				//Debug.LogError (distance + "___" + moveDistance);
-				CollisionFlags cf = SetMove (transform.forward, speed);
+				SetMove (transform.forward, speed);
 				if (Time.time - m_startTime < m_LastTime)
 				{
 					return;
@@ -76,7 +76,7 @@ public class AiMove : MonoBehaviour {
 		}
 	}
 
-	CollisionFlags SetMove (Vector3 dir, float spd)
+	void SetMove (Vector3 dir, float spd)
 	{
 		dir = dir.normalized;
 		if (dir != Vector3.zero)
@@ -86,7 +86,7 @@ public class AiMove : MonoBehaviour {
 		Vector3 pos = transform.position;
 		pos.y = 0;
 		transform.position = pos;
-		return characterController.Move (dir * spd * Time.deltaTime);
+		CollisionFlags cf = characterController.Move (dir * spd * Time.deltaTime);
 	}
 
 
