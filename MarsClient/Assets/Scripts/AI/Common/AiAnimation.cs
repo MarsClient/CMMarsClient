@@ -25,7 +25,7 @@ public class AntDefine
 	public const string KEY_IDLE = "Idle";
 	public const string KEY_ATTACK = "Attack";
 	public const string KEY_SPELL = "Spell";
-	public const float ANIMATION_OFFSET = 0.01f;
+	public const float ANIMATION_OFFSET = 0.02f;
 }
 
 public class AntParameter
@@ -69,12 +69,17 @@ public class AnimationInfo
 	[HideInInspector] public float length;//animationClip animation time.
 	public float frameRate { get { return animationClip.frameRate * speed; } }
 
+	private Animation m_animation;
 	/*int method*/
 	public void Init (Animation ant) 
 	{
-		SetSpeed (ant);
+		this.m_animation = ant;
+		SetAnimationSpeed (this.speed);
 	}
-	private void SetSpeed (Animation ant) { if (speed == 0) { speed = 1; } length = animationClip.length / speed; ant[animationClip.name].speed = speed; }
+	private void SetAnimationSpeed (float spd) { if (spd == 0) { spd = 1; } length = animationClip.length / spd; m_animation[animationClip.name].speed = spd; }
+	public void SetSpeaciedSpeed () { SetSpeaciedSpeed (1); }
+	public void SetSpeaciedSpeed (float ratio) { if (this.speed == 0) { this.speed = 1; } float spd = this.speed * ratio; SetAnimationSpeed (spd); }
+	
 	public FrameEvent getEvent (int index) { if (index >= 0 && index < events.Count) { return events[index]; } return null; }
 }
 
@@ -214,7 +219,7 @@ public class AiAnimation : MonoBehaviour {
 						{
 							lastUpdateAnimationMessageTime = Time.time;
 							AntParameter ap = new AntParameter((int)m_AnimationInfo.clip, m_i);
-							gameObject.SendMessage (frameEvent.method, m_i, SendMessageOptions.RequireReceiver);
+							gameObject.SendMessage (frameEvent.method, ap, SendMessageOptions.RequireReceiver);
 						}
 					}
 				}
