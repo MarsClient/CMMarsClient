@@ -42,6 +42,14 @@ public abstract class HitUnit : MonoBehaviour {
 			if (fe.attackedClip == Clip.Null || fe.attackedClip == Clip.Idle) { if (m_ac.isRun == true) { ac.Play (Clip.Idle); } }
 			else { ac.Play (fe.attackedClip); }
 		}
+		else
+		{
+			if (fe.attackedClip == Clip.Fall || fe.attackedClip == Clip.Hit)
+			{
+				//ac.Stop ();
+				ac.Play (fe.attackedClip);
+			}
+		}
 
 		PoolManager.Instance.LoadGameObject ("Bullets_10000", (GameObject go)=>
 		{

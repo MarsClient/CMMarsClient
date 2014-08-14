@@ -12,7 +12,10 @@ public class PlayerUnit : HitUnit {
 	{
 		base.Awake ();
 		//m_ac = GetComponent <AiAnimation>();
-		Add ();
+		if (FightManager.instance != null)
+		{
+			Add ();
+		}
 	}
 
 	void Add ()

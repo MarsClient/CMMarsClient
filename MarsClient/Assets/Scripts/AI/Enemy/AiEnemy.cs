@@ -65,32 +65,38 @@ public class AiEnemy : MonoBehaviour
 		
 		m_AIPath = GetComponent <AIPath>();
 		enemys.Add (this);
-		//InvokeRepeating ("UpdateEnemyAI", 0, 3);
+		InvokeRepeating ("UpdateEnemyAI", 0, 0.25f);
+
+
+		if (PlayerUnit.playersUnit.Count > 0)
+		{
+			target = PlayerUnit.playersUnit[0].transform;
+		}
 	}
 
 	void UpdateEnemyAI () 
 	{
 		if (aiAnt.dontMove == false)
 		{
-			if (target != null)
+//			if (target != null)
+//			{
+//				m_AIPath.StartPath (target.position, OnStartPath, OnPathCompleteToAttack);
+//			}
+//			isAiWalk = FightMath.isStateRandom ();
+//			if (isAiWalk)
+//			{
+//				isAiWalk = false;
+//				m_AIPath.StartPath (FightMath.GetRandomVectorRun (m_AIPath.navAgent), OnStartPath, OnPathComplete);
+//			}
+//			else
+//			{
+			if (target == null)
 			{
-				m_AIPath.StartPath (target.position, OnStartPath, OnPathCompleteToAttack);
+				isAiWalk = true;
+				return;
 			}
-			isAiWalk = FightMath.isStateRandom ();
-			if (isAiWalk)
-			{
-				isAiWalk = false;
-				m_AIPath.StartPath (FightMath.GetRandomVectorRun (m_AIPath.navAgent), OnStartPath, OnPathComplete);
-			}
-			else
-			{
-				if (target == null)
-				{
-					isAiWalk = true;
-					return;
-				}
-				m_AIPath.StartPath (target.position, OnStartPath, OnPathCompleteToAttack);
-			}
+			m_AIPath.StartPath (target.position, OnStartPath, OnPathCompleteToAttack);
+//			}
 		}
 	}
 
