@@ -221,10 +221,13 @@ public class AssetLoader : MonoBehaviour {
 	{
 		get
 		{
-			m_pros = new string[3];
-			m_pros[0] = Constants.RO_STRING + ((int)PRO.ZS).ToString ();
-			m_pros[1] = Constants.RO_STRING + ((int)PRO.FS).ToString ();
-			m_pros[2] = Constants.RO_STRING + ((int)PRO.DZ).ToString ();
+			if (m_pros == null || m_pros.Length == 0)
+			{
+				m_pros = new string[3];
+				m_pros[0] = Constants.RO_STRING + ((int)PRO.ZS).ToString ();
+				m_pros[1] = Constants.RO_STRING + ((int)PRO.FS).ToString ();
+				m_pros[2] = Constants.RO_STRING + ((int)PRO.DZ).ToString ();
+			}
 			return m_pros;
 		}
 	}

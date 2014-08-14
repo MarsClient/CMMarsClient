@@ -329,7 +329,7 @@ public class AiAnimation : MonoBehaviour {
 		AnimationSpellAttackCall (antParameter.clip, antParameter.eventIndex);
 	}
 	
-	public void DeathDoneMessage (AntParameter antParameter)
+	public void DeathDoneMessage (Clip clip)
 	{
 		AnimationDeath ();
 	}
