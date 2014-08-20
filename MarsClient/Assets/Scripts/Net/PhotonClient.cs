@@ -32,6 +32,10 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	NetRecv netRecv;
 
+
+	/*Queue*/
+	private Queue<Bundle> COMMANDS = new Queue<Bundle>();
+
 	void Start () {
 
 		Instance = this;
@@ -86,6 +90,19 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 					DC.LogError ("Disconnected");
 				}
 			}
+
+			UpdateQueue ();
+		}
+	}
+
+	void UpdateQueue ()
+	{
+		if (COMMANDS.Count > 0)
+		{
+			Bundle bundle = COMMANDS.Dequeue ();
+
+			netRecv.ProcessResult (bundle);
+			CalledProcessResult (bundle);
 		}
 	}
 
@@ -151,8 +168,8 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 			string json = operationResponse.Parameters[operationResponse.OperationCode].ToString();
 			Bundle bundle = JsonDeserialize (json);
 			if (netRecv == null) netRecv = GetComponent<NetRecv>();
-			netRecv.ProcessResult (bundle);
-			CalledProcessResult (bundle);
+
+			COMMANDS.Enqueue (bundle);
 		}
 	}
 
