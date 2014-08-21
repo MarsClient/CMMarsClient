@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [CustomEditor (typeof (CreatMonster))]
-public class CreatMonsterEdit : Editor {
+public class CreatMonsterEditor : Editor {
 
 	/*
 	 *@see script.id is tranform's name
