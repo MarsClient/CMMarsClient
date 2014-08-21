@@ -6,18 +6,29 @@ using DC = DebugConsole;
 using System.Security;
 using ExitGames.Client.Photon;
 
-public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
+public class PhotonClient : IPhotonPeerListener {
 
 	public delegate void ProcessResults (Bundle bundle);
 	public delegate void ProcessResultSync (Bundle bundle);
 	public static  ProcessResults processResults;
 	public static  ProcessResultSync processResultSync;
 
-
-	public static PhotonClient Instance;
+	private static PhotonClient _instance;
+	public static PhotonClient Instance
+	{
+		get
+		{
+			if (_instance == null)
+			{
+				_instance = new PhotonClient ();
+				_instance.Init ();
+			}
+			return _instance;
+		}
+	}
 
 	//LOAD SERVER ADDRESS
-	public string LOAD_LOGIN_SERVER_ADDRESS = "localhost:5055";
+	//public string LOAD_LOGIN_SERVER_ADDRESS = "localhost:5055";
 	private string LoginServerApplication = "LoginServer";
 	//private string LoginServerApplication = "MarsServer";
 	//Game Server
@@ -36,18 +47,16 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	/*Queue*/
 	private Queue<Bundle> COMMANDS = new Queue<Bundle>();
 
-	void Start () {
+	public void Init () {
 
-		Instance = this;
 		Application.runInBackground = true;
 		this.ServerConnected = false;
 		DC.LogError ("Disconnected");
-		LoadingLoginServer ();
 	}
 
 	public void LoadingLoginServer ()
 	{
-		load_address = LOAD_LOGIN_SERVER_ADDRESS;
+		load_address = NetIPs.IP;
 		appserver = LoginServerApplication;
 		this.Connect();
 	}
@@ -115,7 +124,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 			this.ServerConnected = true;
 			break;
 		case StatusCode.Disconnect:
-			if (netRecv == null) netRecv = GetComponent<NetRecv>();
+			//if (netRecv == null) netRecv = GetComponent<NetRecv>();
 			Bundle bundle = new Bundle ();
 			bundle.error = new Error ();
 			bundle.error.message = "game.server.net.error";
@@ -167,7 +176,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		{
 			string json = operationResponse.Parameters[operationResponse.OperationCode].ToString();
 			Bundle bundle = JsonDeserialize (json);
-			if (netRecv == null) netRecv = GetComponent<NetRecv>();
+//			if (netRecv == null) netRecv = GetComponent<NetRecv>();
 
 			COMMANDS.Enqueue (bundle);
 		}
@@ -179,7 +188,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		{
 			string json = eventData.Parameters[eventData.Code].ToString ();
 			Bundle bundle = JsonDeserialize (json);
-			if (netRecv == null) netRecv = GetComponent<NetRecv>();
+//			if (netRecv == null) netRecv = GetComponent<NetRecv>();
 			netRecv.ProcessResultSync (bundle);
 			CalledProcessEvent (bundle);
 		}
