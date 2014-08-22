@@ -11,49 +11,45 @@ public class AppServerManager : MonoBehaviour {
 	
 #if UNITY_ANDROID
 
-	public class Func
+	T DoCommand<T> (string funcStr, params string[] paraterm)
 	{
-		[DefaultValue(null)]
-		public string func;
-		[DefaultValue(null)]
-		public string val;
-	}
-
-	void CallAndroidCommand (params string[] paraterm)
-	{
-		Func func = new Func();
-		func.func = paraterm[0];
-		if (paraterm.Length == 2)
-		{
-			func.val = paraterm[1];
-		}
-		string value = JsonConvert.SerializeObject (func);
-		Debug.Log (value);
 		AndroidJavaClass jc = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
 		AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
-		jo.Call ("CallAndroidActivity", value);
+		return jo.Call<T> (funcStr, paraterm);
+	}
+
+	void DoCommand (string funcStr, params string[] paraterm)
+	{
+		AndroidJavaClass jc = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
+		AndroidJavaObject jo = jc.GetStatic<AndroidJavaObject>("currentActivity");
+		jo.Call ("DoCommand", funcStr, paraterm);
 	}
 #endif
 
 
-	/*string mesage = "";
+	string message = "";
 	void Test (string val)
 	{
-		this.mesage = val;
+		this.message = val;
 	}
 	void OnGUI ()
 	{
 		if (GUILayout.Button ("call android"))
 		{
-			CallAndroidCommand ("Test", "hahha");
+			DoCommand ("Test", "hahha", "heihei");
 		}
 
 		if (GUILayout.Button ("call android"))
 		{
-			CallAndroidCommand ("Test111111");
+			DoCommand ("Test111111");
 		}
 
-		GUILayout.Label ("_____" + mesage);
-	}*/
+		if (GUILayout.Button ("GetVersion"))
+		{
+			message += DoCommand<int> ("GetVersion").ToString ();
+		}
+
+		GUILayout.Label ("_____" + message);
+	}
 
 }
