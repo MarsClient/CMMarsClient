@@ -73,6 +73,7 @@ public class AnimationInfo
 	/*int method*/
 	public void Init (Animation ant) 
 	{
+		speed = speed == 0 ? 1 : speed;
 		this.m_animation = ant;
 		SetAnimationSpeed (this.speed);
 	}
