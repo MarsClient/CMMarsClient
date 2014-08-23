@@ -67,6 +67,7 @@ public class CreatMonsterEditor : Editor {
 							gameMonster.z = creatMonster.z;
 							gameMonster.hp = creatMonster.hpMax;
 							gameMonster.hpMax = creatMonster.hpMax;
+							gameMonster.isBoss = creatMonster.isBoss;
 							fight.gameMonsters[tra_Name][idx] = gameMonster;
 //							string[] arr = tra.name.Split ('_');
 //							GameMonster gameMonster = new GameMonster ();

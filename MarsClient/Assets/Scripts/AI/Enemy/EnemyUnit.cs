@@ -50,6 +50,7 @@ public class EnemyUnit : HitUnit {
 		{
 			Remove ();
 			m_ac.Play (Clip.Die);
+			TweenPosition.Begin (GetComponentInChildren<Animation>().gameObject, 0.5f, Vector3.zero);
 			bloodBar.gameObject.SetActive (false);
 		}
 	}

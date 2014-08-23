@@ -99,6 +99,10 @@ public class AiAnimation : MonoBehaviour {
 	public delegate void UnitDeath ();
 	public UnitDeath unitDeath;
 
+	/* Unit Death Move*/
+	public delegate void UnitDeathMove ();
+	public UnitDeathMove unitDeathMove;
+
 	/* Fx */
 	public delegate void FxDelegate (AnimationInfo info, FrameEvent fe);
 	public FxDelegate fxDelegate;
@@ -125,10 +129,6 @@ public class AiAnimation : MonoBehaviour {
 	void Start () 
 	{
 		m_Animation = GetComponentInChildren<Animation>();
-		if (m_Animation.GetComponent<AnimationMessageManager>() == null)
-		{
-			m_Animation.gameObject.AddComponent <AnimationMessageManager>();
-		}
 		m_Transform = transform;
 
 		trailsManager = GetComponentInChildren<TrailsManager>();
@@ -148,7 +148,10 @@ public class AiAnimation : MonoBehaviour {
 		if (isDie) { return; }
 		if (clip != c)
 		{
-			m_AnimationInfo = GetInfoByClip (c);
+			AnimationInfo aInfo = GetInfoByClip (c);
+			if (aInfo == null) return;
+
+			m_AnimationInfo = aInfo;
 			bool isExist = m_AnimationInfo != null;
 			if (isExist == true)
 			{
@@ -291,7 +294,13 @@ public class AiAnimation : MonoBehaviour {
 		}
 	}
 
-
+	public void AnimationDeathMove ()
+	{
+		if (unitDeathMove != null)
+		{
+			unitDeathMove ();
+		}
+	}
 
 	#region
 	public void IdleMessage (Clip c)
@@ -332,6 +341,11 @@ public class AiAnimation : MonoBehaviour {
 	public void DeathDoneMessage (Clip clip)
 	{
 		AnimationDeath ();
+	}
+
+	public void DeathMoveMessage (AntParameter antParameter)
+	{
+		AnimationDeathMove ();
 	}
 	#endregion
 

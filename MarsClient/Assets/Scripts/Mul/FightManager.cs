@@ -17,7 +17,7 @@ public class FightManager : MultiPlayer {
 
 	public override void LoadingDoneRoles ()
 	{
-		string[] test = new string[] {Constants.ENEMYS + "EE0001"};
+		string[] test = new string[] {Constants.ENEMYS + "EE0001", Constants.ENEMYS + "BO100001"};
 		AssetLoader.Instance.DownloadAssetbundle (test, MonsterCallBack);
 	}
 
