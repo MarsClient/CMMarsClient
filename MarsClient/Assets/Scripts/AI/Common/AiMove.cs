@@ -23,14 +23,14 @@ public class AiMove : MonoBehaviour {
 	private float factSpeed = 0;
 	
 	//ai controller
-	private CharacterController characterController;
+	private NavMeshAgent characterController;
 	
 	// ai move dir
 	private Vector3 m_dir = Vector3.zero;
 	
 	void Awake () 
 	{
-		characterController = GetComponent <CharacterController>();
+		characterController = GetComponent <NavMeshAgent>();
 		SetMoveSpeed ();
 		StartUpdate ();
 	}
@@ -90,7 +90,8 @@ public class AiMove : MonoBehaviour {
 		Vector3 pos = transform.position;
 		pos.y = 0;
 		transform.position = pos;
-		CollisionFlags cf = characterController.Move (dir * spd * Time.deltaTime);
+		if (characterController.enabled == true)
+			characterController.Move (dir * spd * Time.deltaTime);
 	}
 	
 	
