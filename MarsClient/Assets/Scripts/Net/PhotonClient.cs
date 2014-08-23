@@ -216,10 +216,8 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		}
 	}
 
-//	private void OnApplicationQuit ()
-//	{
-//		//Update ();
-//		NetSend.SendAbortDiscount ();
-//		//Update ();
-//	}
+	private void OnApplicationQuit ()
+	{
+		PeerDiscount ();
+	}
 }

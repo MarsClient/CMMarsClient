@@ -27,7 +27,7 @@ public class AppServerManager : MonoBehaviour {
 #endif
 
 
-	string message = "";
+	/*string message = "";
 	void Test (string val)
 	{
 		this.message = val;
@@ -50,6 +50,6 @@ public class AppServerManager : MonoBehaviour {
 		}
 
 		GUILayout.Label ("_____" + message);
-	}
+	}*/
 
 }
