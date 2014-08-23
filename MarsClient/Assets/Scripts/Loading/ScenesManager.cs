@@ -69,6 +69,7 @@ public class ScenesManager : MonoBehaviour {
 			currentOnSenceLoadingDone (currentLoadName);
 		}
 		slider.value = 1;
+		TweenAlpha.Begin (slider.gameObject, 0.5f, 0);
 		currentOnSenceLoadingDone = null;
 		TweenAlpha.Begin (gameObject, 2f, 0);
 		Destroy (gameObject, 2f);
