@@ -47,7 +47,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	public void LoadingLoginServer ()
 	{
-		load_address = NetIPs.IP;
+		load_address = IpSetting.IP;
 		appserver = LoginServerApplication;
 		this.Connect();
 	}
