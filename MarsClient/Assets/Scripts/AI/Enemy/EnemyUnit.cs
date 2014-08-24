@@ -37,10 +37,10 @@ public class EnemyUnit : HitUnit {
 		updateUIShow ();
 	}
 
-	public override void InitUI (GameBase gb)
+	public void InitUI (GameMonster gb)
 	{
-		this.gameMonster = (GameMonster) gb;
-		base.InitUI (gb);
+		this.gameMonster = gb;
+		base.InitUIVal (gb.level);
 	}
 
 	public override void ExtraEvent (int dmg)
@@ -70,7 +70,7 @@ public class EnemyUnit : HitUnit {
 		//hp deduct
 		slider.value = gameMonster.hpRatio;
 		m_enemy.aiPath.Stop ();
-		//m_ac.aiMove.startMoveDir (info, fe);
+
 		if (gameMonster.hp <= 0)
 		{
 			Remove ();
@@ -86,10 +86,13 @@ public class EnemyUnit : HitUnit {
 	{
 		if (bundle.cmd == Command.MonsterStateUpdate)
 		{
-			gameMonster.hp = bundle.gameMonster.hp;
+			if (gameMonster.id == bundle.gameMonster.id)
+			{
+				gameMonster.hp = bundle.gameMonster.hp;
 
-			HpDeduct ();
-			this.HitEffect ();
+				HpDeduct ();
+				this.HitEffect ();
+			}
 		}
 	}
 

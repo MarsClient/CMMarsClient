@@ -31,7 +31,7 @@ public abstract class HitUnit : MonoBehaviour {
 		m_ac.unitDeath = UnitDeath;
 	}
 
-	public virtual void InitUI (GameBase gb)
+	public virtual void InitUIVal (int lv)
 	{
 		if (bloodBar != null)
 		{
@@ -41,7 +41,7 @@ public abstract class HitUnit : MonoBehaviour {
 		}
 		slider.value = 1.0f;
 		UILabel lvLabel = slider.GetComponentInChildren<UILabel>();
-		lvLabel.text = gb.level.ToString ();
+		lvLabel.text = lv.ToString ();
 	}
 
 	private GameObject dmgParent;
@@ -58,6 +58,8 @@ public abstract class HitUnit : MonoBehaviour {
 		if (caches.Count == 0) return;
 
 		AnimationInfoCache animationInfoCache = caches.Dequeue ();
+
+		m_ac.aiMove.startMoveDir (animationInfoCache.info, animationInfoCache.fe);
 
 		if (ac.dontMove == false)
 		{
