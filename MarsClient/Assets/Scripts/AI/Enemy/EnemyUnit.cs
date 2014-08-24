@@ -7,7 +7,7 @@ public class EnemyUnit : HitUnit {
 	public static List<EnemyUnit> enemysUnit = new List<EnemyUnit> ();
 	AiEnemy m_enemy;
 
-	public GameMonster gameMonster;
+	public GameMonster gameMonster {get; private set; }
 
 	protected void Awake ()
 	{
@@ -35,10 +35,6 @@ public class EnemyUnit : HitUnit {
 
 	public override void ExtraEvent (AnimationInfo info, FrameEvent fe, int dmg)
 	{
-//		Debug.Log (info.clip);
-//		Debug.Log (fe.antDisatnce);
-//		Debug.Log (fe.antMoveSpd);
-//		Debug.Log (fe.method);
 		gameMonster.hp -= dmg;
 		gameMonster.hp = Mathf.Max (gameMonster.hp, 0);
 		slider.value = gameMonster.hpRatio;
