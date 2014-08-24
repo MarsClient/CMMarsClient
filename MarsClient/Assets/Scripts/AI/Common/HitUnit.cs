@@ -1,5 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
+public struct AnimationInfoCache
+{
+	public AnimationInfo info;
+	public FrameEvent fe;
+	public int dmg;
+	public bool isDouble;
+	public bool isDmg;
+}
 
 public abstract class HitUnit : MonoBehaviour {
 
@@ -12,6 +22,8 @@ public abstract class HitUnit : MonoBehaviour {
 	public UILabel label;//for show unit name
 	public UISlider slider;//for show blood;
 	//public GameObject go;
+
+	private Queue<AnimationInfoCache> caches = new Queue<AnimationInfoCache>();
 
 	public void Awake ()
 	{
@@ -35,39 +47,47 @@ public abstract class HitUnit : MonoBehaviour {
 	private GameObject dmgParent;
 	private GameObject dmgPrefab;
 
-	public void Hitted (AnimationInfo info, FrameEvent fe, int dmg, bool isDouble, bool isDmg = false)
+	public void Hitted (AnimationInfoCache animationInfoCache/*AnimationInfo info, FrameEvent fe, int dmg, bool isDouble, bool isDmg = false*/)
 	{
+		caches.Enqueue (animationInfoCache);
+		ExtraEvent (animationInfoCache.dmg);
+	}
+
+	protected void HitEffect ()
+	{
+		if (caches.Count == 0) return;
+
+		AnimationInfoCache animationInfoCache = caches.Dequeue ();
+
 		if (ac.dontMove == false)
 		{
-			if (fe.attackedClip == Clip.Null || fe.attackedClip == Clip.Idle) { if (m_ac.isRun == true) { ac.Play (Clip.Idle); } }
-			else { ac.Play (fe.attackedClip); }
+			if (animationInfoCache.fe.attackedClip == Clip.Null || animationInfoCache.fe.attackedClip == Clip.Idle) { if (m_ac.isRun == true) { ac.Play (Clip.Idle); } }
+			else { ac.Play (animationInfoCache.fe.attackedClip); }
 		}
 		else
 		{
-			if (fe.attackedClip == Clip.Fall || fe.attackedClip == Clip.Hit)
+			if (animationInfoCache.fe.attackedClip == Clip.Fall || animationInfoCache.fe.attackedClip == Clip.Hit)
 			{
 				//ac.Stop ();
-				ac.Play (fe.attackedClip);
+				ac.Play (animationInfoCache.fe.attackedClip);
 			}
 		}
-
+		
 		PoolManager.Instance.LoadGameObject ("Bullets_10000", (GameObject go)=>
-		{
+		                                     {
 			go.transform.position = hitPos.position;
 		}, Constants.EF);
-		if (isDmg)
+		if (animationInfoCache.isDmg)
 		{
 			PoolManager.Instance.LoadGameObject ("DmgEffect",
-				(GameObject go)=>
-				{
-					go.transform.position = hitPos.position;
-					go.GetComponentInChildren<DmgEffect> ().SetText (dmg, isDouble ? DmageEffect.DOUBLE : DmageEffect.NORMAL);
-				});
+			                                     (GameObject go)=>
+			                                     {
+				go.transform.position = hitPos.position;
+				go.GetComponentInChildren<DmgEffect> ().SetText (animationInfoCache.dmg, animationInfoCache.isDouble ? DmageEffect.DOUBLE : DmageEffect.NORMAL);
+			});
 		}
 
 
-		ExtraEvent (info, fe, dmg);
-		//hit color
 		CancelInvoke ("ResetColor");
 		SetColor (1.0f);
 		Invoke ("ResetColor", 0.1f);
@@ -129,7 +149,7 @@ public abstract class HitUnit : MonoBehaviour {
 
 	void HiddenMe () { gameObject.SetActive (false); }
 
-	public virtual void ExtraEvent (AnimationInfo info, FrameEvent fe, int dmg) {  }
+	public virtual void ExtraEvent (int dmg) {  }
 	public virtual void DataRefresh (object t) { }
 	public virtual void UnitDeath () {  }
 }

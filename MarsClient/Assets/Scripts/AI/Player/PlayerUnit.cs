@@ -4,7 +4,35 @@ using System.Collections.Generic;
 
 public class PlayerUnit : HitUnit {
 
+	#region playersUnit
 	public static List<PlayerUnit> playersUnit = new List<PlayerUnit> ();
+	public static PlayerUnit TryGetPlayerUnit (long roleId)
+	{
+		return TryGetPlayerUnit (null, roleId);
+	}
+	public static PlayerUnit TryGetPlayerUnit (Transform target = null, long roleId = 0)
+	{
+		for (int i = 0; i < playersUnit.Count; i++)
+		{
+			PlayerUnit playerUnit = playersUnit[i];
+			if (target != null)
+			{
+				if (playerUnit.transform == target)
+				{
+					return playerUnit;
+				}
+			}
+			else if (roleId != 0)
+			{
+				if (playerUnit.role.roleId == roleId)
+				{
+					return playerUnit;
+				}
+			}
+		}
+		return null;
+	}
+	#endregion
 
 	private Role role;
 	

@@ -129,7 +129,13 @@ public class AiPlayer : MonoBehaviour
 				if ((angle > 0 && distance < attDistance) || (angle <= 0 && distance < attDistance / 4))
 				{
 					FightMath.SetTargetForwardDirection (eu.transform, transform);
-					eu.Hitted (info, fe, Main.Instance.role.attNormalDmg, Main.Instance.role.isDouble, true);
+					AnimationInfoCache cache = new AnimationInfoCache();
+					cache.info = info;
+					cache.fe = fe;
+					cache.dmg = Main.Instance.role.attNormalDmg;
+					cache.isDouble = Main.Instance.role.isDouble;
+					cache.isDmg = true;
+					eu.Hitted (cache/*info, fe, Main.Instance.role.attNormalDmg, Main.Instance.role.isDouble, true*/);
 				}
 			}
 		}
@@ -146,7 +152,13 @@ public class AiPlayer : MonoBehaviour
 				{
 					bs.InitBullets ((HitUnit hu)=> 
 					                {
-						hu.Hitted (info, fe, Main.Instance.role.attNormalDmg, Main.Instance.role.isDouble, true);
+						AnimationInfoCache cache = new AnimationInfoCache();
+						cache.info = info;
+						cache.fe = fe;
+						cache.dmg = Main.Instance.role.attNormalDmg;
+						cache.isDouble = Main.Instance.role.isDouble;
+						cache.isDmg = true;
+						hu.Hitted (cache/*info, fe, Main.Instance.role.attNormalDmg, Main.Instance.role.isDouble, true*/);
 					});
 					bs.InitLayer (TagLayerDefine.ENEMY_TAG);
 				}
@@ -175,7 +187,7 @@ public class AiPlayer : MonoBehaviour
 				{
 					bs.InitBullets ((HitUnit hu)=> 
 					                {
-						hu.Hitted (info, fe, 10, false, true);
+						//hu.Hitted (info, fe, 10, false, true);
 					});
 					bs.InitLayer (TagLayerDefine.ENEMY_TAG);
 				}
@@ -198,7 +210,7 @@ public class AiPlayer : MonoBehaviour
 				{
 					bs.InitBullets ((HitUnit hu)=> 
 					                {
-						hu.Hitted (info, fe, 10, false, true);
+						//hu.Hitted (info, fe, 10, false, true);
 					}, true);
 					bs.InitPosition (FightMath.TargetRandge (transform, randge));
 					bs.InitLayer (TagLayerDefine.ENEMY_TAG);

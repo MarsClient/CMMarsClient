@@ -11,10 +11,20 @@ public class EnemyUnit : HitUnit {
 
 	protected void Awake ()
 	{
+		PhotonClient.processResults += ProcessResults;
+		PhotonClient.processResultSync += ProcessResultSync;
+
+
 		base.Awake ();
 		//m_ac = GetComponent <AiAnimation>();
 		m_enemy = GetComponent <AiEnemy> ();
 		enemysUnit.Add (this);
+	}
+
+	void OnDisable ()
+	{
+		PhotonClient.processResults -= ProcessResults;
+		PhotonClient.processResultSync -= ProcessResultSync;
 	}
 	
 	void Remove ()
@@ -33,24 +43,16 @@ public class EnemyUnit : HitUnit {
 		base.InitUI (gb);
 	}
 
-	public override void ExtraEvent (AnimationInfo info, FrameEvent fe, int dmg)
+	public override void ExtraEvent (int dmg)
 	{
-		gameMonster.hp -= dmg;
+		/*gameMonster.hp -= dmg;
 		gameMonster.hp = Mathf.Max (gameMonster.hp, 0);
-		slider.value = gameMonster.hpRatio;
+		*/
 
-		m_enemy.aiPath.Stop ();
-		m_ac.aiMove.startMoveDir (info, fe);
-
-		if (gameMonster.hp <= 0)
-		{
-			Remove ();
-			m_ac.Play (Clip.Die);
-			TweenPosition.Begin (GetComponentInChildren<Animation>().gameObject, 0.5f, Vector3.zero);
-			bloodBar.gameObject.SetActive (false);
-
-			DeathDoSomething ();
-		}
+		GameMonster gm = new GameMonster();
+		gm.id = gameMonster.id;
+		gm.deductHp = dmg;
+		NetSend.SendMonsterUpdate (gm);
 	}
 
 	public override void UnitDeath ()
@@ -60,6 +62,38 @@ public class EnemyUnit : HitUnit {
 	}
 
 	public void DeathDoSomething()
+	{
+	}
+
+	void HpDeduct ()
+	{
+		//hp deduct
+		slider.value = gameMonster.hpRatio;
+		m_enemy.aiPath.Stop ();
+		//m_ac.aiMove.startMoveDir (info, fe);
+		if (gameMonster.hp <= 0)
+		{
+			Remove ();
+			m_ac.Play (Clip.Die);
+			TweenPosition.Begin (GetComponentInChildren<Animation>().gameObject, 0.5f, Vector3.zero);
+			bloodBar.gameObject.SetActive (false);
+			
+			DeathDoSomething ();
+		}
+	}
+
+	void ProcessResults (Bundle bundle)
+	{
+		if (bundle.cmd == Command.MonsterStateUpdate)
+		{
+			gameMonster.hp = bundle.gameMonster.hp;
+
+			HpDeduct ();
+			this.HitEffect ();
+		}
+	}
+
+	void ProcessResultSync (Bundle bundle)
 	{
 
 	}

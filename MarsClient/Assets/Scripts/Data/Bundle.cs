@@ -50,6 +50,9 @@ public class Bundle
 	[DefaultValue (null)]
 	public GameMonster[] gameMonsters;
 
+	[DefaultValue (null)]
+	public GameMonster gameMonster;
+
 	/*follow is old*/
 
 //	[DefaultValue (null)]
