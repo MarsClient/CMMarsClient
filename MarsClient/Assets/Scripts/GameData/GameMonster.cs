@@ -4,6 +4,8 @@ using System.ComponentModel;
 
 public class GameMonster : GameBase
 {
+	[DefaultValue (null)]
+	public string id;
 	[DefaultValue (0F)]
 	public float x;
 	[DefaultValue (0F)]
@@ -16,4 +18,14 @@ public class GameMonster : GameBase
 	public float action;
 	[DefaultValue (false)]
 	public bool isBoss;
+
+	[DefaultValue(0)]
+	public int state;
+	
+	[DefaultValue(0F)]
+	public float target_x;
+	[DefaultValue(0F)]
+	public float target_y;
+	[DefaultValue(0F)]
+	public float target_z;
 }

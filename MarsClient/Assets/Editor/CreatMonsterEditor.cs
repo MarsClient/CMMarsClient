@@ -60,7 +60,7 @@ public class CreatMonsterEditor : Editor {
 						{
 
 							GameMonster gameMonster = new GameMonster ();
-							gameMonster.id = long.Parse (creatMonster.id);
+							gameMonster.id = creatMonster.id;
 							gameMonster.type = creatMonster.type;
 							gameMonster.level = creatMonster.level;
 							gameMonster.x = creatMonster.x;

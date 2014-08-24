@@ -52,6 +52,8 @@ public class EnemyUnit : HitUnit {
 			m_ac.Play (Clip.Die);
 			TweenPosition.Begin (GetComponentInChildren<Animation>().gameObject, 0.5f, Vector3.zero);
 			bloodBar.gameObject.SetActive (false);
+
+			DeathDoSomething ();
 		}
 	}
 
@@ -59,5 +61,10 @@ public class EnemyUnit : HitUnit {
 	{
 		AlphaTween ();
 		m_enemy.Stop ();
+	}
+
+	public void DeathDoSomething()
+	{
+
 	}
 }
