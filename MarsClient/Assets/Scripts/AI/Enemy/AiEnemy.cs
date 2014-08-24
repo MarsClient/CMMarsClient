@@ -28,6 +28,9 @@ public class AiEnemy : MonoBehaviour
 	{
 		aiAnt.attackDelegate -= AttackDelegate;
 		aiAnt.spellAttackDelegate -= SpellAttackDelegate;
+
+		PhotonClient.processResults -= ProcessResults;
+		PhotonClient.processResultSync -= ProcessResultSync;
 	}
 	
 	public void Remove ()
@@ -59,6 +62,9 @@ public class AiEnemy : MonoBehaviour
 
 	void Start () 
 	{
+		PhotonClient.processResults += ProcessResults;
+		PhotonClient.processResultSync += ProcessResultSync;
+
 		aiAnt = GetComponent <AiAnimation>();
 		aiAnt.attackDelegate += AttackDelegate;
 		aiAnt.spellAttackDelegate += SpellAttackDelegate;
@@ -78,25 +84,12 @@ public class AiEnemy : MonoBehaviour
 	{
 		if (aiAnt.dontMove == false)
 		{
-//			if (target != null)
-//			{
-//				m_AIPath.StartPath (target.position, OnStartPath, OnPathCompleteToAttack);
-//			}
-//			isAiWalk = FightMath.isStateRandom ();
-//			if (isAiWalk)
-//			{
-//				isAiWalk = false;
-//				m_AIPath.StartPath (FightMath.GetRandomVectorRun (m_AIPath.navAgent), OnStartPath, OnPathComplete);
-//			}
-//			else
-//			{
 			if (target == null)
 			{
 				isAiWalk = true;
 				return;
 			}
 			m_AIPath.StartPath (target.position, OnStartPath, OnPathCompleteToAttack);
-//			}
 		}
 	}
 
@@ -137,5 +130,15 @@ public class AiEnemy : MonoBehaviour
 		aiPath.navAgent.enabled = false;
 		aiPath.StopAllCoroutines ();
 		CancelInvoke ("UpdateEnemyAI");
+	}
+
+	void ProcessResults (Bundle bundle)
+	{
+
+	}
+
+	void ProcessResultSync (Bundle bundle)
+	{
+
 	}
 }

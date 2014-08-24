@@ -96,6 +96,11 @@ public class NetSend {
 	{
 		PhotonClient.SendServer (Command.MonsterRefresh, region);
 	}
+
+	public static void SendMonsterUpdate (GameMonster gameMonster)
+	{
+		PhotonClient.SendServer (Command.MonsterStateUpdate, gameMonster);
+	}
 	#endregion
 
 	public static void SendDisconnectServer ()
