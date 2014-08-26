@@ -11,6 +11,7 @@ public class NetTest : MonoBehaviour {
 	{
 		DC.RegisterCommand (Command.Login.ToString (), Login);
 		DC.RegisterCommand (Command.JoinTeam.ToString (), JoinTeam);
+		DC.RegisterCommand ("JoinHasTeam", JoinHasTeam);
 		DC.RegisterCommand (Command.LeaveTeam.ToString (), LeaveTeam);
 	}
 
@@ -39,6 +40,19 @@ public class NetTest : MonoBehaviour {
 			return REPOSE;
 		}
 		return p[0] + " teamName, teamId usage";
+	}
+
+	private string JoinHasTeam (params string[] p)
+	{
+		if (p.Length >= 2)
+		{
+			Team team = new Team ();
+			team.teamName = "haha";
+			team.teamId = p[1];//
+			NetSend.SendJoinTeam (team);
+			return REPOSE;
+		}
+		return p[0] + " teamId usage";
 	}
 
 	private string LeaveTeam (params string[] p)

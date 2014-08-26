@@ -15,6 +15,8 @@ public class AiPlayer : MonoBehaviour
 
 	public float attDistance = 2;
 
+	private bool isOwn = false;
+
 	//private AiMove aiMove;
 	private AiAnimation aiAnt;
 	void Start ()
@@ -33,6 +35,11 @@ public class AiPlayer : MonoBehaviour
 		aiAnt.attackDelegate -= AttackDelegate;
 		aiAnt.spellAttackDelegate -= SpellAttackDelegate;
 		aiAnt.fxDelegate -= FxDelegate;
+	}
+
+	public void SetOwn (bool own)//check is myself
+	{
+		isOwn = own;
 	}
 
 	#region Move
@@ -119,6 +126,8 @@ public class AiPlayer : MonoBehaviour
 	#region AiAnimation Event
 	void AttackDelegate (AnimationInfo info, FrameEvent fe)
 	{
+		//if (!isOwn) return;
+
 		if (attType == AttType.inf)
 		{
 			for (int i = 0; i < EnemyUnit.enemysUnit.Count; i++)
@@ -132,9 +141,9 @@ public class AiPlayer : MonoBehaviour
 					AnimationInfoCache cache = new AnimationInfoCache();
 					cache.info = info;
 					cache.fe = fe;
-					cache.dmg = Main.Instance.role.attNormalDmg;
+					cache.dmg = isOwn ? (Main.Instance.role.attNormalDmg) : 0;
 					cache.isDouble = Main.Instance.role.isDouble;
-					cache.isDmg = true;
+					cache.isDmg = isOwn;
 					eu.Hitted (cache/*info, fe, Main.Instance.role.attNormalDmg, Main.Instance.role.isDouble, true*/);
 				}
 			}

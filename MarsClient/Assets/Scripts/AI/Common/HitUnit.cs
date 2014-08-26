@@ -49,8 +49,12 @@ public abstract class HitUnit : MonoBehaviour {
 
 	public void Hitted (AnimationInfoCache animationInfoCache/*AnimationInfo info, FrameEvent fe, int dmg, bool isDouble, bool isDmg = false*/)
 	{
+
 		caches.Enqueue (animationInfoCache);
-		ExtraEvent (animationInfoCache.dmg);
+		if (animationInfoCache.isDmg)
+		{
+			ExtraEvent (animationInfoCache.dmg);
+		}
 	}
 
 	protected void HitEffect ()

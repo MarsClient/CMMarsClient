@@ -15,7 +15,7 @@ public enum MSState : int
 public class AiEnemy : MonoBehaviour 
 {
 	public static List<AiEnemy> enemys = new List<AiEnemy>();
-	public Transform target;
+	public PlayerUnit target;
 	public float attDistance = 2;
 
 	private AIPath m_AIPath;
@@ -74,10 +74,10 @@ public class AiEnemy : MonoBehaviour
 		InvokeRepeating ("UpdateEnemyAI", 0, 0.25f);
 
 
-		if (PlayerUnit.playersUnit.Count > 0)
+		/*if (PlayerUnit.playersUnit.Count > 0)
 		{
 			target = PlayerUnit.playersUnit[0].transform;
-		}
+		}*/
 	}
 
 	void UpdateEnemyAI () 
@@ -89,7 +89,7 @@ public class AiEnemy : MonoBehaviour
 				isAiWalk = true;
 				return;
 			}
-			m_AIPath.StartPath (target.position, OnStartPath, OnPathCompleteToAttack);
+			m_AIPath.StartPath (target.transform.position, OnStartPath, OnPathCompleteToAttack);
 		}
 	}
 

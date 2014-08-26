@@ -35,11 +35,12 @@ public class PlayerUnit : HitUnit {
 	#endregion
 
 	private Role role;
+	private AiPlayer m_player;
 	
 	void Awake ()
 	{
 		base.Awake ();
-		//m_ac = GetComponent <AiAnimation>();
+		m_player = GetComponent<AiPlayer>();
 		if (FightManager.instance != null)
 		{
 			Add ();
@@ -49,6 +50,11 @@ public class PlayerUnit : HitUnit {
 	void Add ()
 	{
 		playersUnit.Add (this);
+	}
+
+	void OnDestory ()
+	{
+		Remove ();
 	}
 
 	void Remove ()
@@ -72,6 +78,10 @@ public class PlayerUnit : HitUnit {
 				label.color = Color.yellow;
 			}
 			label.text = role.roleName;
+		}
+		if (m_player != null)
+		{
+			m_player.SetOwn (Main.Instance.role.roleId == role.roleId);
 		}
 	}
 

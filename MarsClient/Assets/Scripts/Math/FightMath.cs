@@ -65,11 +65,11 @@ public class FightMath
 
 	public static void SetTargetForwardDirection (Transform left, Transform right)
 	{
-		Vector3 forward = right.position - left.position;
+		/*Vector3 forward = right.position - left.position;
 		if (forward != Vector3.zero)
 		{
 			left.forward = forward.normalized;
-		}
+		}*/
 	}
 
 	public static bool isStateRandom () { return Random.Range (0, 2) == 1; }

@@ -30,6 +30,10 @@ public class GameMonster
 	public float hpMax;
 	[DefaultValue(0F)]
 	public float deductHp;
+	[DefaultValue(0L)]
+	public long attId;
+	[DefaultValue (false)]
+	public long isCritical;
 	
 	
 	public float hpRatio

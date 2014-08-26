@@ -41,6 +41,7 @@ public class EnemyUnit : HitUnit {
 	{
 		this.gameMonster = gb;
 		base.InitUIVal (gb.level);
+		m_enemy.target = PlayerUnit.TryGetPlayerUnit (gb.attId);
 	}
 
 	public override void ExtraEvent (int dmg)
@@ -98,6 +99,6 @@ public class EnemyUnit : HitUnit {
 
 	void ProcessResultSync (Bundle bundle)
 	{
-
+		ProcessResults (bundle);
 	}
 }
