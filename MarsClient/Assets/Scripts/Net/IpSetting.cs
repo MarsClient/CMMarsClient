@@ -10,7 +10,10 @@ public class IpSetting : MonoBehaviour {
 
 	void Awake ()
 	{
-		Instance = this;
+		if (Instance == null)
+		{
+			Instance = this;
+		}
 	}
 
 	public static string IP

@@ -205,19 +205,25 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	private void CalledProcessResult (Bundle bundle)
 	{
-		if (processResults != null && bundle != null)
+		if (bundle != null)
 		{
 			netRecv.ProcessResult (bundle);
-			processResults (bundle);
+			if (processResults != null)
+			{
+				processResults (bundle);
+			}
 		}
 	}
 
 	private void CalledProcessEvent (Bundle bundle)
 	{
-		if (processResultSync != null && bundle != null)
+		if (bundle != null)
 		{
 			netRecv.ProcessResultSync (bundle);
-			processResultSync (bundle);
+			if (processResultSync != null)
+			{
+				processResultSync (bundle);
+			}
 		}
 	}
 

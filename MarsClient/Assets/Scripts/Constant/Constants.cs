@@ -22,11 +22,14 @@ public class Constants
 	public const string  PRO_CREAT = "_Creat";
 	public const int MAX_COUNT = 180;
 
-	//UI PATH
+	//AssetBunle PATH
 	public const string UI = "UI/";
 	public const string EF = "EF/";
 	public const string ENEMYS = "Enemys/";
 	public const string NPC = "NPC/";
 	public const string PRO = "RO/";
 	public const string SC = "SC/";
+
+	//special path
+	public const string GAMEATLAS = "UI/GameAtlas";
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class GameUIAtlas : MonoBehaviour {
@@ -8,11 +8,7 @@ public class GameUIAtlas : MonoBehaviour {
 	{
 		get
 		{
-			if (m_instance == null)
-			{
-				GameObject resGo = Resources.Load (Constants.UI + "GameAtlas") as GameObject;
-				m_instance = resGo.GetComponent<GameUIAtlas>();
-			}
+			m_instance = ResourceLoadObj.SetResourceObjInstance<GameUIAtlas> (Constants.GAMEATLAS, m_instance);
 			return m_instance;
 		}
 	}
