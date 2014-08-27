@@ -15,33 +15,38 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	public static PhotonClient Instance;
 
-	void Awake () { if (Instance == null) { Instance = this; DontDestroyOnLoad (gameObject); } else if (Instance != this) Destroy (gameObject);}
+	void Awake () 
+	{ 
+		if (Instance == null) 
+		{ 
+			Instance = this; 
+			DontDestroyOnLoad (gameObject);
+		}
+		else if (Instance != this) 
+		{
+			Destroy (gameObject);
+		}
+	}
 
-	//LOAD SERVER ADDRESS
-	//public string LOAD_LOGIN_SERVER_ADDRESS = "localhost:5055";
 	private string LoginServerApplication = "LoginServer";
-	//private string LoginServerApplication = "MarsServer";
-	//Game Server
-	//public string LOAD_GAME_ADDRESS;
 	private string GameServerApplication = "MarsServer";
 
-	public string load_address;
-	public string appserver;
+	public string load_address;//for see
+	public string appserver;//for see
 
 	protected PhotonPeer peer;
 	public bool ServerConnected {get; private set;}
 
-	NetRecv netRecv;
-
-
 	/*Queue*/
 	private Queue<Bundle> COMMANDS = new Queue<Bundle>();
+	private Queue<Bundle> COMMANDEVENTS = new Queue<Bundle>();
+
+	private NetRecv netRecv;
 
 	public void Start () {
-
+		netRecv = GetComponent <NetRecv>();
 		Application.runInBackground = true;
 		this.ServerConnected = false;
-		//DC.LogError ("Disconnected");
 		LoadingLoginServer ();
 	}
 
@@ -100,9 +105,13 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		if (COMMANDS.Count > 0)
 		{
 			Bundle bundle = COMMANDS.Dequeue ();
-
-			netRecv.ProcessResult (bundle);
 			CalledProcessResult (bundle);
+		}
+
+		if (COMMANDEVENTS.Count > 0)
+		{
+			Bundle bundle = COMMANDEVENTS.Dequeue ();
+			CalledProcessEvent (bundle);
 		}
 	}
 
@@ -115,12 +124,12 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 			this.ServerConnected = true;
 			break;
 		case StatusCode.Disconnect:
-			if (netRecv == null) netRecv = GetComponent<NetRecv>();
+
 			Bundle bundle = new Bundle ();
 			bundle.error = new Error ();
 			bundle.error.message = "game.server.net.error";
 			bundle.cmd = Command.NetError;
-			netRecv.ProcessResult (bundle);
+			CalledProcessResult (bundle);
 			this.ServerConnected = false;
 			break;
 		}
@@ -149,8 +158,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 			/*operationCode contain update dont show denug*/
 			if (operationCode != Command.UpdatePlayer && operationCode != Command.TeamUpdate)
 			{
-				Debug.Log (json);
-				DC.Log (json);
+				PhotonClient.Instance.NetLog (json);
 			}
 		}
 		PhotonClient.Instance.peer.OpCustom((byte)operationCode, parameter, true);
@@ -158,8 +166,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 
 	public void DebugReturn (DebugLevel level, string message)
 	{
-		DC.Log (message);
-		Debug.Log (message);
+		NetLog (message);
 	}
 	public void OnOperationResponse (OperationResponse operationResponse)
 	{
@@ -167,8 +174,6 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		{
 			string json = operationResponse.Parameters[operationResponse.OperationCode].ToString();
 			Bundle bundle = JsonDeserialize (json);
-			if (netRecv == null) netRecv = GetComponent<NetRecv>();
-
 			COMMANDS.Enqueue (bundle);
 		}
 	}
@@ -179,9 +184,8 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		{
 			string json = eventData.Parameters[eventData.Code].ToString ();
 			Bundle bundle = JsonDeserialize (json);
-			if (netRecv == null) netRecv = GetComponent<NetRecv>();
-			netRecv.ProcessResultSync (bundle);
-			CalledProcessEvent (bundle);
+
+			COMMANDEVENTS.Enqueue (bundle);
 		}
 	}
 
@@ -194,8 +198,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 		/*operationCode contain update dont show denug*/
 		if (bundle.cmd != Command.UpdatePlayer && bundle.cmd != Command.TeamUpdate)
 		{
-			Debug.Log (json);
-			DC.LogWarning(json);
+			NetLog (json);
 		}
 		return bundle;
 	}
@@ -204,6 +207,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	{
 		if (processResults != null && bundle != null)
 		{
+			netRecv.ProcessResult (bundle);
 			processResults (bundle);
 		}
 	}
@@ -212,6 +216,7 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	{
 		if (processResultSync != null && bundle != null)
 		{
+			netRecv.ProcessResultSync (bundle);
 			processResultSync (bundle);
 		}
 	}
@@ -219,5 +224,14 @@ public class PhotonClient : MonoBehaviour, IPhotonPeerListener {
 	private void OnApplicationQuit ()
 	{
 		PeerDiscount ();
+	}
+
+	/*
+	 * for debug
+	 **/
+	private void NetLog (object message)
+	{
+		Debug.Log (message);
+		DC.Log (message);
 	}
 }
