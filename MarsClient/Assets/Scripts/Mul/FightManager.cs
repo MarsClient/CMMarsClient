@@ -38,6 +38,7 @@ public class FightManager : MultiPlayer {
 				AddNewPro (role);
 			}
 		}
+		Main.Instance.onlineRoles = null;
 	}
 
 	void OnEnable ()

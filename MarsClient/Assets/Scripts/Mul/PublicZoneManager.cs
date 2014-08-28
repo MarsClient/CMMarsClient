@@ -39,6 +39,7 @@ public class PublicZoneManager : MultiPlayer {
 		{
 			AddNewPro (r);
 		}
+		Main.Instance.onlineRoles = null;
 	}
 
 	void OnEnable ()
