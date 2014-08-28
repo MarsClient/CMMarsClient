@@ -25,15 +25,18 @@ public class NetSetting : MonoBehaviour {
 		}
 	}
 
+	private NetRecv netRecv;
+
 	void Start ()
 	{
+		netRecv = GetComponent<NetRecv>();
 		Application.runInBackground = true;
 		PhotonClient.Instance.Start ();
 	}
 
 	void Update ()
 	{
-
+		PhotonClient.Instance.UpdateQueue (netRecv);
 	}
 
 	private void OnApplicationQuit ()
