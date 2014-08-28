@@ -14,18 +14,7 @@ public class NetClient : IPhotonPeerListener {
 	public static  ProcessResults processResults;
 	public static  ProcessResultSync processResultSync;
 
-	private static NetClient mInstance;
-	public static NetClient Instance
-	{
-		get
-		{
-			if (mInstance == null)
-			{
-				mInstance = new NetClient();
-			}
-			return mInstance;
-		}
-	}
+	public static readonly NetClient Instance = new NetClient();
 
 	private Thread oThread;
 
@@ -96,11 +85,10 @@ public class NetClient : IPhotonPeerListener {
 			break;
 		case StatusCode.Disconnect:
 
-			Bundle bundle = new Bundle ();
-			bundle.error = new Error ();
-			bundle.error.message = "game.server.net.error";
-			bundle.cmd = Command.NetError;
-			CalledProcessResult (bundle);
+			if (someJson != null && someJson.Length > 0)
+			{
+				COMMANDS.Enqueue (someJson[0]);
+			}
 			this.ServerConnected = false;
 			break;
 		}
@@ -133,8 +121,13 @@ public class NetClient : IPhotonPeerListener {
 #endregion
 
 #region Get data from server API (contain debug)
-	public void Start () 
+	private bool isVal = false;
+	private NetRecv netRecv;
+	private string[] someJson;
+	public void Start (NetRecv netRecv, string[] someJson) 
 	{
+		this.netRecv = netRecv;
+		this.someJson = someJson;
 		LoadingLoginServer ();
 	}
 	
@@ -154,21 +147,17 @@ public class NetClient : IPhotonPeerListener {
 		this.Connect();
 	}
 
-
-	private bool isVal = false;
-	public void UpdateQueue (NetRecv netRecv)
+	public void UpdateQueue ()
 	{
 		if (COMMANDS.Count > 0)
 		{
 			Bundle bundle =  JsonDeserialize (COMMANDS.Dequeue ());
-			netRecv.ProcessResult (bundle);
 			CalledProcessResult (bundle);
 		}
 		
 		if (COMMANDEVENTS.Count > 0)
 		{
 			Bundle bundle = JsonDeserialize (COMMANDEVENTS.Dequeue ());
-			netRecv.ProcessResult (bundle);
 			CalledProcessEvent (bundle);
 		}
 		
@@ -205,6 +194,7 @@ public class NetClient : IPhotonPeerListener {
 	{
 		if (bundle != null)
 		{
+			netRecv.ProcessResult (bundle);
 			if (processResults != null)
 			{
 				processResults (bundle);
@@ -216,6 +206,7 @@ public class NetClient : IPhotonPeerListener {
 	{
 		if (bundle != null)
 		{
+			netRecv.ProcessResultSync (bundle);
 			if (processResultSync != null)
 			{
 				processResultSync (bundle);

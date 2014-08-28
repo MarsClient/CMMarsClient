@@ -40,7 +40,8 @@ public class AiMove : MonoBehaviour {
 	
 	public void StartUpdate ()
 	{
-		InvokeRepeating ("SpecialMoving", 0, 0.03333f);
+		float rateTime = Time.deltaTime;
+		InvokeRepeating ("SpecialMoving", 0, rateTime);
 	}
 	
 	public void UpdateMove (Vector3 move) 

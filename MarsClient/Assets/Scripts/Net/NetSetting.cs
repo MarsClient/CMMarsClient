@@ -27,16 +27,22 @@ public class NetSetting : MonoBehaviour {
 
 	private NetRecv netRecv;
 
+	/// <summary>
+	/// index 0 is net disconnect message
+	/// index 1 is todo
+	/// </summary>
+	public string[] someJson;
+
 	void Start ()
 	{
 		netRecv = GetComponent<NetRecv>();
 		Application.runInBackground = true;
-		NetClient.Instance.Start ();
+		NetClient.Instance.Start (netRecv, someJson);
 	}
 
 	void Update ()
 	{
-		NetClient.Instance.UpdateQueue (netRecv);
+		NetClient.Instance.UpdateQueue ();
 	}
 
 	private void OnApplicationQuit ()
