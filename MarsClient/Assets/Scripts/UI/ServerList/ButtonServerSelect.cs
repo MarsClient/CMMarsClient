@@ -7,12 +7,12 @@ public class ButtonServerSelect : MonoBehaviour {
 
 	void OnEnable ()
 	{
-		PhotonClient.processResults += ProcessResults;
+		NetClient.processResults += ProcessResults;
 	}
 	
 	void OnDisable ()
 	{
-		PhotonClient.processResults -= ProcessResults;
+		NetClient.processResults -= ProcessResults;
 	}
 
 	void ProcessResults (Bundle bundle)
@@ -55,7 +55,7 @@ public class ButtonServerSelect : MonoBehaviour {
 	{
 		if (serverList.currentServer != null)
 		{
-			PhotonClient.Instance.LoadingGameServer (serverList.currentServer.ip);
+			NetClient.Instance.LoadingGameServer (serverList.currentServer.ip);
 			new DialogContent ()
 				.SetMessage("server.linking")
 					.SetNoBtn ("game.dialog.no")

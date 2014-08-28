@@ -199,12 +199,12 @@ public class UIStartPanel : MonoBehaviour {
 
 	void OnEnable ()
 	{
-		PhotonClient.processResults += ProcessResults;
+		NetClient.processResults += ProcessResults;
 	}
 
 	void OnDisable ()
 	{
-		PhotonClient.processResults -= ProcessResults;
+		NetClient.processResults -= ProcessResults;
 	}
 
 	void ProcessResults (Bundle bundle)

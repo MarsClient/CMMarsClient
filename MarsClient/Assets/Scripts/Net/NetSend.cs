@@ -11,32 +11,32 @@ public class NetSend {
 
 	public static void SendRegister (Account a)
 	{
-		PhotonClient.SendServer (Command.Register, a);
+		NetClient.SendServer (Command.Register, a);
 	}
 
 	public static void SendLogin (Account a)
 	{
-		PhotonClient.SendServer (Command.Login, a);
+		NetClient.SendServer (Command.Login, a);
 	}
 
 	public static void SendServerSelect (Server server)
 	{
-		PhotonClient.SendServer (Command.ServerSelect, server);
+		NetClient.SendServer (Command.ServerSelect, server);
 	}
 
 	public static void SendCreatRole (Role r)
 	{
-		PhotonClient.SendServer (Command.CreatRole, r);
+		NetClient.SendServer (Command.CreatRole, r);
 	}
 
 	public static void SendEnterGame (Role r)
 	{
-		PhotonClient.SendServer (Command.EnterGame, r);
+		NetClient.SendServer (Command.EnterGame, r);
 	}
 
 	public static void SendChat (Message message)
 	{
-		PhotonClient.SendServer (Command.SendChat, message);
+		NetClient.SendServer (Command.SendChat, message);
 	}
 
 //	public static void SendRole (Role r)
@@ -46,66 +46,66 @@ public class NetSend {
 
 	public static void SendUpdatePlayer (Role r)
 	{
-		PhotonClient.SendServer (Command.UpdatePlayer, r);
+		NetClient.SendServer (Command.UpdatePlayer, r);
 	}
 
 	#region Team
 	public static void SendCreatTeam ()
 	{
-		PhotonClient.SendServer (Command.CreatTeam);
+		NetClient.SendServer (Command.CreatTeam);
 	}
 
 	public static void SendJoinTeam (Team team)
 	{
-		PhotonClient.SendServer (Command.JoinTeam, team);
+		NetClient.SendServer (Command.JoinTeam, team);
 	}
 
 	public static void SendLeaveTeam (Team team)
 	{
-		PhotonClient.SendServer (Command.LeaveTeam, team);
+		NetClient.SendServer (Command.LeaveTeam, team);
 	}
 
 	public static void SendSwapTeamLeader (Team team)
 	{
-		PhotonClient.SendServer (Command.SwapTeamLeader, team);
+		NetClient.SendServer (Command.SwapTeamLeader, team);
 	}
 
 	public static void SendDismissTeam ()
 	{
-		PhotonClient.SendServer (Command.DismissTeam);
+		NetClient.SendServer (Command.DismissTeam);
 	}
 
 	public static void SendTeamUpdate (Role r)
 	{
-		PhotonClient.SendServer (Command.TeamUpdate, r);
+		NetClient.SendServer (Command.TeamUpdate, r);
 	}
 	#endregion
 
 	#region Fight
 	public static void SendEnterFight (Fight fight)
 	{
-		PhotonClient.SendServer (Command.EnterFight, fight);
+		NetClient.SendServer (Command.EnterFight, fight);
 	}
 
 	public static void SendPlayersDone ()
 	{
-		PhotonClient.SendServer (Command.PlayerDone);
+		NetClient.SendServer (Command.PlayerDone);
 	}
 
 	public static void SendMonsterRefresh (FightRegion region)
 	{
-		PhotonClient.SendServer (Command.MonsterRefresh, region);
+		NetClient.SendServer (Command.MonsterRefresh, region);
 	}
 
 	public static void SendMonsterUpdate (GameMonster gameMonster)
 	{
-		PhotonClient.SendServer (Command.MonsterStateUpdate, gameMonster);
+		NetClient.SendServer (Command.MonsterStateUpdate, gameMonster);
 	}
 	#endregion
 
 	public static void SendDisconnectServer ()
 	{
-		PhotonClient.Instance.PeerDiscount ();
+		NetClient.Instance.PeerDiscount ();
 	}
 	//Follow is Older
 	/*

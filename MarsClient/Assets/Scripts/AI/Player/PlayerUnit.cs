@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -105,12 +105,12 @@ public class PlayerUnit : HitUnit {
 
 	void OnEnable ()
 	{
-		PhotonClient.processResultSync += ProcessResultSync;
+		NetClient.processResultSync += ProcessResultSync;
 	}
 
 	void OnDisable ()
 	{
-		PhotonClient.processResultSync -= ProcessResultSync;
+		NetClient.processResultSync -= ProcessResultSync;
 	}
 
 	void ProcessResultSync (Bundle bundle)

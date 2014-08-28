@@ -42,14 +42,14 @@ public class FightManager : MultiPlayer {
 
 	void OnEnable ()
 	{
-		PhotonClient.processResults += ProcessResults;
-		PhotonClient.processResultSync += ProcessResultSync;
+		NetClient.processResults += ProcessResults;
+		NetClient.processResultSync += ProcessResultSync;
 	}
 	
 	void OnDisable ()
 	{
-		PhotonClient.processResults -= ProcessResults;
-		PhotonClient.processResultSync -= ProcessResultSync;
+		NetClient.processResults -= ProcessResults;
+		NetClient.processResultSync -= ProcessResultSync;
 	}
 
 	void ProcessResults (Bundle bundle)

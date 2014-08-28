@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.IO;
 
-public class CSharpEncrypt
+public class NetEncrypt
 {
 
 	public static string keyStory = "qwulkaawppeowipoaskdaouisdofiusoilewrkj";
@@ -13,7 +13,7 @@ public class CSharpEncrypt
 	/// <summary>
 	/// 构造方法
 	/// </summary>
-	public CSharpEncrypt()
+	public NetEncrypt()
 	{
 		
 	}

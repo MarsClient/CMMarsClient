@@ -82,7 +82,7 @@ public class NetRecv : MonoBehaviour {
 							{
 								Debug.Log (loadName);
 								NetSend.SendDisconnectServer ();
-								PhotonClient.Instance.LoadingLoginServer ();
+								NetClient.Instance.LoadingLoginServer ();
 
 								PanelsManager.Close ();
 								PanelsManager.Show (PanelType.ServerList, (Panel panel)=>

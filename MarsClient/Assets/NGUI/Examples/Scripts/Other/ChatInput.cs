@@ -114,13 +114,13 @@ public class ChatInput : MonoBehaviour
 	void OnEnable ()
 	{
 		if (isOne)
-			PhotonClient.processResultSync += ProcessResultSync;
+			NetClient.processResultSync += ProcessResultSync;
 	}
 	
 	void OnDisable ()
 	{
 		if(isOne)
-			PhotonClient.processResultSync -= ProcessResultSync;
+			NetClient.processResultSync -= ProcessResultSync;
 	}
 	
 	void ProcessResultSync (Bundle bundle)

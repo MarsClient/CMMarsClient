@@ -7,21 +7,21 @@ using System.Security;
 using ExitGames.Client.Photon;
 using System.Threading;
 
-public class PhotonClient : IPhotonPeerListener {
+public class NetClient : IPhotonPeerListener {
 
 	public delegate void ProcessResults (Bundle bundle);
 	public delegate void ProcessResultSync (Bundle bundle);
 	public static  ProcessResults processResults;
 	public static  ProcessResultSync processResultSync;
 
-	private static PhotonClient mInstance;
-	public static PhotonClient Instance
+	private static NetClient mInstance;
+	public static NetClient Instance
 	{
 		get
 		{
 			if (mInstance == null)
 			{
-				mInstance = new PhotonClient();
+				mInstance = new NetClient();
 			}
 			return mInstance;
 		}
@@ -190,7 +190,7 @@ public class PhotonClient : IPhotonPeerListener {
 	private Bundle JsonDeserialize (string json)
 	{
 		Bundle bundle = new Bundle ();
-		json = CSharpEncrypt.Decrypt (json);
+		json = NetEncrypt.Decrypt (json);
 		bundle = JsonConvert.DeserializeObject<Bundle>(json);
 		
 		/*operationCode contain update dont show denug*/
@@ -261,10 +261,10 @@ public class PhotonClient : IPhotonPeerListener {
 			/*operationCode contain update dont show denug*/
 			if (operationCode != Command.UpdatePlayer && operationCode != Command.TeamUpdate)
 			{
-				PhotonClient.Instance.NetLog (json);
+				NetClient.Instance.NetLog (json);
 			}
 		}
-		PhotonClient.Instance.peer.OpCustom((byte)operationCode, parameter, true);
+		NetClient.Instance.peer.OpCustom((byte)operationCode, parameter, true);
 	}
 #endregion
 }

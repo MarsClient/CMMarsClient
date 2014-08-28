@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -29,8 +29,8 @@ public class AiEnemy : MonoBehaviour
 		aiAnt.attackDelegate -= AttackDelegate;
 		aiAnt.spellAttackDelegate -= SpellAttackDelegate;
 
-		PhotonClient.processResults -= ProcessResults;
-		PhotonClient.processResultSync -= ProcessResultSync;
+		NetClient.processResults -= ProcessResults;
+		NetClient.processResultSync -= ProcessResultSync;
 	}
 	
 	public void Remove ()
@@ -62,8 +62,8 @@ public class AiEnemy : MonoBehaviour
 
 	void Start () 
 	{
-		PhotonClient.processResults += ProcessResults;
-		PhotonClient.processResultSync += ProcessResultSync;
+		NetClient.processResults += ProcessResults;
+		NetClient.processResultSync += ProcessResultSync;
 
 		aiAnt = GetComponent <AiAnimation>();
 		aiAnt.attackDelegate += AttackDelegate;

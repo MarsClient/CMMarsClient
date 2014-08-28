@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class NetSetting : MonoBehaviour {
@@ -31,16 +31,16 @@ public class NetSetting : MonoBehaviour {
 	{
 		netRecv = GetComponent<NetRecv>();
 		Application.runInBackground = true;
-		PhotonClient.Instance.Start ();
+		NetClient.Instance.Start ();
 	}
 
 	void Update ()
 	{
-		PhotonClient.Instance.UpdateQueue (netRecv);
+		NetClient.Instance.UpdateQueue (netRecv);
 	}
 
 	private void OnApplicationQuit ()
 	{
-		PhotonClient.Instance.PeerDiscount ();
+		NetClient.Instance.PeerDiscount ();
 	}
 }

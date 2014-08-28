@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TabButton;
@@ -167,7 +167,7 @@ public class RolePanel : MonoBehaviour
 	{
 		//if (isActive == false) { roleList.Initialization (Main.Instance.roles); }
 
-		PhotonClient.processResults += ProcessResults;
+		NetClient.processResults += ProcessResults;
 	}
 
 	void SetCreatRole (bool isActive)
@@ -183,7 +183,7 @@ public class RolePanel : MonoBehaviour
 
 	void OnDisable ()
 	{
-		PhotonClient.processResults -= ProcessResults;
+		NetClient.processResults -= ProcessResults;
 	}
 
 	void CreatRoleOnClick ()

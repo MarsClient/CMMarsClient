@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,8 +11,8 @@ public class EnemyUnit : HitUnit {
 
 	protected void Awake ()
 	{
-		PhotonClient.processResults += ProcessResults;
-		PhotonClient.processResultSync += ProcessResultSync;
+		NetClient.processResults += ProcessResults;
+		NetClient.processResultSync += ProcessResultSync;
 
 
 		base.Awake ();
@@ -23,8 +23,8 @@ public class EnemyUnit : HitUnit {
 
 	void OnDisable ()
 	{
-		PhotonClient.processResults -= ProcessResults;
-		PhotonClient.processResultSync -= ProcessResultSync;
+		NetClient.processResults -= ProcessResults;
+		NetClient.processResultSync -= ProcessResultSync;
 	}
 	
 	void Remove ()

@@ -43,12 +43,12 @@ public class PublicZoneManager : MultiPlayer {
 
 	void OnEnable ()
 	{
-		PhotonClient.processResultSync += ProcessResultSync;
+		NetClient.processResultSync += ProcessResultSync;
 	}
 	
 	void OnDisable ()
 	{
-		PhotonClient.processResultSync -= ProcessResultSync;
+		NetClient.processResultSync -= ProcessResultSync;
 	}
 	
 	void ProcessResultSync (Bundle bundle)
