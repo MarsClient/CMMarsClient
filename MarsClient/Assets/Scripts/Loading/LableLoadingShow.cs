@@ -5,7 +5,7 @@ public class LableLoadingShow : MonoBehaviour {
 
 	UILabel m_Label;
 //
-	void Start ()
+	/*void Start ()
 	{
 		m_Label = GetComponent<UILabel> ();
 		InvokeRepeating ("UpdateText", 0, 0.25f);
@@ -33,5 +33,5 @@ public class LableLoadingShow : MonoBehaviour {
 			i = 0;
 		}
 		++i;
-	}
+	}*/
 }

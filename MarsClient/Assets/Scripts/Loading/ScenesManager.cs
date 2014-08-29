@@ -14,7 +14,7 @@ public class ScenesManager : MonoBehaviour {
 	public static string currentLoadName = "Splash";
 	public static bool isAssetBundle = false;
 
-	public UISlider slider;
+	public SliderTween slider;
 
 	//public static void Load
 
