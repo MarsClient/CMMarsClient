@@ -40,6 +40,5 @@ public class SliderTween : MonoBehaviour {
 		if (interval >= 1) return;
 		curValue = Mathf.Lerp (curValue, endValue, interval);
 		slider.value = curValue;
-		Debug.Log (curValue);
 	}
 }
