@@ -5,7 +5,7 @@ namespace GmUpdate
 {
 	public interface GameUpdateListeners
 	{
-		void DownloadFile (float progress);
+		void DownloadFile (float progress, string info);
 		void DownloadFileFinish ();
 		void UnZipFile ();
 		void UnZipFileFinish ();

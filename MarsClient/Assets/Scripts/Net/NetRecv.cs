@@ -15,7 +15,8 @@ public class NetRecv : MonoBehaviour {
 				Main.Instance.sqliteVer = bundle.sqliteVer;
 				StartCoroutine (GameData.Instance.reload ());
 
-				GmUpdate.GameUpdate.instance.StartResDownload ();
+				GameUpdateInterface.instance.StartDownloading ();
+				//GmUpdate.GameUpdate.instance.StartResDownload ();
 			}
 			if (bundle.cmd == Command.Login)
 			{

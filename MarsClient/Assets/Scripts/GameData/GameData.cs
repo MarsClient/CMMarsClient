@@ -148,7 +148,6 @@ public class GameData	{
 		LoadGameStrings (db);
 		LoadGameEffects (db);
 		isLoadingSuccess = true;
-		ScenesManager.instance.DelaySuccessLoading ();
 		db.Close ();
 	}
 
