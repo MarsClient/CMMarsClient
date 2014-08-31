@@ -16,7 +16,7 @@ public class GameUpdateInterface : MonoBehaviour, GameUpdateListeners
 	public void StartDownloading ()
 	{
 		GameUpdate.instance.AddElementListener (this);
-		StartCoroutine (GameUpdate.instance.StartResDownload ());
+		GameUpdate.instance.StartResDownload ();
 	}
 
 	#region GameUpdateListeners implementation

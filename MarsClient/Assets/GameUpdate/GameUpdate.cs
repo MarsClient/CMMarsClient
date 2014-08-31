@@ -3,14 +3,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Net;
 
 namespace GmUpdate
 {
-	public class GameUpdate
+	public class GameUpdate : MonoBehaviour
 	{
-		public static readonly GameUpdate instance = new GameUpdate();
+		private static GameUpdate mInstance;
+		public static GameUpdate instance
+		{
+			get
+			{
+				if (mInstance == null)
+				{
+					mInstance = new GameObject ("~GameUpdate").AddComponent<GameUpdate>();
+				}
+				return mInstance;
+			}
+		}
 
 		private List<GameUpdateListeners> gameUpdateListeners = new List<GameUpdateListeners>();
 
@@ -18,10 +28,15 @@ namespace GmUpdate
 		private Thread resThread;// android & IOS
 		private Thread unZipThread;// android & IOS*/
 
-#region ResDownload
-		public IEnumerator StartResDownload ()
+		void Start ()
 		{
-			return Run ();
+			StartCoroutine (FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH));
+		}
+
+#region ResDownload
+		public void StartResDownload ()
+		{
+			Run ();
 		}
 
 		/*public void AbortResDownload ()
@@ -32,9 +47,9 @@ namespace GmUpdate
 
 
 #region Thread Func
-		IEnumerator Run ()
+		void Run ()
 		{
-			return DownloadFile (Common.URL + Common.ZIP_NAME, Common.STORE_PATH);
+			//StartCoroutine (FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH));
 		}
 #endregion
 
@@ -101,72 +116,61 @@ namespace GmUpdate
 			}
 		}*/
 
-		private IEnumerator DownloadFile (string url, string savepath)
+		public IEnumerator FPointDownload(string uri,string saveFile)
 		{
-			Uri uri = new Uri (url);
-			HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create (uri);
-			long countLength = request.GetResponse().ContentLength;
+			System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(uri);
+			System.Net.HttpWebRequest requestGetCount = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(uri);
+			long countLength = requestGetCount.GetResponse().ContentLength;
+			
 
-			bool isSuccess = false;
-			//check local data's size
-			long lStartCount = 0;
-			FileStream fileStream;
-			if (File.Exists (savepath))
+			long lStartPos = 0;
+			System.IO.FileStream fs;
+			if (System.IO.File.Exists(saveFile))
 			{
-				fileStream = File.OpenWrite (savepath);
-				lStartCount = fileStream.Length;
-				if (lStartCount >= countLength)
+				fs = System.IO.File.OpenWrite(saveFile);
+				lStartPos = fs.Length;
+				if (countLength - lStartPos <= 0)
 				{
-					Debug.Log (savepath + " has Exist....");
-					isSuccess = true;
+					fs.Close();
+					yield break;
 				}
-				if (isSuccess == false)
-				{
-					fileStream.Seek (lStartCount, SeekOrigin.Current);//store current file instream..
-				}
+				fs.Seek(lStartPos, System.IO.SeekOrigin.Current); //移动文件流中的当前指针 
 			}
 			else
 			{
-				fileStream = new FileStream (savepath, FileMode.Create);
+				fs = new System.IO.FileStream(saveFile, System.IO.FileMode.Create);
 			}
-			if (isSuccess == false)
+			
+			
+			if (lStartPos > 0)
 			{
-				if (lStartCount > 0)
-				{
-					request.AddRange ((int) lStartCount);
-				}
-
-				//request server
-				Stream stream = request.GetResponse ().GetResponseStream ();
-				int len = Common.BUFF_SIZE;
-
-				byte[] nbytes = new byte[len];
-				int nReadSize = 0;
-				nReadSize = stream.Read(nbytes, 0, len);
-
-				string data = "";
-
-				long cur = 0;
-				long end = 0;
-				float progress = 0;
-				while (cur < countLength)
-				{
-					fileStream.Write(nbytes, 0, nReadSize);
-					nReadSize = stream.Read(nbytes, 0, len);
-
-					cur = fileStream.Length;
-					end = countLength;
-					progress = (float) cur / (float) end;
-					data = cur / Common.M_SIZE + "MB /" + end / Common.M_SIZE + "MB";
-					DownloadFile (progress, data);
-					Debug.Log (data + "____" + nReadSize + "____" + progress);
-					yield return new WaitForSeconds (0);
-				}
-				stream.Close();
-				fileStream.Close();
-				isSuccess = true;
+				request.AddRange((int)lStartPos); 
+				Debug.Log(lStartPos);
 			}
-			DownloadFileFinish ();
+			
+
+			System.IO.Stream ns = request.GetResponse().GetResponseStream();
+			int len = Common.BUFF_SIZE;
+			
+			byte[] nbytes = new byte[len];
+			int nReadSize = 0;
+			nReadSize = ns.Read(nbytes, 0, len);
+			while (nReadSize > 0)
+			{
+				fs.Write(nbytes, 0, nReadSize);
+				nReadSize = ns.Read(nbytes, 0, len);
+				string t = "已下载:" + fs.Length / 1024 + "kb /" + countLength / 1024 + "kb";
+				DownloadFile ((float) fs.Length / (float) countLength, t);
+				yield return false;
+			}
+			ns.Close();
+			fs.Close();
+		}
+
+		void OnApplicationQuit()
+		{
+			print("stop");
+			StopCoroutine("FPointDown");
 		}
 	}
 }
