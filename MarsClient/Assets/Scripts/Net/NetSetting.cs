@@ -48,5 +48,6 @@ public class NetSetting : MonoBehaviour {
 	private void OnApplicationQuit ()
 	{
 		NetClient.Instance.PeerDiscount ();
+		GmUpdate.GameUpdate.instance.AbortResDownload ();
 	}
 }
