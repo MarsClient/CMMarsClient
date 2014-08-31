@@ -35,11 +35,14 @@ public class PublicZoneManager : MultiPlayer {
 	public override void LoadingDoneRoles ()
 	{
 		AssetLoader.Instance.DownloadAssetbundle (GameData.Instance.getAllNpcsModel(), NpcCallBack);
-		foreach (Role r in Main.Instance.onlineRoles)
+		if (Main.Instance.onlineRoles != null)
 		{
-			AddNewPro (r);
+			foreach (Role r in Main.Instance.onlineRoles)
+			{
+				AddNewPro (r);
+			}
+			Main.Instance.onlineRoles = null;
 		}
-		Main.Instance.onlineRoles = null;
 	}
 
 	void OnEnable ()

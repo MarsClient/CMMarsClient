@@ -31,14 +31,17 @@ public class FightManager : MultiPlayer {
 		}
 		ScenesManager.instance.DelaySuccessLoading ();
 
-		foreach (Role role in Main.Instance.onlineRoles)
+		if (Main.Instance.onlineRoles != null)
 		{
-			if (role.roleId != Main.Instance.role.roleId)
+			foreach (Role role in Main.Instance.onlineRoles)
 			{
-				AddNewPro (role);
+				if (role.roleId != Main.Instance.role.roleId)
+				{
+					AddNewPro (role);
+				}
 			}
+			Main.Instance.onlineRoles = null;
 		}
-		Main.Instance.onlineRoles = null;
 	}
 
 	void OnEnable ()
