@@ -12,11 +12,20 @@ namespace GmUpdate
 		public const int BUFF_SIZE = 1024 * 8;
 		public const int M_SIZE = 1024;
 		
-		public static string STORE_PATH
+		public static string STORE_PATH_ZIP
 		{
 			get
 			{
 				string storePath = "D:/Unity_Space/res" + ZIP_NAME;
+				return storePath;
+			}
+		}
+
+		public static string UN_ZIP_FILE_PATH
+		{
+			get
+			{
+				string storePath = "D:/Unity_Space/res/MarsClientRes";
 				return storePath;
 			}
 		}

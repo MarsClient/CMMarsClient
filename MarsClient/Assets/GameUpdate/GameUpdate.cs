@@ -24,7 +24,7 @@ namespace GmUpdate
 #region Thread Func
 		IEnumerator Run ()
 		{
-			return FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH);
+			return FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH_ZIP);
 		}
 #endregion
 
@@ -89,11 +89,15 @@ namespace GmUpdate
 				lStartPos = fs.Length;
 				if (countLength - lStartPos <= 0)
 				{
+
 					DownloadFileFinish ();
 					fs.Close();
 					yield break;
 				}
-				fs.Seek(lStartPos, System.IO.SeekOrigin.Current); //移动文件流中的当前指针 
+				else
+				{
+					fs.Seek(lStartPos, System.IO.SeekOrigin.Current); //移动文件流中的当前指针 
+				}
 			}
 			else
 			{
