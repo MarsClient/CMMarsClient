@@ -9,7 +9,7 @@ namespace GmUpdate
 {
 	public class GameUpdate : MonoBehaviour
 	{
-		private static GameUpdate mInstance;
+		/*private static GameUpdate mInstance;
 		public static GameUpdate instance
 		{
 			get
@@ -20,7 +20,9 @@ namespace GmUpdate
 				}
 				return mInstance;
 			}
-		}
+		}*/
+
+		public readonly static GameUpdate instance = new GameUpdate();
 
 		private List<GameUpdateListeners> gameUpdateListeners = new List<GameUpdateListeners>();
 
@@ -30,13 +32,13 @@ namespace GmUpdate
 
 		void Start ()
 		{
-			StartCoroutine (FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH));
+			//StartCoroutine (FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH));
 		}
 
 #region ResDownload
-		public void StartResDownload ()
+		public IEnumerator StartResDownload ()
 		{
-			Run ();
+			return Run ();
 		}
 
 		/*public void AbortResDownload ()
@@ -47,9 +49,9 @@ namespace GmUpdate
 
 
 #region Thread Func
-		void Run ()
+		IEnumerator Run ()
 		{
-			//StartCoroutine (FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH));
+			return FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH);
 		}
 #endregion
 
@@ -155,11 +157,13 @@ namespace GmUpdate
 			byte[] nbytes = new byte[len];
 			int nReadSize = 0;
 			nReadSize = ns.Read(nbytes, 0, len);
+
+			string temp = Localization.Get("gameUpdate.download.progress");
 			while (nReadSize > 0)
 			{
 				fs.Write(nbytes, 0, nReadSize);
 				nReadSize = ns.Read(nbytes, 0, len);
-				string t = "已下载:" + fs.Length / 1024 + "kb /" + countLength / 1024 + "kb";
+				string t =string.Format (temp, fs.Length / 1024 + "kb /" + countLength / 1024 + "kb");
 				DownloadFile ((float) fs.Length / (float) countLength, t);
 				yield return false;
 			}

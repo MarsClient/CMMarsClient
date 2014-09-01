@@ -66,6 +66,7 @@ game.cgat.team.4 = [7d7a8c]【组队】
 game.fight.messgae = 你是否进入{0}副本..... 
 
 gameUpdate.donwload.done = 下载完成
+gameUpdate.download.progress = 已下载{0}
 
 
 
