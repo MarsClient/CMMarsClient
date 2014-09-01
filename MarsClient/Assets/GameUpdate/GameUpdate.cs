@@ -4,28 +4,40 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using ICSharpCode.SharpZipLib;
+using ICSharpCode.SharpZipLib.Zip;
 
 namespace GmUpdate
 {
 	public class GameUpdate : MonoBehaviour
 	{
-		public readonly static GameUpdate instance = new GameUpdate();
+		private static GameUpdate mInstance;
+		public  static GameUpdate instance
+		{
+			get
+			{
+				if (mInstance == null)
+					mInstance = new GameObject("GameUpdate").AddComponent<GameUpdate>();
+				return mInstance;
+			}
+		}
+
 		private List<GameUpdateListeners> gameUpdateListeners = new List<GameUpdateListeners>();
 
 #region ResDownload
-		public IEnumerator StartResDownload ()
+		public void StartResDownload ()
 		{
-			return Run ();
+			StartCoroutine (FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH_ZIP, Common.STORE_PATH_ZIP, Common.UN_ZIP_FILE_PATH));
 		}
 
 #endregion 
 
 
 #region Thread Func
-		IEnumerator Run ()
-		{
-			return FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH_ZIP);
-		}
+//		IEnumerator Run ()
+//		{
+//			return FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH_ZIP);
+//		}
 #endregion
 
 #region Listeners
@@ -56,12 +68,12 @@ namespace GmUpdate
 				listeners.DownloadFileFinish ();
 			}
 		}
-		void UnZipFile ()
+		void UnZipFile (float progress, string info)
 		{
 			for (int i = 0; i < gameUpdateListeners.Count; i++)
 			{
 				GameUpdateListeners listeners = gameUpdateListeners[i];
-				listeners.UnZipFile ();
+				listeners.UnZipFile (progress, info);
 			}
 		}
 		void UnZipFileFinish ()
@@ -74,7 +86,7 @@ namespace GmUpdate
 		}
 #endregion
 
-		public IEnumerator FPointDownload(string uri,string saveFile)
+		public IEnumerator FPointDownload(string uri,string saveFile, string inFile, string outFile)
 		{
 			System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(uri);
 			System.Net.HttpWebRequest requestGetCount = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(uri);
@@ -89,9 +101,10 @@ namespace GmUpdate
 				lStartPos = fs.Length;
 				if (countLength - lStartPos <= 0)
 				{
-
-					DownloadFileFinish ();
 					fs.Close();
+					DownloadFileFinish ();
+					StartCoroutine (UnZip (inFile, outFile));
+					//StartCoroutine (UnZip (Common.STORE_PATH_ZIP, Common.UN_ZIP_FILE_PATH));
 					yield break;
 				}
 				else
@@ -103,15 +116,11 @@ namespace GmUpdate
 			{
 				fs = new System.IO.FileStream(saveFile, System.IO.FileMode.Create);
 			}
-			
-			
 			if (lStartPos > 0)
 			{
 				request.AddRange((int)lStartPos); 
 				Debug.Log(lStartPos);
 			}
-			
-
 			System.IO.Stream ns = request.GetResponse().GetResponseStream();
 			int len = Common.BUFF_SIZE;
 			
@@ -132,6 +141,61 @@ namespace GmUpdate
 			fs.Close();
 
 			DownloadFileFinish ();
+			StartCoroutine (UnZip (inFile, outFile));
+		}
+
+		IEnumerator UnZip (string inFile, string outFile)
+		{
+			if (!Directory.Exists(outFile))
+				Directory.CreateDirectory(outFile);
+			
+			ZipInputStream s = new ZipInputStream(File.OpenRead(inFile));
+			
+			ZipEntry theEntry;
+
+			string root = "";
+			float index = 0;
+			float progress = 0;
+			string info = "";
+			while ((theEntry = s.GetNextEntry()) != null)
+			{
+				
+				string directoryName = Path.GetDirectoryName(theEntry.Name);
+				string fileName = Path.GetFileName(theEntry.Name);
+				string[] paths = theEntry.Name.Split ('/');
+				info = paths[paths.Length - 1].Replace (".assetBundle", "");
+
+				if (directoryName != String.Empty)
+					Directory.CreateDirectory(outFile + directoryName);
+				
+				if (fileName != String.Empty)
+				{
+					FileStream streamWriter = File.Create(outFile + theEntry.Name);
+					
+					int size = 2048;
+					byte[] data = new byte[2048];
+					while (true)
+					{
+						size = s.Read(data, 0, data.Length);
+						if (size > 0)
+						{
+							streamWriter.Write(data, 0, size);
+						}
+						else
+						{
+							break;
+						}
+						//float progress = (float)streamWriter.Length / (float)theEntry.Size;
+						Debug.Log (theEntry.Name + "____"  + streamWriter.Length + "____" + theEntry.Size + "____" + progress + "____" + paths[0] + "____" + paths[1]);
+						UnZipFile (progress, info);
+					}
+					streamWriter.Close();
+				}
+
+				yield return false;
+			}
+			s.Close();
+			UnZipFileFinish ();
 		}
 
 		void OnApplicationQuit()

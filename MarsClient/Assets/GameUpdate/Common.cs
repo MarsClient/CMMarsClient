@@ -25,7 +25,7 @@ namespace GmUpdate
 		{
 			get
 			{
-				string storePath = "D:/Unity_Space/res/MarsClientRes";
+				string storePath = "D:/Unity_Space/res/MarsClientRes/";
 				return storePath;
 			}
 		}

@@ -7,7 +7,7 @@ namespace GmUpdate
 	{
 		void DownloadFile (float progress, string info);
 		void DownloadFileFinish ();
-		void UnZipFile ();
+		void UnZipFile (float progress, string info);
 		void UnZipFileFinish ();
 	}
 }

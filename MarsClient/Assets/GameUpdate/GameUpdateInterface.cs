@@ -16,7 +16,7 @@ public class GameUpdateInterface : MonoBehaviour, GameUpdateListeners
 	public void StartDownloading ()
 	{
 		GameUpdate.instance.AddElementListener (this);
-		StartCoroutine (GameUpdate.instance.StartResDownload ());
+		GameUpdate.instance.StartResDownload ();
 	}
 
 	#region GameUpdateListeners implementation
@@ -28,18 +28,18 @@ public class GameUpdateInterface : MonoBehaviour, GameUpdateListeners
 
 	void GameUpdateListeners.DownloadFileFinish ()
 	{
-		slider.SetSliderInfo (1, Localization.Get ("gameUpdate.donwload.done"));
-		ScenesManager.instance.DelaySuccessLoading ();
+		//slider.SetSliderInfo (1, Localization.Get ("gameUpdate.donwload.done"));
+
 	}
 
-	void GameUpdateListeners.UnZipFile ()
+	void GameUpdateListeners.UnZipFile (float progress, string info)
 	{
-
+		slider.SetSliderInfo (progress, info);
 	}
 
 	void GameUpdateListeners.UnZipFileFinish ()
 	{
-
+		ScenesManager.instance.DelaySuccessLoading ();
 	}
 
 	#endregion
