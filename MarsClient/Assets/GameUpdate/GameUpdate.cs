@@ -9,31 +9,8 @@ namespace GmUpdate
 {
 	public class GameUpdate : MonoBehaviour
 	{
-		/*private static GameUpdate mInstance;
-		public static GameUpdate instance
-		{
-			get
-			{
-				if (mInstance == null)
-				{
-					mInstance = new GameObject ("~GameUpdate").AddComponent<GameUpdate>();
-				}
-				return mInstance;
-			}
-		}*/
-
 		public readonly static GameUpdate instance = new GameUpdate();
-
 		private List<GameUpdateListeners> gameUpdateListeners = new List<GameUpdateListeners>();
-
-		/*private Thread apkThread;//for android
-		private Thread resThread;// android & IOS
-		private Thread unZipThread;// android & IOS*/
-
-		void Start ()
-		{
-			//StartCoroutine (FPointDownload (Common.URL + Common.ZIP_NAME, Common.STORE_PATH));
-		}
 
 #region ResDownload
 		public IEnumerator StartResDownload ()
@@ -41,10 +18,6 @@ namespace GmUpdate
 			return Run ();
 		}
 
-		/*public void AbortResDownload ()
-		{
-			AbortThread (ref resThread);
-		}*/
 #endregion 
 
 
@@ -101,23 +74,6 @@ namespace GmUpdate
 		}
 #endregion
 
-
-		/*private void StartThread (ref Thread thread, ThreadStart threadStart)
-		{
-			AbortThread (ref thread);
-			thread = new Thread (threadStart);
-			thread.Start ();
-		}
-
-		private void AbortThread (ref Thread thread)
-		{
-			if (thread != null)
-			{
-				thread.Abort ();
-				thread = null;
-			}
-		}*/
-
 		public IEnumerator FPointDownload(string uri,string saveFile)
 		{
 			System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.HttpWebRequest.Create(uri);
@@ -133,6 +89,7 @@ namespace GmUpdate
 				lStartPos = fs.Length;
 				if (countLength - lStartPos <= 0)
 				{
+					DownloadFileFinish ();
 					fs.Close();
 					yield break;
 				}
@@ -169,11 +126,12 @@ namespace GmUpdate
 			}
 			ns.Close();
 			fs.Close();
+
+			DownloadFileFinish ();
 		}
 
 		void OnApplicationQuit()
 		{
-			print("stop");
 			StopCoroutine("FPointDown");
 		}
 	}
