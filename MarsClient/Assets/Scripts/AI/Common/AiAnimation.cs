@@ -25,6 +25,7 @@ public class AntDefine
 	public const string KEY_IDLE = "Idle";
 	public const string KEY_ATTACK = "Attack";
 	public const string KEY_SPELL = "Spell";
+	public const int INVALID = -1;
 	public const float ANIMATION_OFFSET = 0.02f;
 }
 
@@ -127,6 +128,8 @@ public class AiAnimation : MonoBehaviour {
 	private float prefabPlayTime = 0;//prefab play time
 	private float lastUpdateAnimationMessageTime = 0;
 
+	private object syncObj = new object ();
+
 	void Start () 
 	{
 		m_Animation = GetComponentInChildren<Animation>();
@@ -146,26 +149,32 @@ public class AiAnimation : MonoBehaviour {
 
 	public void Play (Clip c)
 	{
-		if (isDie) { return; }
-		if (clip != c)
+		lock (syncObj)
 		{
-			AnimationInfo aInfo = GetInfoByClip (c);
-			if (aInfo == null) return;
-
-			m_AnimationInfo = aInfo;
-			bool isExist = m_AnimationInfo != null;
-			if (isExist == true)
+			if (isDie) { return; }
+			if (clip != c)
 			{
+				AnimationInfo aInfo = GetInfoByClip (c);
+				if (aInfo == null) return;
 
-				clip = c;
-				if (m_AnimationInfo.animationClip.wrapMode != WrapMode.Loop)
+				m_AnimationInfo = aInfo;
+				bool isExist = m_AnimationInfo != null;
+				if (isExist == true)
 				{
-					beginPlayTime = Time.time;
-					Stop ();
 
+					clip = c;
+					if (m_AnimationInfo.animationClip.wrapMode != WrapMode.Loop)
+					{
+						beginPlayTime = Time.time;
+						Stop ();
+
+					}
+					else
+					{
+						beginPlayTime = AntDefine.INVALID;
+					}
+					m_Animation.CrossFade (m_AnimationInfo.animationClip.name);
 				}
-				//Debug.Log (beginPlayTime + "_________" + c);
-				m_Animation.CrossFade (m_AnimationInfo.animationClip.name);
 			}
 		}
 	}
@@ -203,7 +212,7 @@ public class AiAnimation : MonoBehaviour {
 	{
 		//trailsManager.RunAnimations (m_Animation, isAttack || isSpell);
 
-		if (m_AnimationInfo != null && m_AnimationInfo.animationClip.wrapMode != WrapMode.Loop)
+		if (m_AnimationInfo != null && m_AnimationInfo.animationClip.wrapMode != WrapMode.Loop && beginPlayTime != AntDefine.INVALID)
 		{
 			float m_tt = Time.time - beginPlayTime;//go through time; length * spd
 			if (m_AnimationInfo.events.Count > 0)

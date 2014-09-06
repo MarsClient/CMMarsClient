@@ -98,4 +98,9 @@ public class PoolManager : MonoBehaviour {
 		go.SetActive (false);
 		pools[path] = goList;
 	}
+
+	public void Clear ()
+	{
+		pools.Clear ();
+	}
 }
