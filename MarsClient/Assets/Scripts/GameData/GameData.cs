@@ -149,6 +149,8 @@ public class GameData	{
 		LoadGameEffects (db);
 		isLoadingSuccess = true;
 		db.Close ();
+
+		ScenesManager.instance.DelaySuccessLoading ();
 	}
 
 	void loadLocalDb(string dbfilename, string saveFilename)

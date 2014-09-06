@@ -12,7 +12,6 @@ public class FightManager : MultiPlayer {
 	{
 		UILoadPanel.LoadingPanel ();
 		base.Start ();
-		gameObject.AddComponent <PoolManager>();
 	}
 
 	public override void LoadingDoneRoles ()
@@ -54,6 +53,8 @@ public class FightManager : MultiPlayer {
 	{
 		NetClient.processResults -= ProcessResults;
 		NetClient.processResultSync -= ProcessResultSync;
+
+		PoolManager.Instance.Clear ();
 	}
 
 	void ProcessResults (Bundle bundle)

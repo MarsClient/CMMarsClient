@@ -8,11 +8,10 @@ using System.Collections.Generic;
 /// when load new scene,this class will release.
 /// </summary>
 
-public class PoolManager : MonoBehaviour {
+public class PoolManager
+{
 
-	public static PoolManager Instance;
-	void Awake () { Instance = this; }
-	void OnDestroy() { Instance = null; }
+	public readonly static PoolManager Instance = new PoolManager ();
 
 	private Dictionary<string, LinkedList<GameObject>> pools = new Dictionary<string, LinkedList<GameObject>>();
 
@@ -102,5 +101,7 @@ public class PoolManager : MonoBehaviour {
 	public void Clear ()
 	{
 		pools.Clear ();
+
+		Debug.LogError (pools.Count);
 	}
 }
