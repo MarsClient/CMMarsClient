@@ -165,8 +165,9 @@ public class AiAnimation : MonoBehaviour {
 					clip = c;
 					if (m_AnimationInfo.animationClip.wrapMode != WrapMode.Loop)
 					{
+						prefabPlayTime = 0;
 						beginPlayTime = Time.time;
-						Stop ();
+						//Stop ();
 
 					}
 					else
