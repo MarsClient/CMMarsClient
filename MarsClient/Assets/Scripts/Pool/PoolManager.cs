@@ -102,6 +102,6 @@ public class PoolManager
 	{
 		pools.Clear ();
 
-		Debug.LogError (pools.Count);
+//		Debug.LogError (pools.Count);
 	}
 }
