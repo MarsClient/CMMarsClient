@@ -46,7 +46,7 @@ public class CreatAssetBundle : Editor {
 			targetPath += "/" + obj.name + ".assetbundle";  
 //			Debug.Log (bt);
 			if (BuildPipeline.BuildAssetBundle (obj, null, targetPath, BuildAssetBundleOptions.CollectDependencies, bt)) {  
-				Debug.Log(obj.name +"Creat success");  
+				Debug.Log(targetPath +" Creat success");  
 			}   
 			else   
 			{  
