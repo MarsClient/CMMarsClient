@@ -1,0 +1,21 @@
+Thanks for purchasing this pakage.
+
+Animated items:
+Stone Chests, Large Wooden Chests, Small Wooden Chests as well as the Jewelry Boxes is animation ready.
+Ckicking on the Items under /Meshes/Containers/... you can preview the individual open and close animations
+1 - 4   Idle
+4 - 41  Open
+41 - 77 Close
+
+Breakable items:
+Crates, Barrels & Urns each have a Fixed State and a broken state models included for each of the textures sets
+They would be used where the developer would swop the fixed model with the broken version and hide the swop
+with a particle effect, be it a dust burst, a flame, a flash or what ever they desire.
+
+Textures:
+All textures are 512 x 512
+I have tested scaling down to 256 x 256 and even 128 x 128 still givs god results.
+
+Send some screenshots to info@3dforge.co.za of your work and I will showcase them on the website
+
+Enjoy
