@@ -33,7 +33,7 @@ public class GameMonster
 	[DefaultValue(0L)]
 	public long attId;
 	[DefaultValue (false)]
-	public long isCritical;
+	public bool isCritical;
 	
 	
 	public float hpRatio
@@ -67,4 +67,7 @@ public class GameMonster
 	public float target_y;
 	[DefaultValue(0F)]
 	public float target_z;
+
+	[DefaultValue(null)]
+	public GameReward gameReward;
 }
