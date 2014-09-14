@@ -26,6 +26,7 @@ public class Constants
 	public const string UI = "UI/";
 	public const string EF = "EF/";
 	public const string ENEMYS = "Enemys/";
+	public const string ITEMS = "Items/";
 	public const string NPC = "NPC/";
 	public const string PRO = "RO/";
 	public const string SC = "SC/";

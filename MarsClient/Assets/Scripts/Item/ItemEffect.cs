@@ -65,7 +65,7 @@ public class ItemEffect : MonoBehaviour {
 				particleSystem.gameObject.SetActive (true);
 
 				isOk = true;
-				Destroy (mParent.gameObject, 2.0f);
+				//Destroy (mParent.gameObject, 2.0f);
 			}
 		}
 	}

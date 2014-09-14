@@ -88,7 +88,11 @@ public class EnemyUnit : HitUnit {
 		GameItem item = GameData.Instance.GetItemById (long.Parse (gameReward.item.id));
 		if (item != null)
 		{
-			Debug.LogError (item.model);
+			//Debug.LogError (item.model);
+			PoolManager.Instance.LoadGameObject (item.model, (GameObject target)=>
+		    {
+				target.transform.position = transform.position;
+			}, Constants.ITEMS);
 			return;
 		}
 		Debug.LogError ("No Such Item");
