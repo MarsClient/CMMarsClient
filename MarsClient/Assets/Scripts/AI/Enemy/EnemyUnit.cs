@@ -83,16 +83,33 @@ public class EnemyUnit : HitUnit {
 		}
 	}
 
+	void DropOutItem (GameReward gameReward)
+	{
+		GameItem item = GameData.Instance.GetItemById (long.Parse (gameReward.item.id));
+		if (item != null)
+		{
+			Debug.LogError (item.model);
+			return;
+		}
+		Debug.LogError ("No Such Item");
+	}
+
 	void ProcessResults (Bundle bundle)
 	{
 		if (bundle.cmd == Command.MonsterStateUpdate)
 		{
 			if (gameMonster.id == bundle.gameMonster.id)
 			{
+				gameMonster.gameReward = bundle.gameMonster.gameReward;
 				gameMonster.hp = bundle.gameMonster.hp;
 
 				HpDeduct ();
 				this.HitEffect ();
+
+				if (gameMonster.gameReward != null)
+				{
+					this.DropOutItem (gameMonster.gameReward);
+				}
 			}
 		}
 	}

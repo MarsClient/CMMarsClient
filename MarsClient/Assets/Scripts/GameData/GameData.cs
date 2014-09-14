@@ -374,4 +374,11 @@ public class GameData	{
 		}
 		return gameEffect;
 	}
+
+	public GameItem GetItemById (long id)
+	{
+		GameItem item = null;
+		gameItems.TryGetValue (id, out item);
+		return item;
+	}
 }
