@@ -12,6 +12,8 @@ public class AssetLoader : MonoBehaviour {
 
 	private static object obj = new object();
 
+	private List<string> loadPaths = new List<string>();//check same path loading at the same time;
+
 	private string scenePath = "";
 	private string assetBundlePath = "";
 

@@ -182,7 +182,7 @@ public class AiPlayer : MonoBehaviour
 	{
 		if (info.clip == Clip.Spell1)
 		{
-			StartCoroutine (ShootMulBullet (7, 0.1f, 2, info, fe));
+			StartCoroutine (ShootMulBullet (7, 0.0f, 2, info, fe));
 		}
 		else if (info.clip == Clip.Spell2)
 		{

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/*爱情简单，相处太难。像恋不如相见。相守不如相爱。*/
 namespace GmUpdate
 {
 	/*ftp://qq459127484:kanni789@002.3vftp.com /MarsRes.zip*/

@@ -74,10 +74,10 @@ public class AiEnemy : MonoBehaviour
 		InvokeRepeating ("UpdateEnemyAI", 0, 0.25f);
 
 
-		/*if (PlayerUnit.playersUnit.Count > 0)
+		if (PlayerUnit.playersUnit.Count > 0)
 		{
-			target = PlayerUnit.playersUnit[0].transform;
-		}*/
+			target = PlayerUnit.playersUnit[0];
+		}
 	}
 
 	void UpdateEnemyAI () 

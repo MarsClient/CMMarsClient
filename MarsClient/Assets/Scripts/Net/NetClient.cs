@@ -30,7 +30,7 @@ public class NetClient : IPhotonPeerListener {
 		if (oThread != null)
 		{
 			oThread.Abort ();
-			oThread.Abort ();
+			oThread = null;
 		}
 	}
 
